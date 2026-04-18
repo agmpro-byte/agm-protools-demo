@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Live Operations Dashboard — AGM Pro Tools</title>
+<meta name="description" content="See what your data already knows. Your Contractor Automation Score, live.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0f1a;
     --bg-card: #111827;
     --bg-hover: #1a2332;
+    --bg-elevated: #151d2b;
     --accent: #22c55e;
     --accent-dim: rgba(34,197,94,0.15);
     --accent-glow: rgba(34,197,94,0.3);
@@ -33,13 +35,13 @@
     --border2: rgba(255,255,255,0.03);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  html { font-size: 17px; }
+  html { font-size:17px; }
   body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:17px; line-height:1.5; }
 
+  /* ═══ HEADER ═══ */
   .header { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:20px 40px; background:rgba(10,15,26,0.95); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
   .header-left { display:flex; align-items:center; gap:14px; }
   .header-logo { font-size:20px; font-weight:800; letter-spacing:-0.03em; line-height:1.1; }
-  .header-logo-sub { font-size:12px; font-weight:500; color:var(--text3); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:3px; }
   .header-tagline { font-size:12px; font-weight:500; color:var(--text3); letter-spacing:0.01em; margin-top:4px; font-style:italic; }
   .header-center { text-align:center; }
   .header-client { font-size:26px; font-weight:800; letter-spacing:-0.02em; line-height:1.2; }
@@ -52,50 +54,96 @@
   .status-dot { width:9px; height:9px; border-radius:50%; background:currentColor; animation:pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 var(--accent-glow)} 50%{box-shadow:0 0 0 6px transparent} }
 
-  .ribbon { background:linear-gradient(90deg, rgba(124,58,237,0.12), rgba(34,197,94,0.08)); border-bottom:1px solid var(--border); padding:14px 40px; text-align:center; font-size:15px; color:var(--text2); font-weight:500; }
-  .ribbon strong { color:var(--text); font-weight:700; }
-
+  /* ═══ FILTER BAR ═══ */
   .filter-bar { display:flex; justify-content:center; align-items:center; gap:8px; padding:16px 40px; background:var(--bg); border-bottom:1px solid var(--border); flex-wrap:wrap; }
   .filter-label { font-size:13px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-right:12px; }
   .filter-btn { background:transparent; border:1px solid var(--border); color:var(--text2); font-size:14px; font-weight:600; font-family:inherit; padding:8px 18px; border-radius:10px; cursor:pointer; transition:all 0.2s ease; white-space:nowrap; }
   .filter-btn:hover { border-color:var(--accent); color:var(--text); background:var(--accent-dim); }
   .filter-btn.active { background:var(--accent); color:#0a0f1a; border-color:var(--accent); font-weight:700; }
 
-  .main { padding:28px 40px 40px; max-width:1480px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+  /* ═══ MAIN ═══ */
+  .main { padding:32px 40px 40px; max-width:1480px; margin:0 auto; display:flex; flex-direction:column; gap:24px; }
 
-  /* Hero KPIs */
-  .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  .metric { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:22px 26px; position:relative; overflow:hidden; transition:border-color 0.3s; }
-  .metric:hover { border-color:rgba(255,255,255,0.1); }
-  .metric::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-  .metric:nth-child(1)::before { background:linear-gradient(90deg,var(--blue),transparent); }
-  .metric:nth-child(2)::before { background:linear-gradient(90deg,var(--cyan),transparent); }
-  .metric:nth-child(3)::before { background:linear-gradient(90deg,var(--agm-purple),transparent); }
-  .metric:nth-child(4)::before { background:linear-gradient(90deg,var(--accent),transparent); }
-  .metric-label { font-size:14px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
-  .metric-val { font-size:44px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
-  .metric:nth-child(1) .metric-val { color:var(--blue); }
-  .metric:nth-child(2) .metric-val { color:var(--cyan); }
-  .metric:nth-child(3) .metric-val { color:var(--agm-purple); }
-  .metric:nth-child(4) .metric-val { color:var(--accent); }
-  .metric-sub { font-size:15px; color:var(--text2); margin-top:10px; font-weight:500; }
-  .metric-sub .up { color:var(--accent); font-weight:700; }
-  .metric-sub .dim { color:var(--text3); font-weight:500; }
+  /* ═══ CAS HERO ═══ */
+  .cas-hero { background:linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border:1px solid var(--border); border-radius:18px; padding:40px; position:relative; overflow:hidden; }
+  .cas-hero::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--agm-purple), var(--accent)); }
+  .cas-hero-inner { display:grid; grid-template-columns:auto 1fr auto; gap:40px; align-items:center; }
 
-  /* Duo */
-  .duo-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:stretch; }
+  .cas-ring-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .cas-ring { position:relative; width:200px; height:200px; }
+  .cas-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .cas-ring-track { fill:none; stroke:var(--border); stroke-width:12; }
+  .cas-ring-fill { fill:none; stroke:url(#cas-gradient); stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1); }
+  .cas-number-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; }
+  .cas-number { font-size:68px; font-weight:800; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; background:linear-gradient(135deg, var(--agm-purple) 0%, var(--accent) 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+  .cas-of { font-size:16px; color:var(--text3); font-weight:500; margin-top:2px; }
+  .cas-label { font-size:13px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.12em; text-align:center; }
+
+  .cas-meta { display:flex; flex-direction:column; gap:14px; }
+  .cas-eyebrow { font-size:13px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.12em; }
+  .cas-headline { font-size:36px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; }
+  .cas-headline .brand { background:linear-gradient(135deg, var(--agm-purple), var(--accent)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+  .cas-sub { font-size:16px; color:var(--text2); line-height:1.55; max-width:560px; }
+  .cas-stats { display:flex; gap:24px; margin-top:6px; flex-wrap:wrap; }
+  .cas-stat { display:flex; flex-direction:column; gap:4px; }
+  .cas-stat-val { font-size:22px; font-weight:800; color:var(--text); font-variant-numeric:tabular-nums; }
+  .cas-stat-val.up { color:var(--accent); }
+  .cas-stat-lbl { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
+
+  .cas-cta { display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+  .cas-cta-btn { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg, var(--agm-purple) 0%, var(--accent) 100%); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-weight:700; font-size:15px; letter-spacing:-0.01em; box-shadow:0 8px 24px rgba(124,58,237,0.25); transition:transform 0.2s, box-shadow 0.2s; }
+  .cas-cta-btn:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(124,58,237,0.35); }
+  .cas-cta-sub { font-size:13px; color:var(--text3); max-width:220px; text-align:right; line-height:1.4; }
+
+  /* ═══ CATEGORY GRID ═══ */
+  .category-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+  .cat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:24px; position:relative; overflow:hidden; display:flex; flex-direction:column; gap:16px; transition:border-color 0.2s; }
+  .cat-card:hover { border-color:rgba(255,255,255,0.1); }
+  .cat-card::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .cat-card.green::before { background:var(--accent); }
+  .cat-card.blue::before { background:var(--blue); }
+  .cat-card.cyan::before { background:var(--cyan); }
+  .cat-card.purple::before { background:var(--agm-purple); }
+  .cat-card.amber::before { background:var(--amber); }
+  .cat-card.red::before { background:var(--red); }
+
+  .cat-head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; }
+  .cat-name { font-size:14px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.08em; }
+  .cat-score-chip { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
+  .cat-score-big { font-size:32px; font-weight:800; letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; }
+  .cat-card.green .cat-score-big { color:var(--accent); }
+  .cat-card.blue  .cat-score-big { color:var(--blue); }
+  .cat-card.cyan  .cat-score-big { color:var(--cyan); }
+  .cat-card.purple .cat-score-big { color:var(--agm-purple); }
+  .cat-card.amber .cat-score-big { color:var(--amber); }
+  .cat-card.red .cat-score-big { color:var(--red); }
+  .cat-benchmark { font-size:12px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; }
+  .cat-benchmark.up { color:var(--accent); }
+  .cat-benchmark.down { color:var(--amber); }
+
+  .cat-metrics { display:flex; flex-direction:column; gap:10px; }
+  .cat-metric { display:flex; justify-content:space-between; align-items:baseline; font-size:15px; }
+  .cat-metric-lbl { color:var(--text2); font-weight:500; }
+  .cat-metric-val { color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; }
+
+  .cat-agm, .cat-insight { font-size:14px; line-height:1.5; padding:14px 16px; border-radius:10px; }
+  .cat-agm { background:var(--accent-dim); border:1px solid rgba(34,197,94,0.15); color:var(--text); }
+  .cat-agm-label { font-size:11px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px; display:block; }
+  .cat-insight { background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.18); color:var(--text); }
+  .cat-insight-label { font-size:11px; font-weight:800; color:var(--agm-purple); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px; display:block; }
+
+  /* ═══ ACTIVITY FEED + SYSTEM HEALTH ═══ */
+  .duo-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:20px; align-items:stretch; }
   .card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
   .card-head { display:flex; justify-content:space-between; align-items:center; padding:20px 24px 14px; }
   .card-title { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
   .badge { font-size:13px; font-weight:700; padding:5px 12px; border-radius:12px; text-transform:uppercase; letter-spacing:0.06em; }
   .badge.live { background:var(--accent-dim); color:var(--accent); }
-  .badge.info { background:var(--blue-dim); color:var(--blue); }
-  .badge.agm { background:var(--agm-purple-dim); color:var(--agm-purple); }
 
-  .feed-container { flex:1; overflow:hidden; position:relative; padding:0 24px 20px; max-height:440px; }
+  .feed-container { flex:1; overflow:hidden; position:relative; padding:0 24px 20px; max-height:460px; }
   .feed-container::after { content:''; position:absolute; bottom:0; left:0; right:0; height:52px; background:linear-gradient(transparent, var(--bg-card)); pointer-events:none; z-index:2; }
   .feed-track { display:flex; flex-direction:column; gap:8px; }
-  .feed-item { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:10px; background:var(--border2); transition:background 0.2s, opacity 0.4s, transform 0.4s; flex-shrink:0; }
+  .feed-item { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:10px; background:var(--border2); transition:background 0.2s; flex-shrink:0; }
   .feed-item.fresh { background:var(--accent-dim); border:1px solid rgba(34,197,94,0.18); animation:fresh-flash 2.4s ease-out; }
   @keyframes fresh-flash { 0%{background:rgba(34,197,94,0.28); transform:translateY(-4px)} 100%{background:var(--accent-dim); transform:translateY(0)} }
   .feed-dot { width:9px; height:9px; border-radius:50%; margin-top:7px; flex-shrink:0; }
@@ -110,43 +158,25 @@
   .feed-star { color:var(--star); letter-spacing:1px; }
   .feed-time { font-size:13px; color:var(--text3); white-space:nowrap; margin-top:2px; font-weight:500; }
 
-  .pipeline-body { padding:10px 24px 20px; display:flex; flex-direction:column; }
-  .p-stage { display:flex; align-items:center; gap:18px; padding:14px 0; }
-  .p-stage:not(:last-child) { border-bottom:1px solid var(--border); }
-  .p-stage-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-  .p-stage-info { flex:1; min-width:0; }
-  .p-stage-name { font-size:15px; font-weight:600; margin-bottom:4px; }
-  .p-stage-meta { display:flex; align-items:baseline; gap:10px; }
-  .p-stage-count { font-size:26px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; }
-  .p-stage-label { font-size:14px; color:var(--text3); font-weight:500; }
-  .p-stage-bar { width:100%; height:5px; background:rgba(255,255,255,0.04); border-radius:3px; margin-top:8px; overflow:hidden; }
-  .p-stage-bar-fill { height:100%; border-radius:3px; transition:width 1.5s cubic-bezier(0.16,1,0.3,1); width:0; }
-  .p-stage-value { font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; flex-shrink:0; min-width:100px; text-align:right; }
-
-  /* Tri-row */
-  .tri-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
-  .tri-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:22px 26px; }
-  .tri-title { font-size:14px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px; }
-  .tri-hero { text-align:center; margin-bottom:16px; }
-  .tri-hero .big { font-size:48px; font-weight:800; letter-spacing:-0.03em; line-height:1; }
-  .tri-hero .big.green { color:var(--accent); }
-  .tri-hero .big.blue { color:var(--blue); }
-  .tri-hero .big.star { color:var(--star); }
-  .tri-hero .sub { font-size:14px; color:var(--text2); margin-top:10px; font-weight:500; }
-  .stars { font-size:22px; color:var(--star); letter-spacing:3px; margin-top:12px; }
-
-  .stat-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid var(--border2); font-size:15px; }
-  .stat-row:last-child { border-bottom:none; }
-  .stat-label { color:var(--text2); font-weight:500; }
-  .stat-val { color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; font-size:16px; }
-  .stat-val.ok { color:var(--accent); }
-
-  .health-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; font-size:15px; border-bottom:1px solid var(--border2); }
+  .health-body { padding:8px 24px 20px; }
+  .health-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; font-size:15px; border-bottom:1px solid var(--border2); }
   .health-row:last-child { border-bottom:none; }
   .health-left { color:var(--text2); font-weight:500; }
-  .health-right { color:var(--accent); font-weight:700; display:flex; align-items:center; gap:8px; font-size:15px; }
+  .health-right { color:var(--accent); font-weight:700; display:flex; align-items:center; gap:8px; }
   .health-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow); }
 
+  /* ═══ AGM WORKING BAND ═══ */
+  .agm-band { background:linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border:1px solid var(--border); border-radius:14px; padding:26px 30px; }
+  .agm-band::before { content:''; display:block; height:3px; background:linear-gradient(90deg, var(--agm-purple), var(--accent)); border-radius:2px; margin:-26px -30px 22px; }
+  .agm-band-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
+  .agm-band-title { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .agm-band-time { font-size:15px; color:var(--accent); font-weight:700; }
+  .agm-band-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:20px; }
+  .agm-stat { display:flex; flex-direction:column; gap:6px; }
+  .agm-stat-val { font-size:30px; font-weight:800; letter-spacing:-0.02em; color:var(--text); font-variant-numeric:tabular-nums; }
+  .agm-stat-lbl { font-size:13px; color:var(--text3); font-weight:600; letter-spacing:0.02em; }
+
+  /* ═══ FOOTER ═══ */
   .footer { text-align:center; padding:32px 40px 40px; border-top:1px solid var(--border); margin-top:14px; }
   .footer-tagline { font-size:15px; color:var(--text2); font-weight:500; margin-bottom:12px; }
   .footer-brand { font-size:15px; color:var(--text3); }
@@ -155,18 +185,23 @@
   .security-note { font-size:13px; color:var(--text3); margin-top:18px; font-family:'SF Mono',Menlo,monospace; letter-spacing:0.03em; }
   .security-note .ok { color:var(--accent); }
 
-  @media(max-width:980px) {
-    .metrics { grid-template-columns:repeat(2,1fr); }
+  /* ═══ RESPONSIVE ═══ */
+  @media(max-width:1180px) {
+    .cas-hero-inner { grid-template-columns:auto 1fr; }
+    .cas-cta { grid-column:1/-1; flex-direction:row; justify-content:center; align-items:center; gap:20px; margin-top:16px; }
+    .cas-cta-sub { text-align:left; max-width:none; }
+    .category-grid { grid-template-columns:repeat(2, 1fr); }
+    .agm-band-grid { grid-template-columns:repeat(3, 1fr); }
+  }
+  @media(max-width:720px) {
+    .cas-hero-inner { grid-template-columns:1fr; }
+    .cas-meta { text-align:center; align-items:center; }
+    .category-grid { grid-template-columns:1fr; }
     .duo-grid { grid-template-columns:1fr; }
-    .tri-row { grid-template-columns:1fr; }
+    .agm-band-grid { grid-template-columns:repeat(2, 1fr); }
     .header { grid-template-columns:1fr 1fr; padding:12px 16px; }
     .header-center { grid-column:1/-1; order:3; margin-top:8px; text-align:left; }
-    .main { padding:16px; }
-  }
-  @media(max-width:560px) {
-    .metrics { grid-template-columns:1fr; }
-    .header { grid-template-columns:1fr auto; }
-    .ribbon { font-size:11px; padding:8px 16px; }
+    .main { padding:20px 16px; }
   }
 </style>
 </head>
@@ -190,7 +225,7 @@
     </div>
     <div class="status-badge">
       <span class="status-dot"></span>
-      <span>Connected</span>
+      <span>Live</span>
     </div>
   </div>
 </header>
@@ -207,87 +242,267 @@
 
 <main class="main">
 
-  <!-- HERO: Leads / Appointments / Pipeline / Revenue -->
-  <div class="metrics">
-    <div class="metric">
-      <div class="metric-label">Leads</div>
-      <div class="metric-val" id="mLeads">0</div>
-      <div class="metric-sub"><span class="up" id="mLeadsDelta">+0</span> new today</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Appointments Booked</div>
-      <div class="metric-val" id="mAppts">0</div>
-      <div class="metric-sub"><span class="up" id="mApptsDelta">+0</span> this week <span class="dim">· <span id="mApptsUpcoming">0</span> upcoming (next 14d)</span></div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Pipeline</div>
-      <div class="metric-val" id="mPipeline">$0</div>
-      <div class="metric-sub"><span class="up" id="mPipelineCount">0</span> open deals awaiting next step</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Revenue</div>
-      <div class="metric-val" id="mRevenue">$0</div>
-      <div class="metric-sub"><span class="up" id="mRevenueDelta">+$0</span> this week</div>
-    </div>
-  </div>
+  <!-- ═══ CAS HERO ═══ -->
+  <section class="cas-hero">
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="cas-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#7c3aed"/>
+          <stop offset="100%" stop-color="#22c55e"/>
+        </linearGradient>
+      </defs>
+    </svg>
 
-  <!-- DUO: Activity + Pipeline -->
+    <div class="cas-hero-inner">
+      <div class="cas-ring-wrap">
+        <div class="cas-ring">
+          <svg viewBox="0 0 200 200">
+            <circle class="cas-ring-track" cx="100" cy="100" r="86"/>
+            <circle class="cas-ring-fill" cx="100" cy="100" r="86"
+                    stroke-dasharray="540.35" stroke-dashoffset="540.35" id="casRingFill"/>
+          </svg>
+          <div class="cas-number-wrap">
+            <div class="cas-number" id="casNumber">0</div>
+            <div class="cas-of">out of 100</div>
+          </div>
+        </div>
+        <div class="cas-label">Contractor Automation Score</div>
+      </div>
+
+      <div class="cas-meta">
+        <div class="cas-eyebrow">Your Automation Intelligence</div>
+        <h1 class="cas-headline">Your business is running at <span class="brand" id="casHeadlineScore">72</span> of its automation potential.</h1>
+        <p class="cas-sub">The Contractor Automation Score measures how well your operation captures leads, follows up on quotes, generates reviews, tracks pipeline, and reactivates dormant customers. AGM improves all five.</p>
+        <div class="cas-stats">
+          <div class="cas-stat">
+            <div class="cas-stat-val up" id="casDelta">▲ +4</div>
+            <div class="cas-stat-lbl">vs. last month</div>
+          </div>
+          <div class="cas-stat">
+            <div class="cas-stat-val" id="casRank">Top 22%</div>
+            <div class="cas-stat-lbl">national benchmark</div>
+          </div>
+          <div class="cas-stat">
+            <div class="cas-stat-val" id="casTarget">85</div>
+            <div class="cas-stat-lbl">your target range</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cas-cta">
+        <a class="cas-cta-btn" href="https://contractorautomationscore.com" target="_blank" rel="noopener">
+          See your own score →
+        </a>
+        <div class="cas-cta-sub">10 questions · 3 minutes · free report</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORY GRID ═══ -->
+  <section class="category-grid">
+
+    <!-- Speed to Lead -->
+    <div class="cat-card green">
+      <div class="cat-head">
+        <div class="cat-name">Speed to Lead</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">82</div>
+          <div class="cat-benchmark up">Top 15% nationally</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Avg response time</span><span class="cat-metric-val">47s</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Leads auto-replied</span><span class="cat-metric-val">412</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Missed-call rescues</span><span class="cat-metric-val">11 this wk</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        Sent 11 missed-call rescue auto-replies this week; 4 converted to booked appointments.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Insight</span>
+        Your response times under 60 seconds close at <strong>47% higher win rates</strong> than your 2–5 min responses.
+      </div>
+    </div>
+
+    <!-- Quote Follow-Up -->
+    <div class="cat-card amber">
+      <div class="cat-head">
+        <div class="cat-name">Quote Follow-Up</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">68</div>
+          <div class="cat-benchmark">Top 35% nationally</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Quotes awaiting response</span><span class="cat-metric-val">24 · $202k</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Auto follow-ups sent</span><span class="cat-metric-val">148 this wk</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Quote → sold win rate</span><span class="cat-metric-val">46%</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        3 quotes flagged as stale (7+ days no response). Chaser sequence triggered for each.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Insight</span>
+        Quotes followed-up within 48 hours close at <strong>2.1× the rate</strong> of quotes left more than a week.
+      </div>
+    </div>
+
+    <!-- Review Generation -->
+    <div class="cat-card cyan">
+      <div class="cat-head">
+        <div class="cat-name">Review Generation</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">75</div>
+          <div class="cat-benchmark up">Top 20% nationally</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Reviews collected</span><span class="cat-metric-val">287 · 4.9★</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">New this week</span><span class="cat-metric-val">41</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Request → review rate</span><span class="cat-metric-val">78%</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        53 review requests sent this week. 41 five-star reviews landed, zero under 4 stars.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Insight</span>
+        Review requests sent within 24hrs of install completion get <strong>3× more 5-star responses</strong> than delayed requests.
+      </div>
+    </div>
+
+    <!-- Pipeline Visibility -->
+    <div class="cat-card purple">
+      <div class="cat-head">
+        <div class="cat-name">Pipeline Visibility</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">71</div>
+          <div class="cat-benchmark">Top 33% nationally</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Open pipeline value</span><span class="cat-metric-val">$202,089</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Stages tracked live</span><span class="cat-metric-val">6 of 6</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Jobs sold · MTD</span><span class="cat-metric-val">12 · $128k</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        Live pipeline sync running every 5 min. Stage changes pushed to 3 downstream workflows automatically.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Insight</span>
+        You have <strong>31% of pipeline value</strong> stuck in the Quoted stage. That's your biggest velocity leak.
+      </div>
+    </div>
+
+    <!-- Customer Reactivation -->
+    <div class="cat-card red">
+      <div class="cat-head">
+        <div class="cat-name">Customer Reactivation</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">58</div>
+          <div class="cat-benchmark down">⚠ Biggest gap</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Dormant customers (90+ days)</span><span class="cat-metric-val">47</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Re-engaged this month</span><span class="cat-metric-val">8</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Reactivation revenue · MTD</span><span class="cat-metric-val">$28,400</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        2 reactivation sequences running. 8 dormant customers re-engaged, 3 became new jobs.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Insight</span>
+        Customers reactivated after 90+ days dormant spend <strong>23% more per job</strong> than brand-new leads.
+      </div>
+    </div>
+
+    <!-- Spotlight: Biggest Lift -->
+    <div class="cat-card blue">
+      <div class="cat-head">
+        <div class="cat-name">How to raise your score</div>
+        <div class="cat-score-chip">
+          <div class="cat-score-big">+13</div>
+          <div class="cat-benchmark up">potential points</div>
+        </div>
+      </div>
+      <div class="cat-metrics">
+        <div class="cat-metric"><span class="cat-metric-lbl">Close reactivation gap</span><span class="cat-metric-val">+7 pts</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Stale-quote chasers 100% on</span><span class="cat-metric-val">+4 pts</span></div>
+        <div class="cat-metric"><span class="cat-metric-lbl">Review requests within 24hr</span><span class="cat-metric-val">+2 pts</span></div>
+      </div>
+      <div class="cat-agm">
+        <span class="cat-agm-label">AGM Working</span>
+        These three are already partially running. Going full-coverage moves you from <strong>72 → 85</strong>.
+      </div>
+      <div class="cat-insight">
+        <span class="cat-insight-label">Benchmark</span>
+        <strong>85+ contractors</strong> average 38% more revenue per location than the 70–75 band.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ ACTIVITY + HEALTH ═══ -->
   <div class="duo-grid">
     <div class="card">
       <div class="card-head">
         <span class="card-title">Recent Activity</span>
-        <span class="badge live"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:5px;vertical-align:middle"></span>Live</span>
+        <span class="badge live"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>Live</span>
       </div>
       <div class="feed-container">
         <div class="feed-track" id="activityFeed"></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-head">
-        <span class="card-title">Sales Pipeline</span>
-        <span class="badge agm">AGM Sync</span>
+        <span class="card-title">System Health</span>
       </div>
-      <div class="pipeline-body" id="pipelineBody"></div>
+      <div class="health-body">
+        <div class="health-row"><span class="health-left">AGM Sync</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
+        <div class="health-row"><span class="health-left">Review engine</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
+        <div class="health-row"><span class="health-left">Follow-up agent</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
+        <div class="health-row"><span class="health-left">Lead capture</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
+        <div class="health-row"><span class="health-left">Reactivation sequences</span><span class="health-right"><span class="health-dot"></span>2 running</span></div>
+        <div class="health-row"><span class="health-left">SMS delivery</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
+        <div class="health-row"><span class="health-left">Self-heal events</span><span class="health-right" style="color:var(--text2)"><span id="healEvents">7</span> auto-resolved</span></div>
+      </div>
     </div>
   </div>
 
-  <!-- TRI: Reputation / This Week / System Health -->
-  <div class="tri-row">
-    <div class="tri-card">
-      <div class="tri-title">Reputation</div>
-      <div class="tri-hero">
-        <div class="big star"><span id="revCount">0</span></div>
-        <div class="sub">Reviews collected all-time</div>
-        <div class="stars">★★★★★</div>
-        <div class="sub"><span id="revAvg">0.0</span> average rating</div>
+  <!-- ═══ AGM WORKING BAND ═══ -->
+  <section class="agm-band">
+    <div class="agm-band-head">
+      <div class="agm-band-title">What AGM did for you this week</div>
+      <div class="agm-band-time">≈ 22 hours of manual work saved</div>
+    </div>
+    <div class="agm-band-grid">
+      <div class="agm-stat">
+        <div class="agm-stat-val">148</div>
+        <div class="agm-stat-lbl">Auto follow-ups sent</div>
       </div>
-      <div class="stat-row"><span class="stat-label">New reviews this week</span><span class="stat-val ok" id="revWeek">0</span></div>
-      <div class="stat-row"><span class="stat-label">Review requests sent</span><span class="stat-val" id="revRequested">0</span></div>
-      <div class="stat-row"><span class="stat-label">Request → review rate</span><span class="stat-val ok" id="revRate">0%</span></div>
+      <div class="agm-stat">
+        <div class="agm-stat-val">53</div>
+        <div class="agm-stat-lbl">Review requests sent</div>
+      </div>
+      <div class="agm-stat">
+        <div class="agm-stat-val">11</div>
+        <div class="agm-stat-lbl">Missed calls rescued</div>
+      </div>
+      <div class="agm-stat">
+        <div class="agm-stat-val">8</div>
+        <div class="agm-stat-lbl">Dormant customers re-engaged</div>
+      </div>
+      <div class="agm-stat">
+        <div class="agm-stat-val">7</div>
+        <div class="agm-stat-lbl">System issues self-healed</div>
+      </div>
     </div>
-
-    <div class="tri-card">
-      <div class="tri-title">This Week</div>
-      <div class="stat-row"><span class="stat-label">New leads</span><span class="stat-val" id="wkLeads">0</span></div>
-      <div class="stat-row"><span class="stat-label">Quotes sent</span><span class="stat-val" id="wkQuotes">0</span></div>
-      <div class="stat-row"><span class="stat-label">Jobs booked</span><span class="stat-val" id="wkBooked">0</span></div>
-      <div class="stat-row"><span class="stat-label">Auto follow-ups</span><span class="stat-val" id="wkFollowUps">0</span></div>
-      <div class="stat-row"><span class="stat-label">Avg response time</span><span class="stat-val ok"><span id="wkRespTime">0</span>s</span></div>
-      <div class="stat-row"><span class="stat-label">Missed-call rescues</span><span class="stat-val" id="wkRescues">0</span></div>
-      <div class="stat-row"><span class="stat-label">Win rate</span><span class="stat-val ok" id="wkWinRate">0%</span></div>
-    </div>
-
-    <div class="tri-card">
-      <div class="tri-title">System Health</div>
-      <div class="health-row"><span class="health-left">AGM Sync</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-      <div class="health-row"><span class="health-left">Review engine</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-      <div class="health-row"><span class="health-left">Follow-up agent</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-      <div class="health-row"><span class="health-left">Lead capture</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-      <div class="health-row"><span class="health-left">SMS delivery</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-      <div class="health-row"><span class="health-left">Self-heal events</span><span class="health-right" style="color:var(--text2)"><span id="healEvents">0</span> auto-resolved</span></div>
-    </div>
-  </div>
+  </section>
 
 </main>
 
@@ -298,240 +513,113 @@
 </footer>
 
 <script>
-(function() {
+(function(){
   'use strict';
 
   const TZ_LABEL = 'CT';
+  const FIRST = ['Jennifer','Michael','Sarah','David','Amanda','Chris','Jessica','Matt','Ashley','Ryan','Emily','Brandon','Nicole','Kevin','Stephanie','Tyler','Rachel','Jason','Lauren','Nathan','Megan','Daniel','Heather','Joshua','Rebecca','Andrew','Samantha','Justin','Eric','Kayla'];
+  const LAST = 'ABCDEFGHIJKLMNOPRSTWY'.split('');
+  const SOURCES = ['Google Ads','Facebook Ad','Website form','Referral','Yard sign','Google Business','Instagram DM'];
+  const SERVICES = ['Putting Green','Pet Area','Pool Deck','Backyard','Commercial Install','Rooftop Turf','Playground'];
 
-  const FIRST_NAMES = ['Jennifer','Michael','Sarah','David','Amanda','Christopher','Jessica','Matthew','Ashley','Ryan','Emily','Brandon','Nicole','Kevin','Stephanie','Tyler','Rachel','Jason','Lauren','Nathan','Megan','Daniel','Heather','Joshua','Rebecca','Andrew','Samantha','Justin','Brittany','Eric','Kayla','Adam','Courtney','Brian','Danielle','Kyle','Amber','Jacob','Melissa','Aaron','Kimberly','Travis','Angela','Jesse','Cynthia','Mark','Monica','Patrick','Vanessa','Scott'];
-  const LAST_INITIALS = 'ABCDEFGHIJKLMNOPQRSTVWY'.split('');
-  const SOURCES = ['Google Ads','Facebook Ad','Website form','Referral','Yard sign','Missed call rescue','Google Business Profile','Instagram DM'];
-  const SERVICES = ['Turf Installation','Putting Green','Pet Area','Playground','Rooftop Turf','Patio Surround','Pool Deck','Commercial Landscape'];
+  function pick(a){return a[Math.floor(Math.random()*a.length)]}
+  function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function rName(){return pick(FIRST)+' '+pick(LAST)+'.'}
+  function rQuote(){return '$'+(rand(8,185)*100).toLocaleString()}
+  function rJob(){return 'JB-'+rand(4200,9800)}
+  function rQuoteId(){return 'QT-'+rand(1200,4500)}
 
-  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-  function randName() { return pick(FIRST_NAMES) + ' ' + pick(LAST_INITIALS) + '.'; }
-  function randQuote() { return '$' + (rand(8, 185) * 100).toLocaleString(); }
-  function randJobId() { return 'JB-' + rand(4200, 9800); }
-  function randQuoteId() { return 'QT-' + rand(1200, 4500); }
-
-  // Mock state — will be replaced by authed Modal endpoint fetch in production
-  const state = {
-    leads: 47,
-    leadsDelta: 9,
-    appts: 9,
-    apptsDelta: 3,
-    apptsUpcoming: 14,
-    pipeline: 202089,
-    pipelineCount: 24,
-    revenue: 412680,
-    revenueDelta: 18420,
-    reviews: {
-      count: 287,
-      avg: 4.9,
-      week: 41,
-      requested: 53,
-      rate: 78,
-    },
-    wk: { leads: 62, quotes: 41, booked: 19, followUps: 148, respTime: 47, rescues: 11, winRate: 46 },
-    heals: 7,
-  };
-
-  function animate(id, target, opts) {
+  // ── CAS animation ──
+  function animate(id, target, opts){
     opts = opts || {};
     const el = document.getElementById(id);
     if (!el) return;
-    const duration = opts.duration || 1600;
+    const duration = opts.duration || 1800;
     const prefix = opts.prefix || '';
     const suffix = opts.suffix || '';
-    const decimals = opts.decimals || 0;
     const start = performance.now();
     const from = opts.from || 0;
-    function tick(now) {
+    function tick(now){
       const elapsed = now - start;
-      const p = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const raw = from + (target - from) * eased;
-      const val = decimals > 0 ? raw.toFixed(decimals) : Math.round(raw).toLocaleString();
-      el.textContent = prefix + val + suffix;
+      const p = Math.min(elapsed/duration, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      const val = Math.round(from + (target-from)*eased);
+      el.textContent = prefix + val.toLocaleString() + suffix;
       if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
   }
 
-  function renderMetrics() {
-    animate('mLeads', state.leads);
-    animate('mAppts', state.appts);
-    animate('mPipeline', state.pipeline, { prefix: '$' });
-    animate('mRevenue', state.revenue, { prefix: '$' });
-    document.getElementById('mLeadsDelta').textContent = '+' + state.leadsDelta;
-    document.getElementById('mApptsDelta').textContent = '+' + state.apptsDelta;
-    document.getElementById('mApptsUpcoming').textContent = state.apptsUpcoming;
-    document.getElementById('mPipelineCount').textContent = state.pipelineCount;
-    document.getElementById('mRevenueDelta').textContent = '+$' + state.revenueDelta.toLocaleString();
-
-    animate('revCount', state.reviews.count);
-    animate('revWeek', state.reviews.week);
-    animate('revRequested', state.reviews.requested);
-    document.getElementById('revAvg').textContent = state.reviews.avg.toFixed(1);
-    document.getElementById('revRate').textContent = state.reviews.rate + '%';
-
-    animate('wkLeads', state.wk.leads);
-    animate('wkQuotes', state.wk.quotes);
-    animate('wkBooked', state.wk.booked);
-    animate('wkFollowUps', state.wk.followUps);
-    animate('wkRespTime', state.wk.respTime);
-    animate('wkRescues', state.wk.rescues);
-    document.getElementById('wkWinRate').textContent = state.wk.winRate + '%';
-
-    animate('healEvents', state.heals);
-  }
-
-  // Pipeline stages — trimmed per Troy 2026-04-18: dropped Site Evaluation, Negotiation, Contacted
-  // (Pipeline hero metric above already covers the "in flight" value)
-  // Bottom three are "this month" outcome counters (Appointments Run, Jobs Sold, Projects Completed).
-  const PIPELINE = [
-    { key:'new_lead',    name:'New Leads',        icon:'&#11044;',  color:'var(--blue)',       bg:'var(--blue-dim)',       label:'this week',           count:18, value:0 },
-    { key:'appts_run',   name:'Appointments Run', icon:'&#128197;', color:'var(--amber)',      bg:'var(--amber-dim)',      label:'this month',          count:31, value:0 },
-    { key:'quoted',      name:'Quoted',           icon:'&#128203;', color:'var(--agm-purple)', bg:'var(--agm-purple-dim)', label:'awaiting response',   count:24, value:202089 },
-    { key:'sold',        name:'Jobs Sold',        icon:'&#9733;',   color:'var(--accent)',     bg:'var(--accent-dim)',     label:'this month',          count:12, value:128400 },
-    { key:'complete',    name:'Projects Completed',icon:'&#10003;',  color:'#34d399',           bg:'rgba(52,211,153,0.15)', label:'this month',          count:9,  value:96700 },
-  ];
-
-  function renderPipeline() {
-    const container = document.getElementById('pipelineBody');
-    const maxCount = Math.max(...PIPELINE.map(s => s.count), 1);
-    container.innerHTML = PIPELINE.map(s => {
-      const pct = (s.count / maxCount * 100).toFixed(0);
-      const valStr = s.value > 0 ? '$' + s.value.toLocaleString() : '';
-      return '<div class="p-stage">' +
-        '<div class="p-stage-icon" style="background:' + s.bg + '; color:' + s.color + ';">' + s.icon + '</div>' +
-        '<div class="p-stage-info">' +
-          '<div class="p-stage-name">' + s.name + '</div>' +
-          '<div class="p-stage-meta">' +
-            '<div class="p-stage-count" style="color:' + s.color + ';">' + s.count + '</div>' +
-            '<div class="p-stage-label">' + s.label + '</div>' +
-          '</div>' +
-          '<div class="p-stage-bar"><div class="p-stage-bar-fill" style="background:' + s.color + ';" data-pct="' + pct + '"></div></div>' +
-        '</div>' +
-        (valStr ? '<div class="p-stage-value" style="color:' + s.color + ';">' + valStr + '</div>' : '<div class="p-stage-value"></div>') +
-      '</div>';
-    }).join('');
+  function animateCasRing(score){
+    const el = document.getElementById('casRingFill');
+    const circumference = 540.35;
+    const offset = circumference - (score/100) * circumference;
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        container.querySelectorAll('.p-stage-bar-fill').forEach(bar => {
-          bar.style.width = bar.dataset.pct + '%';
-        });
-      }, 120);
+      el.style.strokeDashoffset = offset;
     });
+    animate('casNumber', score);
   }
 
-  // Activity feed
-  const feedEl = document.getElementById('activityFeed');
-  const MAX_FEED = 14;
+  animateCasRing(72);
 
-  const EVENT_TEMPLATES = [
-    () => ({ dot:'green',  html:'Review request sent to <strong>'+randName()+'</strong> — job '+randJobId(), time:'just now' }),
-    () => ({ dot:'amber',  html:'New ★★★★★ review posted by <strong>'+randName()+'</strong> <span class="feed-star">★★★★★</span>', time:'just now' }),
-    () => ({ dot:'blue',   html:'New lead captured — <strong>'+randName()+'</strong> · ' + pick(SOURCES), time:'just now' }),
-    () => ({ dot:'cyan',   html:'Auto-text sent — missed-call rescue to <strong>'+randName()+'</strong>', time:'just now' }),
-    () => ({ dot:'purple', html:'Quote '+randQuoteId()+' sent to <strong>'+randName()+'</strong> — <span class="feed-amount">'+randQuote()+'</span>', time:'just now' }),
-    () => ({ dot:'green',  html:'Site evaluation booked — <strong>'+randName()+'</strong> · ' + pick(SERVICES), time:'just now' }),
-    () => ({ dot:'amber',  html:'Follow-up sequence triggered for <strong>'+randName()+'</strong>', time:'just now' }),
-    () => ({ dot:'green',  html:'Deposit received from <strong>'+randName()+'</strong> — <span class="feed-amount">'+randQuote()+'</span>', time:'just now' }),
-  ];
-
-  function pushEvent() {
-    const template = pick(EVENT_TEMPLATES);
-    const event = template();
-    const item = document.createElement('div');
-    item.className = 'feed-item fresh';
-    item.innerHTML = '<div class="feed-dot ' + event.dot + '"></div>' +
-                     '<div class="feed-text">' + event.html + '</div>' +
-                     '<div class="feed-time">' + event.time + '</div>';
-    feedEl.insertBefore(item, feedEl.firstChild);
-
-    // Age other items
-    Array.from(feedEl.children).forEach((el, idx) => {
-      if (idx === 0) return;
-      const timeEl = el.querySelector('.feed-time');
-      if (timeEl && timeEl.textContent === 'just now') timeEl.textContent = '1m ago';
-      else if (timeEl && /^\d+m ago$/.test(timeEl.textContent)) {
-        const m = parseInt(timeEl.textContent) + 1;
-        timeEl.textContent = m + 'm ago';
-      }
-    });
-
-    // Trim
-    while (feedEl.children.length > MAX_FEED) {
-      feedEl.removeChild(feedEl.lastChild);
-    }
-
-    // Remove fresh after animation
-    setTimeout(() => item.classList.remove('fresh'), 2400);
-  }
-
-  function updateSyncTime() {
-    const now = new Date();
-    const mins = now.getMinutes().toString().padStart(2, '0');
-    const hrs = (now.getHours() % 12 || 12);
-    const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
-    document.getElementById('lastSync').textContent = hrs + ':' + mins + ' ' + ampm + ' ' + TZ_LABEL;
-  }
-
-  // Period filter — demo multipliers applied to hero KPIs only.
-  // Pipeline, Reputation, This Week, and System Health keep their
-  // inherent windows (stage counts, "this week" rows, etc.) so the
-  // filter feels responsive without exploding complexity.
-  const BASE_STATE = {
-    leads: state.leads,
-    leadsDelta: state.leadsDelta,
-    appts: state.appts,
-    apptsDelta: state.apptsDelta,
-    revenue: state.revenue,
-    revenueDelta: state.revenueDelta,
-  };
-  const PERIOD_MULT = {
-    today: 0.05,
-    '7d':  0.25,
-    mtd:   1.0,
-    q1:    3.0,
-    ytd:   3.5,
-    all:  18.0,
-  };
-
-  function applyPeriod(period) {
-    const m = PERIOD_MULT[period] || 1.0;
-    state.leads        = Math.round(BASE_STATE.leads * m);
-    state.leadsDelta   = Math.max(1, Math.round(BASE_STATE.leadsDelta * Math.min(m, 1)));
-    state.appts        = Math.round(BASE_STATE.appts * m);
-    state.apptsDelta   = Math.max(1, Math.round(BASE_STATE.apptsDelta * Math.min(m, 1)));
-    state.revenue      = Math.round(BASE_STATE.revenue * m);
-    state.revenueDelta = Math.max(100, Math.round(BASE_STATE.revenueDelta * Math.min(m, 1)));
-    renderMetrics();
-  }
-
+  // ── Filter bar (scales some displayed numbers) ──
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      applyPeriod(btn.dataset.period);
+      // For demo: small visual tweak — flash the CAS ring by re-animating.
+      animateCasRing(rand(68, 78));
     });
   });
 
-  // Initial render
-  renderMetrics();
-  renderPipeline();
-  updateSyncTime();
+  // ── Activity feed ──
+  const feedEl = document.getElementById('activityFeed');
+  const MAX_FEED = 14;
 
-  // Seed the feed with enough events to fill without overflowing the pipeline card
-  for (let i = 0; i < 7; i++) {
-    pushEvent();
+  const TEMPLATES = [
+    () => ({dot:'green',  html:'Review request sent to <strong>'+rName()+'</strong> — job '+rJob(), time:'just now'}),
+    () => ({dot:'amber',  html:'New ★★★★★ review posted by <strong>'+rName()+'</strong> <span class="feed-star">★★★★★</span>', time:'just now'}),
+    () => ({dot:'blue',   html:'New lead captured — <strong>'+rName()+'</strong> · '+pick(SOURCES), time:'just now'}),
+    () => ({dot:'cyan',   html:'Auto-text sent — missed-call rescue to <strong>'+rName()+'</strong>', time:'just now'}),
+    () => ({dot:'purple', html:'Quote '+rQuoteId()+' sent to <strong>'+rName()+'</strong> — <span class="feed-amount">'+rQuote()+'</span>', time:'just now'}),
+    () => ({dot:'green',  html:'Site evaluation booked — <strong>'+rName()+'</strong> · '+pick(SERVICES), time:'just now'}),
+    () => ({dot:'amber',  html:'Stale-quote chaser triggered for <strong>'+rName()+'</strong> — QT-'+rand(1200,4500), time:'just now'}),
+    () => ({dot:'purple', html:'Reactivation sequence started for <strong>'+rName()+'</strong> · dormant '+rand(90,240)+' days', time:'just now'}),
+    () => ({dot:'green',  html:'Deposit received from <strong>'+rName()+'</strong> — <span class="feed-amount">'+rQuote()+'</span>', time:'just now'}),
+  ];
+
+  function pushEvent(){
+    const t = pick(TEMPLATES);
+    const ev = t();
+    const item = document.createElement('div');
+    item.className = 'feed-item fresh';
+    item.innerHTML = '<div class="feed-dot '+ev.dot+'"></div><div class="feed-text">'+ev.html+'</div><div class="feed-time">'+ev.time+'</div>';
+    feedEl.insertBefore(item, feedEl.firstChild);
+    Array.from(feedEl.children).forEach((el,i) => {
+      if (i === 0) return;
+      const tEl = el.querySelector('.feed-time');
+      if (!tEl) return;
+      if (tEl.textContent === 'just now') tEl.textContent = '1m ago';
+      else if (/^\d+m ago$/.test(tEl.textContent)) {
+        tEl.textContent = (parseInt(tEl.textContent)+1) + 'm ago';
+      }
+    });
+    while (feedEl.children.length > MAX_FEED) feedEl.removeChild(feedEl.lastChild);
+    setTimeout(() => item.classList.remove('fresh'), 2400);
   }
 
-  // Live updates
+  function updateSync(){
+    const d = new Date();
+    const h = (d.getHours()%12) || 12;
+    const m = d.getMinutes().toString().padStart(2,'0');
+    const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
+    document.getElementById('lastSync').textContent = h+':'+m+' '+ampm+' '+TZ_LABEL;
+  }
+
+  for (let i=0; i<8; i++) pushEvent();
+  updateSync();
   setInterval(pushEvent, 6000);
-  setInterval(updateSyncTime, 30000);
+  setInterval(updateSync, 30000);
 })();
 </script>
 
