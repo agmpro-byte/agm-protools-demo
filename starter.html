@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Acme Turf Co. — AGM Starter Dashboard</title>
+<title>Demo — Heavenly Greens — AGM Starter Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -34,7 +34,6 @@
   html { scroll-behavior:smooth; }
   body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-  /* Header — outer bar spans full width, inner content matches main column */
   .header { background:rgba(10,15,26,0.95); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
   .header-inner { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:14px 28px; max-width:1440px; margin:0 auto; }
   .header-left { display:flex; align-items:center; gap:10px; }
@@ -52,11 +51,16 @@
 
   .main { padding:20px 28px 32px; max-width:1440px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
 
-  /* === HERO — left column dense (copy + stats + ladder), right column ring + impact === */
+  /* === GUT-PUNCH — above-the-fold one-sentence punchline (Gap #1, 2026-05-29) === */
+  .gut-punch { background:linear-gradient(135deg, rgba(239,68,68,0.10) 0%, rgba(245,158,11,0.06) 100%); border:1px solid rgba(239,68,68,0.28); border-radius:14px; padding:22px 28px; position:relative; overflow:hidden; }
+  .gut-punch::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--red), var(--amber)); }
+  .gut-punch-eyebrow { font-size:12px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+  .gut-punch-body { font-size:22px; font-weight:700; letter-spacing:-0.01em; line-height:1.4; color:var(--text); }
+  .gut-punch-body strong { color:var(--red); font-weight:800; }
+
   .hero { background:linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(34,197,94,0.06) 100%); border:1px solid var(--border); border-radius:14px; padding:28px 32px; display:grid; grid-template-columns:2fr 1fr; gap:40px; position:relative; overflow:hidden; align-items:center; }
   .hero::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--jobber), var(--accent)); }
 
-  /* Hero left: copy + stats (ring removed, lives in right column now) */
   .hero-left { display:flex; flex-direction:column; gap:14px; }
   .ring-stack { display:flex; flex-direction:column; align-items:center; gap:10px; flex-shrink:0; }
   .ring { width:170px; height:170px; position:relative; flex-shrink:0; }
@@ -77,7 +81,6 @@
   .stat-val.amber { color:var(--amber); }
   .stat-val.green { color:var(--accent); }
 
-  /* Tier ladder — explains what the score means */
   .tier-ladder { margin-top:18px; padding-top:16px; border-top:1px solid var(--border); }
   .tier-ladder-label { font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
   .tier-bar { display:grid; grid-template-columns:repeat(4, 1fr); gap:4px; }
@@ -93,7 +96,6 @@
   .tier-desc { font-size:11px; color:var(--text2); margin-top:4px; line-height:1.3; }
   .tier-marker { position:absolute; top:-8px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:800; color:var(--amber); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--amber); white-space:nowrap; box-shadow:0 0 12px rgba(249,115,22,0.4); }
 
-  /* Hero right: ring on top, compact impact badge directly below — same vertical axis as the ring */
   .hero-right { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:16px; }
   .impact-badge { background:linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.06)); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:6px; text-align:center; align-items:center; width:260px; max-width:100%; }
   .impact-badge-eyebrow { font-size:11px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.09em; }
@@ -102,7 +104,6 @@
   .impact-badge-cta { background:linear-gradient(135deg, var(--accent), #16a34a); color:white; border:none; padding:8px 18px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.01em; cursor:pointer; white-space:nowrap; box-shadow:0 3px 10px rgba(34,197,94,0.3); transition:transform 0.15s, box-shadow 0.2s; font-family:inherit; margin-top:6px; }
   .impact-badge-cta:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(34,197,94,0.5); }
 
-  /* Color legend strip — explains what each severity color means */
   .legend-strip { display:flex; align-items:center; justify-content:center; gap:24px; padding:10px 16px; background:rgba(255,255,255,0.015); border:1px solid var(--border); border-radius:8px; flex-wrap:wrap; }
   .legend-label { font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-right:8px; }
   .legend-item { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--text2); }
@@ -112,7 +113,6 @@
   .legend-dot.medium { background:var(--gold); box-shadow:0 0 8px rgba(250,204,21,0.6); }
   .legend-dot.opportunity { background:var(--accent); box-shadow:0 0 8px rgba(34,197,94,0.5); }
 
-  /* Quick-nav tile strip — 5 across, color-coded, deep-links to detail panels */
   .nav-strip { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
   .mini-tile { display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:rgba(255,255,255,0.025); border:1px solid var(--border); border-top-width:3px; border-radius:9px; text-decoration:none; color:inherit; cursor:pointer; transition:background 0.15s, transform 0.12s, border-color 0.2s; position:relative; }
   .mini-tile:hover { background:rgba(255,255,255,0.05); transform:translateY(-2px); }
@@ -129,12 +129,10 @@
   .mini-tile.opportunity .mini-num { color:var(--accent); }
   .mini-meta { font-size:12px; color:var(--text3); font-weight:500; font-variant-numeric:tabular-nums; }
 
-  /* Slogan band */
   .slogan { padding:24px 28px; background:rgba(124,58,237,0.05); border:1px solid var(--jobber-dim); border-radius:10px; text-align:center; display:flex; flex-direction:column; gap:6px; letter-spacing:-0.01em; }
   .slogan-headline { font-size:26px; font-weight:800; color:var(--text); letter-spacing:-0.02em; line-height:1.2; }
   .slogan-sub { font-size:16px; font-weight:500; color:var(--text2); font-style:italic; line-height:1.4; }
 
-  /* === Panel grid: 2 columns === */
   .panels { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 
   .panel { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:26px 28px; position:relative; overflow:hidden; transition:border-color 0.3s; display:flex; flex-direction:column; }
@@ -176,17 +174,10 @@
   .p-row:hover { background:rgba(255,255,255,0.04); }
   .row-age { font-size:14px; font-weight:700; color:var(--text); white-space:nowrap; font-variant-numeric:tabular-nums; min-width:54px; }
   .row-source { font-size:12px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; padding:3px 8px; background:rgba(255,255,255,0.04); border-radius:4px; }
+  .row-name { font-size:14px; font-weight:700; color:var(--text); white-space:nowrap; min-width:80px; }
   .row-meta { font-size:14px; color:var(--text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .row-value { font-size:16px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap; }
   .row-value.muted { color:var(--text3); font-weight:500; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; }
-
-  /* Rotating list — for high-count panels like Cold Leads */
-  .p-list-rotating-wrap { position:relative; height:200px; overflow:hidden; margin-bottom:14px; }
-  .p-list-rotating-wrap::after { content:''; position:absolute; bottom:0; left:0; right:0; height:40px; background:linear-gradient(transparent, var(--bg-card)); pointer-events:none; z-index:2; }
-  .p-list-rotating-wrap::before { content:''; position:absolute; top:0; left:0; right:0; height:20px; background:linear-gradient(var(--bg-card), transparent); pointer-events:none; z-index:2; }
-  .p-list-rotating { display:flex; flex-direction:column; gap:8px; animation:rotate-list 28s linear infinite; }
-  .p-list-rotating-wrap:hover .p-list-rotating { animation-play-state:paused; }
-  @keyframes rotate-list { 0% { transform:translateY(0); } 100% { transform:translateY(-50%); } }
 
   .p-more { text-align:center; padding:8px; font-size:13px; color:var(--text3); font-weight:500; margin-bottom:14px; }
   .p-more a { color:var(--jobber); text-decoration:none; font-weight:700; }
@@ -200,7 +191,6 @@
   .p-cta-button:hover { background:var(--jobber-dim); border-color:var(--jobber); color:#a78bfa; }
   .p-cta-sub { font-size:11px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
 
-  /* Bottom totals band — kept for reinforcement */
   .totals { background:linear-gradient(135deg, rgba(239,68,68,0.06), rgba(245,158,11,0.04)); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:32px 36px; display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center; margin-top:8px; }
   .totals-eyebrow { font-size:13px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; }
   .totals-headline { font-size:24px; font-weight:800; letter-spacing:-0.02em; line-height:1.3; margin-bottom:14px; max-width:640px; }
@@ -229,6 +219,9 @@
     .header-client { font-size:18px; }
     .header-logo { font-size:14px; }
 
+    .gut-punch { padding:16px 18px; }
+    .gut-punch-body { font-size:17px; line-height:1.4; }
+
     .hero { padding:20px 18px; gap:18px; }
     .hero-left { grid-template-columns:auto 1fr; gap:16px; }
     .ring { width:120px; height:120px; }
@@ -245,7 +238,6 @@
     .impact-badge-sub { font-size:13px; max-width:none; }
     .impact-badge-cta { padding:9px 20px; font-size:13px; }
 
-    /* Tier ladder — stack 2x2 on tablet/large mobile so labels are readable */
     .tier-bar { grid-template-columns:1fr 1fr; gap:6px; }
     .tier-segment { padding:12px 14px; }
     .tier-marker { font-size:9px; padding:2px 7px; }
@@ -307,20 +299,19 @@
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   <div class="header-inner">
     <div class="header-left">
       <div class="header-logo">AGM Pro Tools</div>
     </div>
     <div class="header-center">
-      <div class="header-client">Acme Turf Co.</div>
-      <div class="header-client-sub">Phoenix, AZ · Jobber connected</div>
+      <div class="header-client">Demo — Heavenly Greens</div>
+      <div class="header-client-sub">Heavenly Greens · Jobber connected</div>
     </div>
     <div class="header-right">
       <div class="header-sync">
         <div class="sync-label">Last sync</div>
-        <div class="sync-time">2 min ago</div>
+        <div class="sync-time">May 29 · 5:45 PM UTC</div>
       </div>
       <div class="status-badge"><span class="status-dot"></span>Active</div>
     </div>
@@ -329,24 +320,24 @@
 
 <div class="main">
 
-  <!-- HERO -->
+  <section class="gut-punch"><div class="gut-punch-eyebrow">What your data is telling us right now</div><div class="gut-punch-body"><strong>Heavenly Greens</strong>: <strong>$89,000</strong> sitting in <strong>14 stale quotes</strong>. Your biggest: <strong>C. Bradsher</strong> at <strong>$47,200</strong>, sent 23 days ago.</div></section>
+
   <div class="hero">
-    <!-- Left: copy + stats-with-inline-ring + tier ladder -->
     <div class="hero-left">
       <div>
         <div class="hero-info-eyebrow">Your Contractor Automation Score</div>
-        <div class="hero-info-title">Operational — but leaking.</div>
-        <div class="hero-info-sub">Your score of <strong style="color:var(--text);">41 out of 100</strong> means you've built a real business with real revenue — but bottom-28% means roughly $269K/month is walking out the door, and the panels below show exactly where it's going. The contractors above you have plugged these holes.</div>
+        <div class="hero-info-title">Advanced — systems doing real work.</div>
+        <div class="hero-info-sub">Your score of <strong style="color:var(--text);">62 out of 100</strong> means you've built systems that work, and there are still a few specific leaks the panels below pinpoint. The panels below show exactly where the bleeding is — pulled from your last 12 months of Jobber data.</div>
       </div>
 
       <div class="hero-info-stats">
         <div>
           <div class="stat-label">Percentile</div>
-          <div class="stat-val amber">28th</div>
+          <div class="stat-val amber">60th</div>
         </div>
         <div>
           <div class="stat-label">30-day change</div>
-          <div class="stat-val green">+3</div>
+          <div class="stat-val green">baseline</div>
         </div>
         <div>
           <div class="stat-label">Re-scored</div>
@@ -356,25 +347,28 @@
 
       <div>
         <div class="tier-ladder">
-          <div class="tier-ladder-label">Where 41 / 100 sits on the maturity ladder</div>
+          <div class="tier-ladder-label">Where 62 / 100 sits on the maturity ladder</div>
           <div class="tier-bar">
-            <div class="tier-segment foundational">
+            <div class="tier-segment foundational ">
+              
               <div class="tier-name">Foundational</div>
               <div class="tier-range">0–30</div>
               <div class="tier-desc">Running on hustle</div>
             </div>
-            <div class="tier-segment operational current">
-              <div class="tier-marker">YOU · 41</div>
+            <div class="tier-segment operational ">
+              
               <div class="tier-name">Operational</div>
               <div class="tier-range">31–60</div>
               <div class="tier-desc">Built the bones, leaking value</div>
             </div>
-            <div class="tier-segment advanced">
+            <div class="tier-segment advanced current">
+              <div class="tier-marker">YOU · 62</div>
               <div class="tier-name">Advanced</div>
               <div class="tier-range">61–85</div>
               <div class="tier-desc">Systems doing real work</div>
             </div>
-            <div class="tier-segment elite">
+            <div class="tier-segment elite ">
+              
               <div class="tier-name">Elite</div>
               <div class="tier-range">86–100</div>
               <div class="tier-desc">Top of the field</div>
@@ -384,7 +378,6 @@
       </div>
     </div>
 
-    <!-- Right: ring on top, aggregate impact badge below -->
     <div class="hero-right">
       <div class="ring-stack">
         <div class="ring">
@@ -396,10 +389,10 @@
               </linearGradient>
             </defs>
             <circle class="ring-bg" cx="100" cy="100" r="84"/>
-            <circle class="ring-fill" cx="100" cy="100" r="84" stroke-dasharray="216.4 527.5"/>
+            <circle class="ring-fill" cx="100" cy="100" r="84" stroke-dasharray="327.1 527.5"/>
           </svg>
           <div class="ring-center">
-            <div class="score-num">41</div>
+            <div class="score-num">62</div>
             <div class="score-out">/ 100</div>
           </div>
         </div>
@@ -407,14 +400,13 @@
       </div>
       <div class="impact-badge">
         <div class="impact-badge-eyebrow">What your data is telling you</div>
-        <div class="impact-badge-num">~$269,000</div>
+        <div class="impact-badge-num">$312,500</div>
         <div class="impact-badge-sub">estimated lost revenue every month, across all 5 leaks</div>
         <button type="button" class="impact-badge-cta" onclick="document.getElementById('totals').scrollIntoView()">Stop the bleeding →</button>
       </div>
     </div>
   </div>
 
-  <!-- Color legend -->
   <div class="legend-strip">
     <span class="legend-label">Color key</span>
     <span class="legend-item"><span class="legend-dot severe"></span>Severe leak</span>
@@ -423,41 +415,47 @@
     <span class="legend-item"><span class="legend-dot opportunity"></span>Hidden opportunity</span>
   </div>
 
-  <!-- Quick-nav tile strip -->
   <div class="nav-strip">
-    <a href="#panel-leads" class="mini-tile severe">
+    
+    <a href="#panel-cold_leads" class="mini-tile severe">
       <div class="mini-tile-head"><div class="mini-label">Cold leads</div><div class="mini-num">28</div></div>
-      <div class="mini-meta">~$54.5K lost</div>
+      <div class="mini-meta">$54,500</div>
     </a>
-    <a href="#panel-quotes" class="mini-tile high">
+    
+
+    <a href="#panel-wins" class="mini-tile opportunity">
+      <div class="mini-tile-head"><div class="mini-label">Wins</div><div class="mini-num">$86.6K</div></div>
+      <div class="mini-meta">8</div>
+    </a>
+    
+
+    <a href="#panel-cold_quotes" class="mini-tile high">
       <div class="mini-tile-head"><div class="mini-label">Cold quotes</div><div class="mini-num">14</div></div>
-      <div class="mini-meta">$89K sitting</div>
+      <div class="mini-meta">$89,000</div>
     </a>
-    <a href="#panel-appts" class="mini-tile high">
-      <div class="mini-tile-head"><div class="mini-label">Unconfirmed appts</div><div class="mini-num">8</div></div>
-      <div class="mini-meta">~$700/wk waste</div>
+    
+
+    <a href="#panel-dormant" class="mini-tile opportunity">
+      <div class="mini-tile-head"><div class="mini-label">Dormant</div><div class="mini-num">22</div></div>
+      <div class="mini-meta">$14,300</div>
     </a>
+    
+
     <a href="#panel-reviews" class="mini-tile medium">
       <div class="mini-tile-head"><div class="mini-label">Missed reviews</div><div class="mini-num">38</div></div>
-      <div class="mini-meta">~$24.5K future leads</div>
+      <div class="mini-meta">38</div>
     </a>
-    <a href="#panel-dormant" class="mini-tile opportunity">
-      <div class="mini-tile-head"><div class="mini-label">Dormant customers</div><div class="mini-num">220</div></div>
-      <div class="mini-meta">~$143K opp</div>
-    </a>
+    
   </div>
 
-  <!-- Slogan band -->
   <div class="slogan">
     <div class="slogan-headline">What your data is telling you.</div>
     <div class="slogan-sub">Five revenue leaks. All from the data you already had.</div>
   </div>
 
-  <!-- 2-column panel grid -->
   <div class="panels">
-
-    <!-- Panel 1: Leads -->
-    <div class="panel severe" id="panel-leads">
+    
+    <div class="panel severe" id="panel-cold_leads">
       <div class="p-head">
         <div class="p-headline">
           <div class="p-eyebrow">Severe leak · Speed-to-Lead</div>
@@ -471,40 +469,26 @@
       <div class="p-impact">
         <div class="p-impact-item">
           <div class="p-impact-label">Estimated lost revenue</div>
-          <div class="p-impact-val dollar">~$54,500</div>
+          <div class="p-impact-val dollar">$54,500</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Avg. response</div>
-          <div class="p-impact-val red">4h 12m</div>
+          <div class="p-impact-val red">manual</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Top quartile</div>
-          <div class="p-impact-val">11 min</div>
+          <div class="p-impact-val ">11 min</div>
         </div>
       </div>
-      <div class="p-list-title">Live · Cold leads cycling through ↓ &nbsp;<span style="color:var(--text3);font-weight:500;text-transform:none;letter-spacing:0">(hover to pause)</span></div>
-      <div class="p-list-rotating-wrap">
-        <div class="p-list-rotating">
-          <div class="p-row"><div class="row-age">2d</div><div class="row-source">Website</div><div class="row-meta">Backyard install</div><div class="row-value">~$5,400</div></div>
-          <div class="p-row"><div class="row-age">4d</div><div class="row-source">Google Ads</div><div class="row-meta">1,400 sqft front + side</div><div class="row-value">~$7,200</div></div>
-          <div class="p-row"><div class="row-age">5d</div><div class="row-source">Nextdoor</div><div class="row-meta">Putting green install</div><div class="row-value">~$3,200</div></div>
-          <div class="p-row"><div class="row-age">9d</div><div class="row-source">Referral</div><div class="row-meta">Full property install</div><div class="row-value">~$8,400</div></div>
-          <div class="p-row"><div class="row-age">11d</div><div class="row-source">Website</div><div class="row-meta">Replacement quote</div><div class="row-value">~$4,100</div></div>
-          <div class="p-row"><div class="row-age">12d</div><div class="row-source">Facebook Ads</div><div class="row-meta">Backyard + side</div><div class="row-value">~$6,800</div></div>
-          <div class="p-row"><div class="row-age">14d</div><div class="row-source">Google Ads</div><div class="row-meta">Pool surround</div><div class="row-value">~$5,900</div></div>
-          <div class="p-row"><div class="row-age">17d</div><div class="row-source">Thumbtack</div><div class="row-meta">Front yard install</div><div class="row-value">~$4,600</div></div>
-          <!-- Duplicate set for seamless loop -->
-          <div class="p-row"><div class="row-age">2d</div><div class="row-source">Website</div><div class="row-meta">Backyard install</div><div class="row-value">~$5,400</div></div>
-          <div class="p-row"><div class="row-age">4d</div><div class="row-source">Google Ads</div><div class="row-meta">1,400 sqft front + side</div><div class="row-value">~$7,200</div></div>
-          <div class="p-row"><div class="row-age">5d</div><div class="row-source">Nextdoor</div><div class="row-meta">Putting green install</div><div class="row-value">~$3,200</div></div>
-          <div class="p-row"><div class="row-age">9d</div><div class="row-source">Referral</div><div class="row-meta">Full property install</div><div class="row-value">~$8,400</div></div>
-          <div class="p-row"><div class="row-age">11d</div><div class="row-source">Website</div><div class="row-meta">Replacement quote</div><div class="row-value">~$4,100</div></div>
-          <div class="p-row"><div class="row-age">12d</div><div class="row-source">Facebook Ads</div><div class="row-meta">Backyard + side</div><div class="row-value">~$6,800</div></div>
-          <div class="p-row"><div class="row-age">14d</div><div class="row-source">Google Ads</div><div class="row-meta">Pool surround</div><div class="row-value">~$5,900</div></div>
-          <div class="p-row"><div class="row-age">17d</div><div class="row-source">Thumbtack</div><div class="row-meta">Front yard install</div><div class="row-value">~$4,600</div></div>
-        </div>
+      <div class="p-list-title">Cold leads awaiting follow-up</div>
+      <div class="p-list">
+        <div class="p-row"><div class="row-age">22d</div><div class="row-source">Google Ads</div><div class="row-meta">Backyard install quote</div><div class="row-value">$10,800</div></div>
+<div class="p-row"><div class="row-age">19d</div><div class="row-source">Website form</div><div class="row-meta">Putting green inquiry</div><div class="row-value">$10,800</div></div>
+<div class="p-row"><div class="row-age">17d</div><div class="row-source">Referral</div><div class="row-meta">Pool deck turf</div><div class="row-value">$10,800</div></div>
+<div class="p-row"><div class="row-age">15d</div><div class="row-source">Facebook Ad</div><div class="row-meta">Front yard refresh</div><div class="row-value">$10,800</div></div>
+<div class="p-row"><div class="row-age">14d</div><div class="row-source">Google Business</div><div class="row-meta">Pet area</div><div class="row-value">$10,800</div></div>
       </div>
-      <div class="p-more">+ 20 more · <a href="#">View all 28 →</a></div>
+      <div class="p-more">+ 23 more · <a href="#">View all →</a></div>
       <div class="p-cta">
         <div class="p-cta-text"><strong>Sure, you could chase these down yourself.</strong> Or AGM Pro Stack runs a real follow-up sequence on every new lead the moment it arrives. We register the carrier compliance, write the copy, run it. You watch replies come in.</div>
         <div class="p-cta-row">
@@ -513,8 +497,8 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Panel 2: Wins (paired with Cold Leads for contrast) -->
     <div class="panel opportunity" id="panel-wins">
       <div class="p-head">
         <div class="p-headline">
@@ -529,7 +513,7 @@
       <div class="p-impact">
         <div class="p-impact-item">
           <div class="p-impact-label">Jobs closed</div>
-          <div class="p-impact-val">8</div>
+          <div class="p-impact-val ">8</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Avg. ticket</div>
@@ -537,32 +521,21 @@
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Close rate</div>
-          <div class="p-impact-val dollar">30%</div>
+          <div class="p-impact-val dollar">38%</div>
         </div>
       </div>
-      <div class="p-list-title">Live · Wins cycling through ↓ &nbsp;<span style="color:var(--text3);font-weight:500;text-transform:none;letter-spacing:0">(hover to pause)</span></div>
-      <div class="p-list-rotating-wrap">
-        <div class="p-list-rotating">
-          <div class="p-row"><div class="row-age">Apr 22</div><div class="row-source">Referral</div><div class="row-meta">Whole-property install</div><div class="row-value">$18,400</div></div>
-          <div class="p-row"><div class="row-age">Apr 19</div><div class="row-source">Website</div><div class="row-meta">Backyard + pool</div><div class="row-value">$14,800</div></div>
-          <div class="p-row"><div class="row-age">Apr 14</div><div class="row-source">Google Ads</div><div class="row-meta">Putting green + side</div><div class="row-value">$11,200</div></div>
-          <div class="p-row"><div class="row-age">Apr 11</div><div class="row-source">Referral</div><div class="row-meta">Front + side install</div><div class="row-value">$9,400</div></div>
-          <div class="p-row"><div class="row-age">Apr 8</div><div class="row-source">Website</div><div class="row-meta">Backyard refresh</div><div class="row-value">$8,200</div></div>
-          <div class="p-row"><div class="row-age">Apr 5</div><div class="row-source">Nextdoor</div><div class="row-meta">Side yard install</div><div class="row-value">$7,800</div></div>
-          <div class="p-row"><div class="row-age">Apr 2</div><div class="row-source">Google Ads</div><div class="row-meta">Putting green</div><div class="row-value">$6,600</div></div>
-          <div class="p-row"><div class="row-age">Mar 30</div><div class="row-source">Referral</div><div class="row-meta">Pool surround</div><div class="row-value">$10,200</div></div>
-          <!-- Duplicate set for seamless loop -->
-          <div class="p-row"><div class="row-age">Apr 22</div><div class="row-source">Referral</div><div class="row-meta">Whole-property install</div><div class="row-value">$18,400</div></div>
-          <div class="p-row"><div class="row-age">Apr 19</div><div class="row-source">Website</div><div class="row-meta">Backyard + pool</div><div class="row-value">$14,800</div></div>
-          <div class="p-row"><div class="row-age">Apr 14</div><div class="row-source">Google Ads</div><div class="row-meta">Putting green + side</div><div class="row-value">$11,200</div></div>
-          <div class="p-row"><div class="row-age">Apr 11</div><div class="row-source">Referral</div><div class="row-meta">Front + side install</div><div class="row-value">$9,400</div></div>
-          <div class="p-row"><div class="row-age">Apr 8</div><div class="row-source">Website</div><div class="row-meta">Backyard refresh</div><div class="row-value">$8,200</div></div>
-          <div class="p-row"><div class="row-age">Apr 5</div><div class="row-source">Nextdoor</div><div class="row-meta">Side yard install</div><div class="row-value">$7,800</div></div>
-          <div class="p-row"><div class="row-age">Apr 2</div><div class="row-source">Google Ads</div><div class="row-meta">Putting green</div><div class="row-value">$6,600</div></div>
-          <div class="p-row"><div class="row-age">Mar 30</div><div class="row-source">Referral</div><div class="row-meta">Pool surround</div><div class="row-value">$10,200</div></div>
-        </div>
+      <div class="p-list-title">Recent wins</div>
+      <div class="p-list">
+        <div class="p-row"><div class="row-age">May 24</div><div class="row-source">Pebble Beach Estates</div><div class="row-meta">Putting green expansion</div><div class="row-value">$22,400</div></div>
+<div class="p-row"><div class="row-age">May 21</div><div class="row-source">Bay Area HOA</div><div class="row-meta">Common-area refresh</div><div class="row-value">$18,200</div></div>
+<div class="p-row"><div class="row-age">May 18</div><div class="row-source">K. Patel</div><div class="row-meta">Backyard install</div><div class="row-value">$14,500</div></div>
+<div class="p-row"><div class="row-age">May 15</div><div class="row-source">Sunset Pools</div><div class="row-meta">Pool-deck turf</div><div class="row-value">$12,100</div></div>
+<div class="p-row"><div class="row-age">May 12</div><div class="row-source">M. Romero</div><div class="row-meta">Pet area install</div><div class="row-value">$8,900</div></div>
+<div class="p-row"><div class="row-age">May 10</div><div class="row-source">J. Liu</div><div class="row-meta">Front yard refresh</div><div class="row-value">$5,400</div></div>
+<div class="p-row"><div class="row-age">May 6</div><div class="row-source">Walnut Creek HOA</div><div class="row-meta">Putting green</div><div class="row-value">$3,400</div></div>
+<div class="p-row"><div class="row-age">May 2</div><div class="row-source">T. Nguyen</div><div class="row-meta">Side yard</div><div class="row-value">$1,700</div></div>
       </div>
-      <div class="p-more">+ 5 more · <a href="#">View all wins →</a></div>
+      
       <div class="p-cta">
         <div class="p-cta-text"><strong>Your close rate is solid where you focus.</strong> Imagine what it looks like when AGM Pro Stack stops the bleeding on the leads, quotes, and dormant customers around you — and feeds confirmed prospects in on top of what's already working.</div>
         <div class="p-cta-row">
@@ -571,9 +544,9 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Panel 3: Quotes -->
-    <div class="panel high" id="panel-quotes">
+    <div class="panel high" id="panel-cold_quotes">
       <div class="p-head">
         <div class="p-headline">
           <div class="p-eyebrow">High leak · Quote Follow-Up</div>
@@ -595,16 +568,19 @@
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Likely recoverable</div>
-          <div class="p-impact-val dollar">~$44,500</div>
+          <div class="p-impact-val dollar">$44,500</div>
         </div>
       </div>
       <div class="p-list-title">Biggest quotes still cold</div>
       <div class="p-list">
-        <div class="p-row"><div class="row-name">R. Wilson</div><div class="row-meta">14d · 3,200 sqft side yard</div><div class="row-value">$11,800</div></div>
-        <div class="p-row"><div class="row-name">C. Bradsher</div><div class="row-meta">22d · backyard + putting green</div><div class="row-value">$8,900</div></div>
-        <div class="p-row"><div class="row-name">The P. family</div><div class="row-meta">17d · 2,100 sqft front</div><div class="row-value">$7,400</div></div>
+        <div class="p-row"><div class="row-name">C. Bradsher</div><div class="row-meta">23d · Commercial putting-green installation</div><div class="row-value">$47,200</div></div>
+<div class="p-row"><div class="row-name">Sunset Vista HOA</div><div class="row-meta">20d · Common-area turf replacement</div><div class="row-value">$18,600</div></div>
+<div class="p-row"><div class="row-name">A. Chen</div><div class="row-meta">18d · Backyard + pet area combo</div><div class="row-value">$9,400</div></div>
+<div class="p-row"><div class="row-name">D. Patel</div><div class="row-meta">17d · Pool-deck turf</div><div class="row-value">$7,200</div></div>
+<div class="p-row"><div class="row-name">R. Morales</div><div class="row-meta">16d · Front yard refresh</div><div class="row-value">$4,300</div></div>
+<div class="p-row"><div class="row-name">K. Schmidt</div><div class="row-meta">14d · Side-yard install</div><div class="row-value">$2,300</div></div>
       </div>
-      <div class="p-more">+ 11 more · <a href="#">View all 14 →</a></div>
+      <div class="p-more">+ 8 more · <a href="#">View all →</a></div>
       <div class="p-cta">
         <div class="p-cta-text"><strong>Sure, you could build a follow-up flow yourself.</strong> Or AGM Pro Stack runs a 3-step sequence on every quote until it closes or the customer says no. Carrier-registered business line. We do it. You see the replies.</div>
         <div class="p-cta-row">
@@ -613,8 +589,8 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Panel 3: Dormant -->
     <div class="panel opportunity" id="panel-dormant">
       <div class="p-head">
         <div class="p-headline">
@@ -622,31 +598,34 @@
           <div class="p-title">Customers who've forgotten about you</div>
         </div>
         <div class="p-numbers">
-          <div class="p-bignum">220</div>
+          <div class="p-bignum">22</div>
           <div class="p-bignum-sub">no contact 12+ mo</div>
         </div>
       </div>
       <div class="p-impact">
         <div class="p-impact-item">
           <div class="p-impact-label">If 10% re-engage</div>
-          <div class="p-impact-val dollar">~$143,000</div>
+          <div class="p-impact-val dollar">$14,300</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">DB lifetime spend</div>
-          <div class="p-impact-val">$1.4M</div>
+          <div class="p-impact-val ">$143K</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Last outreach</div>
-          <div class="p-impact-val red">14+ mo</div>
+          <div class="p-impact-val red">never</div>
         </div>
       </div>
-      <div class="p-list-title">Highest-value dormant customers</div>
+      <div class="p-list-title">Highest-LTV dormant customers</div>
       <div class="p-list">
-        <div class="p-row"><div class="row-name">The J. family</div><div class="row-meta">Mar 2024 · whole-property</div><div class="row-value">$12,400</div></div>
-        <div class="p-row"><div class="row-name">C. Mendez</div><div class="row-meta">Aug 2023 · pool surround + side</div><div class="row-value">$9,800</div></div>
-        <div class="p-row"><div class="row-name">The M. family</div><div class="row-meta">Jun 2023 · backyard refresh</div><div class="row-value">$6,200</div></div>
+        <div class="p-row"><div class="row-name">Pebble Beach Estates</div><div class="row-meta">last job Mar 2025 · 1y 2mo ago</div><div class="row-value">$87,000</div></div>
+<div class="p-row"><div class="row-name">Bay Area HOA</div><div class="row-meta">last job Nov 2024 · 1y 6mo ago</div><div class="row-value">$42,400</div></div>
+<div class="p-row"><div class="row-name">Walnut Creek HOA</div><div class="row-meta">last job Sep 2024 · 1y 8mo ago</div><div class="row-value">$28,900</div></div>
+<div class="p-row"><div class="row-name">K. Patel</div><div class="row-meta">last job Jun 2024 · 11mo ago</div><div class="row-value">$14,500</div></div>
+<div class="p-row"><div class="row-name">Sunset Pools</div><div class="row-meta">last job Apr 2024 · 1y 1mo ago</div><div class="row-value">$12,100</div></div>
+<div class="p-row"><div class="row-name">M. Romero</div><div class="row-meta">last job Mar 2024 · 1y 2mo ago</div><div class="row-value">$8,900</div></div>
       </div>
-      <div class="p-more">+ 217 more · <a href="#">View all dormant →</a></div>
+      <div class="p-more">+ 16 more · <a href="#">View all →</a></div>
       <div class="p-cta">
         <div class="p-cta-text"><strong>Most contractors never reach back.</strong> AGM Pro Stack quietly checks in with every dormant customer every 90 days, in your voice. We write the copy, set the cadence, run it. Replies route to your inbox.</div>
         <div class="p-cta-row">
@@ -655,8 +634,8 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Panel 4: Reviews -->
     <div class="panel medium" id="panel-reviews">
       <div class="p-head">
         <div class="p-headline">
@@ -665,30 +644,33 @@
         </div>
         <div class="p-numbers">
           <div class="p-bignum">38</div>
-          <div class="p-bignum-sub">missed 5-stars</div>
+          <div class="p-bignum-sub">completed, no review automation</div>
         </div>
       </div>
       <div class="p-impact">
         <div class="p-impact-item">
           <div class="p-impact-label">Jobs done (90d)</div>
-          <div class="p-impact-val">42</div>
+          <div class="p-impact-val ">38</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Asks sent</div>
-          <div class="p-impact-val amber">4</div>
+          <div class="p-impact-val amber">0</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Future-lead value</div>
-          <div class="p-impact-val dollar">~$24,500</div>
+          <div class="p-impact-val dollar">$24,500</div>
         </div>
       </div>
       <div class="p-list-title">Recent jobs with no review request</div>
       <div class="p-list">
-        <div class="p-row"><div class="row-name">M. Reyes</div><div class="row-meta">Apr 18 · 850 sqft backyard</div><div class="row-value muted">no ask</div></div>
-        <div class="p-row"><div class="row-name">The L. family</div><div class="row-meta">Apr 16 · full property</div><div class="row-value muted">no ask</div></div>
-        <div class="p-row"><div class="row-name">C. Patel</div><div class="row-meta">Apr 14 · pool surround</div><div class="row-value muted">no ask</div></div>
+        <div class="p-row"><div class="row-name">Pebble Beach Estates</div><div class="row-meta">May 24 · Putting green expansion</div><div class="row-value muted">no ask</div></div>
+<div class="p-row"><div class="row-name">Bay Area HOA</div><div class="row-meta">May 21 · Common-area refresh</div><div class="row-value muted">no ask</div></div>
+<div class="p-row"><div class="row-name">K. Patel</div><div class="row-meta">May 18 · Backyard install</div><div class="row-value muted">no ask</div></div>
+<div class="p-row"><div class="row-name">Sunset Pools</div><div class="row-meta">May 15 · Pool-deck turf</div><div class="row-value muted">no ask</div></div>
+<div class="p-row"><div class="row-name">M. Romero</div><div class="row-meta">May 12 · Pet area install</div><div class="row-value muted">no ask</div></div>
+<div class="p-row"><div class="row-name">J. Liu</div><div class="row-meta">May 10 · Front yard refresh</div><div class="row-value muted">no ask</div></div>
       </div>
-      <div class="p-more">+ 35 more · <a href="#">View all completed →</a></div>
+      <div class="p-more">+ 32 more · <a href="#">View all →</a></div>
       <div class="p-cta">
         <div class="p-cta-text"><strong>Every job you finish without asking is a 5-star you'll never get.</strong> AGM Pro Stack fires a review request the day a job closes — text and email, one-tap link straight to your Google profile. We catch every job.</div>
         <div class="p-cta-row">
@@ -697,8 +679,8 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Panel 5: Appointments -->
     <div class="panel high" id="panel-appts">
       <div class="p-head">
         <div class="p-headline">
@@ -707,13 +689,13 @@
         </div>
         <div class="p-numbers">
           <div class="p-bignum">8</div>
-          <div class="p-bignum-sub">scheduled, unconfirmed</div>
+          <div class="p-bignum-sub">scheduled, no confirmation rail</div>
         </div>
       </div>
       <div class="p-impact">
         <div class="p-impact-item">
           <div class="p-impact-label">No-show risk this wk</div>
-          <div class="p-impact-val amber">~2-3 jobs</div>
+          <div class="p-impact-val amber">~2 jobs</div>
         </div>
         <div class="p-impact-item">
           <div class="p-impact-label">Truck-roll cost</div>
@@ -724,30 +706,32 @@
           <div class="p-impact-val red">~$700</div>
         </div>
       </div>
-      <div class="p-list-title">This week's unconfirmed appointments</div>
+      <div class="p-list-title">This week's appointments</div>
       <div class="p-list">
-        <div class="p-row"><div class="row-name">B. Castillo</div><div class="row-meta">Mon 4/27 · 9 AM · site walk</div><div class="row-value muted">no confirm</div></div>
-        <div class="p-row"><div class="row-name">The S. family</div><div class="row-meta">Tue 4/28 · 1:30 PM · install</div><div class="row-value muted">no confirm</div></div>
-        <div class="p-row"><div class="row-name">K. Watanabe</div><div class="row-meta">Wed 4/29 · 8 AM · final measure</div><div class="row-value muted">no confirm</div></div>
+        <div class="p-row"><div class="row-name">A. Chen</div><div class="row-meta">Mon 6/2 · 9 AM · Site eval</div><div class="row-value muted">no confirm</div></div>
+<div class="p-row"><div class="row-name">D. Patel</div><div class="row-meta">Mon 6/2 · 1 PM · Site eval</div><div class="row-value muted">no confirm</div></div>
+<div class="p-row"><div class="row-name">Sunset Vista HOA</div><div class="row-meta">Tue 6/3 · 10 AM · Walkthrough</div><div class="row-value muted">no confirm</div></div>
+<div class="p-row"><div class="row-name">R. Morales</div><div class="row-meta">Wed 6/4 · 11 AM · Install start</div><div class="row-value muted">no confirm</div></div>
+<div class="p-row"><div class="row-name">K. Schmidt</div><div class="row-meta">Thu 6/5 · 9 AM · Site eval</div><div class="row-value muted">no confirm</div></div>
+<div class="p-row"><div class="row-name">J. Vasquez</div><div class="row-meta">Fri 6/6 · 2 PM · Install start</div><div class="row-value muted">no confirm</div></div>
       </div>
-      <div class="p-more">+ 5 more · <a href="#">View this week →</a></div>
+      <div class="p-more">+ 2 more · <a href="#">View all →</a></div>
       <div class="p-cta">
-        <div class="p-cta-text"><strong>A reminder hopes the customer remembers. A confirmation captures their actual response.</strong> AGM Pro Stack sends a confirmation request 24 hours out — customer taps to confirm, replies with a question, or asks to reschedule. We capture the response, flag the silent ones, and surface what's at risk before the truck rolls. You walk into Monday knowing what's real.</div>
+        <div class="p-cta-text"><strong>A reminder hopes the customer remembers. A confirmation captures their actual response.</strong> AGM Pro Stack sends a confirmation request 24 hours out — customer taps to confirm, replies with a question, or asks to reschedule. We capture the response, flag the silent ones, and surface what's at risk before the truck rolls.</div>
         <div class="p-cta-row">
           <div class="p-cta-sub">Done-for-you</div>
           <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
         </div>
       </div>
     </div>
-
+    
   </div>
 
-  <!-- Bottom totals band — reinforcement -->
   <div class="totals" id="totals">
     <div>
       <div class="totals-eyebrow">What your data is telling you</div>
       <div class="totals-headline">You're leaving roughly this much in revenue on the floor every month — across leads, quotes, reviews, reactivation, and no-shows combined:</div>
-      <div class="totals-amount">~$269,000</div>
+      <div class="totals-amount">$312,500</div>
       <div class="totals-amount-sub">Estimated lost revenue, last 30 days</div>
     </div>
     <div class="totals-cta">
