@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a3d2a">
+<title>Project Documents Uploader — Job DEMO-1042</title>
+<style>
+  :root {
+    --hg-green: #0a3d2a; --hg-green-light: #1a6b48; --hg-accent: #c8a951;
+    --bg: #f4f3ee; --card: #ffffff; --ink: #1a1a1a; --ink-soft: #5a5a5a;
+    --line: #e3e0d8; --ok: #2f8a3f; --warn: #c46a1d; --err: #b3261e;
+    --required-bg: #fef2f2; --required-border: #fca5a5; --required-text: #991b1b;
+    --optional-bg: #f0f4f0; --optional-border: #c5d0c5; --optional-text: #52615a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 17px; line-height: 1.45; color: var(--ink); background: var(--bg);
+    padding-bottom: 60px; -webkit-font-smoothing: antialiased;
+  }
+  .topbar {
+    background: white; padding: 18px 18px 16px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; position: sticky; top: 0;
+    z-index: 10; text-align: center; border-bottom: 1px solid var(--line);
+  }
+  .topbar .logo { height: 60px; width: auto; max-width: 240px; object-fit: contain; }
+  .topbar .subtitle { font-size: 18px; font-weight: 700; letter-spacing: -0.2px; color: var(--hg-green); }
+  .container { max-width: 540px; margin: 0 auto; padding: 18px; }
+  .card { background: var(--card); border-radius: 14px; padding: 20px; margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid var(--line); }
+  .job-header h1 { margin: 0 0 4px 0; font-size: 22px; letter-spacing: -0.3px; }
+  .job-header .job-num { color: var(--hg-green-light); font-weight: 600; }
+  .job-header dl { margin: 14px 0 0 0; padding: 14px 0 0 0; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 95px 1fr; gap: 8px 12px; font-size: 17px; }
+  .job-header dt { color: var(--ink-soft); font-weight: 500; }
+  .job-header dd { margin: 0; font-weight: 500; }
+  .status-pill { display: inline-flex; align-items: center; gap: 6px; background: #e8f3eb;
+    color: var(--ok); padding: 4px 10px; border-radius: 999px; font-size: 14px; font-weight: 600; margin-top: 10px; }
+  .status-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .upload-zone { border: 2px dashed #c4c0b3; border-radius: 14px; background: #fafaf6;
+    padding: 28px 20px; text-align: center; }
+  .upload-zone .big-icon { font-size: 42px; line-height: 1; margin-bottom: 10px; }
+  .upload-zone p { margin: 0 0 16px 0; color: var(--ink-soft); font-size: 15px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--hg-green); color: white; border: none; border-radius: 10px;
+    padding: 14px 22px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%;
+    -webkit-appearance: none; appearance: none; font-family: inherit; }
+  .btn:active { transform: scale(0.98); }
+  .btn.secondary { background: white; color: var(--hg-green); border: 1.5px solid var(--hg-green); }
+  .btn.stack { margin-top: 10px; }
+  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .btn-row .btn { padding: 13px 14px; font-size: 16px; }
+  .step-banner { background: #e8f3eb; border: 2px solid var(--ok); border-radius: 10px;
+    padding: 14px 16px; font-size: 15px; color: #1a3d2a; margin-bottom: 16px; line-height: 1.5; }
+  .step-banner-label { color: #5a5a5a; font-weight: 500; }
+  .step-banner strong { color: var(--hg-green); font-weight: 700; font-size: 17px; }
+  .step-banner-hint { display: block; margin-top: 6px; font-size: 13px; color: #5a5a5a; }
+  .step-banner-hint a { color: var(--hg-green); font-weight: 600; text-decoration: none; }
+  .info-banner { background: #f7f3e8; border: 1px solid #e8d9a8; border-radius: 10px;
+    padding: 14px 16px; font-size: 14px; color: #6b5a1a; margin-bottom: 16px; line-height: 1.5; }
+  .info-banner strong { color: var(--ink); }
+  .info-banner .access-callout { display: block; margin-top: 10px; padding: 10px 12px;
+    background: #fff4dc; border-left: 3px solid var(--hg-accent); border-radius: 6px;
+    color: var(--ink); font-weight: 600; }
+  .info-banner .access-callout em { color: #6b5a1a; font-weight: 500; font-style: normal; }
+  .video-rules { margin: 14px 0 0 0; padding: 12px 14px; background: #f0f4f0; border-radius: 8px;
+    font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .video-rules strong { color: var(--ink); }
+  .counter { text-align: center; color: var(--ink-soft); font-size: 15px; margin-top: 16px; }
+  .counter strong { color: var(--ink); font-weight: 700; }
+  .upload-list { margin-top: 4px; }
+  .upload-item { display: grid; grid-template-columns: 70px 1fr auto; gap: 14px;
+    align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .upload-item:last-child { border-bottom: none; }
+  .thumb { width: 70px; height: 70px; border-radius: 8px;
+    background: linear-gradient(135deg, #c5d8c5, #8cb09a); flex-shrink: 0; position: relative; overflow: hidden; }
+  .thumb.video::after { content: "▶"; position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center; color: white; font-size: 22px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+  .thumb.pdf { display: flex; align-items: center; justify-content: center;
+    font-size: 32px; background: linear-gradient(135deg, #f5d6c5, #d68a6f); }
+  .upload-meta { min-width: 0; }
+  .upload-name { font-size: 15px; font-weight: 600; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .upload-progress { height: 5px; background: var(--line); border-radius: 3px;
+    overflow: hidden; margin-top: 6px; }
+  .upload-progress-bar { height: 100%; background: var(--hg-green); width: 0%; transition: width 0.25s; }
+  .upload-status { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+  .upload-status.done { color: var(--ok); font-weight: 600; }
+  .upload-status.error { color: var(--err); font-weight: 600; }
+  .remove-btn { width: 36px; height: 36px; border: none; background: transparent;
+    color: var(--ink-soft); font-size: 26px; line-height: 1; cursor: pointer;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    padding: 0; font-family: inherit; transition: background 0.15s, color 0.15s; }
+  .remove-btn:hover { background: #fee2e2; color: var(--err); }
+  .remove-btn:active { transform: scale(0.92); }
+  .remove-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .upload-item.removing { opacity: 0.5; pointer-events: none; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .completed-banner { background: #e8f3eb; border: 1px solid #b8d8c0; border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 16px; display: none; }
+  .completed-banner.show { display: block; }
+  .completed-banner h3 { margin: 0 0 6px 0; font-size: 18px; color: var(--ok);
+    display: flex; align-items: center; gap: 8px; }
+  .completed-banner p { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.5; }
+  .completed-banner p + p { margin-top: 8px; color: var(--ink-soft); font-size: 14px; }
+  .build-packet-btn { display: inline-block; margin-top: 14px; padding: 14px 28px;
+    background: var(--hg-green); color: white; border: none; border-radius: 10px;
+    font-size: 16px; font-weight: 600; cursor: pointer; }
+  .build-packet-btn:active { background: var(--hg-green-light); }
+  .build-packet-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .build-packet-result { margin-top: 10px; font-size: 14px; font-weight: 600; }
+  input[type=file] { display: none; }
+  .recorder-hint { font-size: 13px; color: var(--ink-soft); text-align: center;
+    margin-top: 12px; line-height: 1.45; padding: 0 8px; }
+  /* Per-step section styling — manifest-driven layout (one section per
+     materials manifest step). Required sections get a red badge and
+     accent border; optional sections get a muted neutral badge. */
+  .step-section { background: var(--card); border-radius: 14px; padding: 18px 18px 16px;
+    margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border: 1px solid var(--line); }
+  .step-section.required { border-left: 4px solid var(--required-border); }
+  .step-section.optional { border-left: 4px solid var(--optional-border); }
+  .step-section.deferred { opacity: 0.62; }
+  .step-header { display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 6px; }
+  .step-title { font-size: 18px; font-weight: 700; color: var(--ink); display: flex;
+    align-items: center; gap: 8px; letter-spacing: -0.2px; }
+  .step-title .icon { font-size: 22px; line-height: 1; }
+  .step-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 3px 8px; border-radius: 999px; text-transform: uppercase; flex-shrink: 0; }
+  .step-badge.required { background: var(--required-bg); color: var(--required-text);
+    border: 1px solid var(--required-border); }
+  .step-badge.optional { background: var(--optional-bg); color: var(--optional-text);
+    border: 1px solid var(--optional-border); }
+  .step-badge.deferred { background: #f4f0e6; color: #6b5a1a; border: 1px solid #d8c79a; }
+  .step-desc { font-size: 14px; color: var(--ink-soft); margin: 0 0 10px 0; line-height: 1.45; }
+  .step-progress { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .step-progress.satisfied { color: var(--ok); }
+  .step-progress.short { color: var(--warn); }
+  .step-progress .progress-detail { font-weight: 500; color: var(--ink-soft); margin-left: 4px; }
+  .step-buttons { display: grid; gap: 8px; }
+  .step-buttons.dual { grid-template-columns: 1fr 1fr; }
+  .step-buttons .btn { padding: 12px 14px; font-size: 15px; }
+  /* Existing-damage bypass toggle. Sits below the upload buttons; lets the
+     rep affirm "no visible damage" instead of forcing a placeholder photo.
+     Tappable target (full row), explicit border + dashed style so it reads
+     as an alternate path rather than a generic checkbox. */
+  .bypass-toggle { display: flex; align-items: flex-start; gap: 10px;
+                    margin-top: 12px; padding: 12px 14px;
+                    border: 1px dashed var(--ink-soft); border-radius: 10px;
+                    cursor: pointer; font-size: 15px; line-height: 1.45;
+                    background: rgba(255,255,255,0.55); }
+  .bypass-toggle input[type="checkbox"] { width: 20px; height: 20px;
+                                           margin-top: 2px; flex-shrink: 0;
+                                           cursor: pointer; }
+  .bypass-toggle:hover { border-color: var(--ink); }
+  .bypass-toggle input[type="checkbox"]:checked + span strong { color: var(--ok); }
+  .step-uploads { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); display: none; }
+  .step-uploads.has-items { display: block; }
+  .step-uploads .upload-item { padding: 10px 0; }
+  /* Per-step free-text notes. Sits at the bottom of every section so the
+     rep can carry over context the media can't: PDF caveats, access
+     gotchas, damage context, walkthrough-video reference points. Auto-
+     saves on blur — no save button, no "did I lose this?" anxiety. */
+  .step-notes { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .step-notes label { display: block; font-size: 14px; font-weight: 600;
+    color: var(--ink); margin-bottom: 6px; }
+  .step-notes label .hint { color: var(--ink-soft); font-weight: 500; margin-left: 6px; }
+  .step-notes textarea { width: 100%; min-height: 70px; resize: vertical;
+    padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+    font-family: inherit; font-size: 15px; line-height: 1.4; color: var(--ink);
+    background: #fafaf6; box-sizing: border-box;
+    -webkit-appearance: none; appearance: none; }
+  .step-notes textarea:focus { outline: none; border-color: var(--hg-green);
+    background: white; box-shadow: 0 0 0 2px rgba(10, 61, 42, 0.12); }
+  .step-notes .note-status { font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; min-height: 16px; line-height: 1; transition: color 0.2s; }
+  .step-notes .note-status.saving { color: var(--ink-soft); }
+  .step-notes .note-status.saved { color: var(--ok); font-weight: 600; }
+  .step-notes .note-status.error { color: var(--err); font-weight: 600; }
+</style>
+</head>
+<body>
+<div style="background:#0a3d2a;color:#e9f0ec;text-align:center;font:600 13px/1.4 -apple-system,system-ui,sans-serif;padding:9px 14px;letter-spacing:.2px">
+  Preview · the live Heavenly Greens installer intake form — demonstration only, uploads disabled
+</div>
+
+
+<div class="topbar">
+  <img class="logo" src="data:image/png;base64,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pi8znuFwCWF6hVnSjPT7NxaS/9UoVllZGVdeciVKKW699VYsy+KySy7ltttuQ9HbPOHEM09EaKiurubcS84ll8vNw++4d8Z5Z/wmmJzU2trKjDNmXBT4xM3tzRt6ckpWV1dz+jlncf/990uJnCqEoKGpYd6VV17J7b+7k8svv5zrr78e4JcazS9+8QtmnDYjA/Dsg39CCDFPwgqlFO3t7RelUqlMNBY7EoOUZcF0LheIg4QQc4EfA+8DX3h4awHOPOvMq++7777lSujDfKf0zo31G78MOjT6MchXWnORb2Fo62jjmmuu54477uDnZ/78KyHEns/+7ukdAE4565SvDM0dhBA72NJMkirkXU4+/eSFAbzev38/rrjiCm665RfcfPPN3HbbbXR1dXHDTTdy5ZVXUl1dzZVXXonneVx33XU4yiBqV111la/gDMUlkoiWTOqVlo/8Cbn17vX/Jrf/DzPp39XbU/8M5RKldQzyW7cWtDNKpVLkekwXldqKai699FKUUlx11VXc8QvTav+y665GKcXv7vwPPM/jgisuJRqNhjM8brvtNq6++mosbThQOeVSXl5OpqsLx3Eoiyfo6emhrrY/mUyGX157A9FolMuuvYpIJEIhl6e6uprmptawtiYSieBpQ9m48cYbuf7663F1MFtRbFGBWEza034diuOjP+XpMtra2qjyygwHrMrUdQd1KL+87hbuuusuOppNJ8t4mUmi/uLWW7jttttAay644AKEEPzmN78B4JZbbqGjo913i4Q5j7msT3/ZMl4w+1h63YL9k7Zfgehn0l1lMutii9ls/+qAIvX/BOS/IiBBQ7yAPh7RsrcNv9ZY/s+5tl8R6dfeu7YhJCZipoAon88Ti8W44Zrr8TyPm2+/1TS49kmAMcvmlltuwRKSa6+9FqtgAk9Hau68804kgksuuYSqyhquu+66sBt6eUWa9vZ2brjhBsrLy7n4ssu54YYbuOUXvwjb5lx99dUAXHfddSRTfgdGCy6//HK8oMGZbwHuvOJWtNaccc25vsY2xMiYNvUft99yG0oprrnher/Mww1LhwMtHnCjilu1ChEMHhVh84etxxClnStd/II1fzsFz/RJK2IE6FILIv9FBOv/bwTkH/P3/1ll3T9nG8utCmRxa9KAyPhtrfO/S434t5GpemnZ/+LxCauP++H9S1ylb/t9qf9n8ZletrYqgW0d5YWz1PsO5/x/Mci/+e3bRob9H1UYW3Qr6fv4738rFvDivr//zoLxbysg/1PsTCXU/6yJFv/s9//Tq+tbWniqf/H4v+v5+G92mEXxGOT/fVrz/wdu+qwN0fmKrgAAAABJRU5ErkJggg==" alt="Heavenly Greens">
+  <div class="subtitle">Project Documents Uploader</div>
+</div>
+
+<div class="container">
+  <div class="card job-header">
+    <h1>Add Project Details for <span class="job-num">DEMO-1042</span></h1>
+    <span class="status-pill">Contract signed, ready for install</span>
+    <dl>
+      <dt>Customer</dt><dd>Sample Project</dd>
+      <dt>Address</dt><dd>1422 Lakeshore Dr, San Jose, CA 95126</dd>
+      <dt>Sales Rep</dt><dd>—</dd>
+    </dl>
+  </div>
+
+  <div class="info-banner">
+    <strong>What the install crew needs:</strong> Each section below maps to one
+    item the crew expects in the installer packet. Required items must be uploaded
+    before the install can be dispatched.
+    <span class="access-callout">⚠ Access photos are critical — <em>path or walkthrough areas the crew needs to be aware of.</em></span>
+  </div>
+
+  <!-- ─── Needs Site Inspection — OPTIONAL, NO PREREQ ─────────────────
+       Reordered ABOVE Access Photos per Tim+Troy 2026-05-18: a rep can
+       request a pre-install site inspection without first uploading the
+       install-crew packet materials (Access/Site/Drawing/Damage). Site
+       inspections are a pre-install op between rep + HG production
+       (Liz, Emma) — separate from install-crew prep discipline. The
+       former prerequisite gate (which required all install-crew docs
+       before allowing the Request button) was dropped same date.
+
+       The only remaining gate is the explicit confirm() dialog in
+       requestSiteInspection() naming the recipients — that prevents
+       accidental external email blasts on a stray click. -->
+  <div class="step-section optional" data-step="needs_site_inspection" data-min="0">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">🔍</span>Needs Site Inspection</div>
+      <span class="step-badge optional">Optional</span>
+    </div>
+    <p class="step-desc">Request a pre-install site inspection from HG production when something on site needs human eyes before the install crew dispatches. No prerequisites — fire this whenever you flag a concern.</p>
+    <div class="step-notes">
+      <label for="needs_site_inspectionNote">Inspection notes <span class="hint">— what to look for, who to coordinate with, urgency</span></label>
+      <textarea id="needs_site_inspectionNote" data-step="needs_site_inspection" maxlength="4000" placeholder="e.g. Slope from back patio looks steeper than the drawing suggests — want eyes on it before we bid base depth. Member available weekdays after 3pm."></textarea>
+      <div class="note-status" id="needs_site_inspectionNoteStatus"></div>
+    </div>
+    <div class="step-progress" id="needs_site_inspectionProgress" style="margin-top:10px;">
+      <span id="needs_site_inspectionCount">0</span> attached
+      <span class="hint" style="margin-left:6px;">— optional photos or marked-up drawing</span>
+    </div>
+    <input type="file" id="needs_site_inspectionPicker" accept="image/*,application/pdf" multiple>
+    <input type="file" id="needs_site_inspectionCapture" accept="image/*" capture="environment">
+    <div class="step-buttons dual">
+      <button type="button" class="btn secondary" onclick="document.getElementById('needs_site_inspectionPicker').click()">+ Add Photo / Drawing PDF</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('needs_site_inspectionCapture').click()">📷 Take Photo</button>
+    </div>
+    <div class="step-uploads" id="needs_site_inspectionUploads"></div>
+    <p id="siteInspectionGate" class="hint" style="display:none; margin-top:14px; color:var(--ink-soft); line-height:1.4;"></p>
+    <div class="step-buttons" style="margin-top:8px;">
+      <button type="button" id="siteInspectionRequestBtn" class="btn" onclick="requestSiteInspection()">
+        Submit Request to Production
+      </button>
+    </div>
+    <div id="siteInspectionResult" style="margin-top:10px; font-size:14px; line-height:1.4;"></div>
+  </div>
+
+  <!-- ─── Access Photos — REQUIRED, min 1 ─────────────────────────────
+       Originally ordered first (above Site Photos) per Troy 2026-05-06.
+       Moved below Needs Site Inspection 2026-05-18 — see Site Inspection
+       comment above for rationale. Still ordered before Site Photos so
+       access hazards drive routing decisions for the install crew.
+       IDs use snake_case "access_photos*" to match the JS pattern
+       refreshProgress(step) builds: getElementById(step + 'Progress'),
+       getElementById(step + 'Count'), getElementById(step + 'Uploads').
+       Step key is "access_photos" so IDs are access_photosProgress etc. -->
+  <div class="step-section required" data-step="access_photos" data-min="1">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">🚪</span>Access Photos</div>
+      <span class="step-badge required">Required</span>
+    </div>
+    <p class="step-desc">Path or walkthrough areas the crew needs to be aware of — gate width, side-yard access, stairs, slope, anything that affects how materials get to the install zone.</p>
+    <div class="step-progress short" id="access_photosProgress">
+      <span id="access_photosCount">0</span> / 1 minimum
+      <span class="progress-detail" id="access_photosDetail"></span>
+    </div>
+    <input type="file" id="access_photosPicker" accept="image/*" multiple>
+    <input type="file" id="access_photosCapture" accept="image/*" capture="environment">
+    <div class="step-buttons dual">
+      <button type="button" class="btn" onclick="document.getElementById('access_photosPicker').click()">+ Add Access Photos</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('access_photosCapture').click()">📷 Take Photo</button>
+    </div>
+    <div class="step-uploads" id="access_photosUploads"></div>
+    <div class="step-notes">
+      <label for="access_photosNote">Access notes <span class="hint">— anything tricky about getting in (gate codes, lockboxes, dog warnings, parking limits)</span></label>
+      <textarea id="access_photosNote" data-step="access_photos" maxlength="4000" placeholder="e.g. Gate code 4321. Side gate is 30 inches — measure twice before trailering equipment. Dog in the yard mornings; member moves him in by 10am."></textarea>
+      <div class="note-status" id="access_photosNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Site Photos — REQUIRED, min 3 ─────────────────────────────── -->
+  <div class="step-section required" data-step="photos" data-min="3">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">📸</span>Site Photos</div>
+      <span class="step-badge required">Required</span>
+    </div>
+    <p class="step-desc">Front yard, back yard, and access path — the three the crew always needs first. Add gate width, hardscape, and drainage shots if relevant.</p>
+    <div class="step-progress short" id="photosProgress">
+      <span id="photosCount">0</span> / 3 minimum
+      <span class="progress-detail" id="photosDetail"></span>
+    </div>
+    <input type="file" id="photosPicker" accept="image/*" multiple>
+    <input type="file" id="photosCapture" accept="image/*" capture="environment">
+    <div class="step-buttons dual">
+      <button type="button" class="btn" onclick="document.getElementById('photosPicker').click()">+ Add Photos</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('photosCapture').click()">📷 Take Photo</button>
+    </div>
+    <div class="step-uploads" id="photosUploads"></div>
+    <div class="step-notes">
+      <label for="photosNote">Site photo notes <span class="hint">— what the crew should know about the area you shot</span></label>
+      <textarea id="photosNote" data-step="photos" maxlength="4000" placeholder="e.g. Back yard photo: that dead patch near the corner is where the irrigation valve sits — flag before excavation. Drainage runs toward the south fence."></textarea>
+      <div class="note-status" id="photosNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Drawing PDF — REQUIRED ─────────────────────────────────────── -->
+  <div class="step-section required" data-step="drawing" data-min="1">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">📐</span>Drawing PDF</div>
+      <span class="step-badge required">Required</span>
+    </div>
+    <p class="step-desc">OneNote sketch exported as PDF. Shows measurements and zones. Multi-upload supported for revisions — the latest is what the crew sees.</p>
+    <div class="step-progress short" id="drawingProgress">
+      <span id="drawingCount">0</span> / 1 minimum
+    </div>
+    <input type="file" id="drawingPicker" accept="application/pdf" multiple>
+    <div class="step-buttons">
+      <button type="button" class="btn" onclick="document.getElementById('drawingPicker').click()">+ Upload Drawing PDF</button>
+    </div>
+    <div class="step-uploads" id="drawingUploads"></div>
+    <div class="step-notes">
+      <label for="drawingNote">Drawing/PDF notes <span class="hint">— call out anything not obvious in the sketch (revisions, scale, callouts)</span></label>
+      <textarea id="drawingNote" data-step="drawing" maxlength="4000" placeholder="e.g. Latest revision: pulled the putting green out of zone 2 per member request. Scale is 1 square = 1 ft. Zone 3 base depth is 4 inches, not the default 3."></textarea>
+      <div class="note-status" id="drawingNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Existing Damage — REQUIRED OR BYPASS ──────────────────────── -->
+  <div class="step-section required" data-step="existing_damage" data-min="1">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">⚠️</span>Existing Damage</div>
+      <span class="step-badge required">Required or Bypass</span>
+    </div>
+    <p class="step-desc">Document any pre-existing damage in the work area (concrete cracks, fence issues, sprinklers, irrigation, etc.). If there is no visible damage, check the bypass box below to confirm.</p>
+    <div class="step-progress short" id="existing_damageProgress">
+      <span id="existing_damageCount">0</span> / 1 minimum
+    </div>
+    <input type="file" id="existing_damagePicker" accept="image/*,video/*" multiple>
+    <input type="file" id="existing_damageCapture" accept="image/*,video/*" capture="environment">
+    <div class="step-buttons">
+      <button type="button" class="btn" onclick="document.getElementById('existing_damagePicker').click()">+ Upload Photo or Video</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('existing_damageCapture').click()">📷 Take Photo</button>
+    </div>
+    <label class="bypass-toggle" for="damageBypass">
+      <input type="checkbox" id="damageBypass" onchange="toggleDamageBypass(this)">
+      <span><strong>No visible damage</strong> — check this box to confirm there is nothing to document in the work area.</span>
+    </label>
+    <div class="step-uploads" id="existing_damageUploads"></div>
+    <div class="step-notes">
+      <label for="existing_damageNote">Existing damage notes <span class="hint">— context the crew + office need so we're not blamed later</span></label>
+      <textarea id="existing_damageNote" data-step="existing_damage" maxlength="4000" placeholder="e.g. Crack along the south patio edge was there before walkthrough — member acknowledged. Sprinkler head near gate was already broken; replacement not in scope."></textarea>
+      <div class="note-status" id="existing_damageNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Walkthrough Video — OPTIONAL ──────────────────────────────── -->
+  <div class="step-section optional" data-step="video" data-min="0">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">🎥</span>Walkthrough Video</div>
+      <span class="step-badge optional">Optional</span>
+    </div>
+    <p class="step-desc">60-second walk-around for slope, drainage, or customer-specific requests. Helps the crew plan, but not required to dispatch.</p>
+    <div class="step-progress" id="videoProgress">
+      <span id="videoCount">0</span> uploaded
+    </div>
+    <input type="file" id="videoPicker" accept="video/*" multiple>
+    <div class="step-buttons">
+      <button type="button" class="btn secondary" onclick="document.getElementById('videoPicker').click()">+ Add Video</button>
+    </div>
+    <div class="recorder-hint">Record in your phone's Camera app first, then tap above to upload. Max 60 seconds per clip, 150 MB max.</div>
+    <div class="step-uploads" id="videoUploads"></div>
+    <div class="step-notes">
+      <label for="videoNote">Walk-through video notes <span class="hint">— what to listen / look for, timestamps if useful</span></label>
+      <textarea id="videoNote" data-step="video" maxlength="4000" placeholder="e.g. 0:15 — member points out drainage concern at back corner. 0:32 — discusses the dog run boundary. 0:48 — agrees to keep the existing flagstone path."></textarea>
+      <div class="note-status" id="videoNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Waivers — DEFERRED (HG GC contract build, not yet active) ──
+       Section is hidden by default. Will surface when the contract has
+       a waiver flag set; flag plumbing exists in the engine but no
+       upstream button is wired to populate it yet. See
+       directives/hg_gc_waiver_wiring.md. -->
+  <div class="step-section optional" data-step="waiver" data-min="0" style="display:none;" id="waiverSection">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">📄</span>Waivers</div>
+      <span class="step-badge deferred">When Required</span>
+    </div>
+    <p class="step-desc">HOA, pool, utility, or easement releases. Surfaces only when the contract is flagged for waivers.</p>
+    <div class="step-progress" id="waiverProgress">
+      <span id="waiverCount">0</span> uploaded
+    </div>
+    <input type="file" id="waiverPicker" accept="application/pdf" multiple>
+    <div class="step-buttons">
+      <button type="button" class="btn secondary" onclick="document.getElementById('waiverPicker').click()">+ Upload Waiver PDF</button>
+    </div>
+    <div class="step-uploads" id="waiverUploads"></div>
+  </div>
+
+  <!-- ─── Wrap-Up — Good News — OPTIONAL ─────────────────────────────
+       Post-install outcome bucket: project went great, here are the
+       final shots. Accepts photos AND videos in one bucket — a new
+       pattern in this uploader (Site Photos is photo-only,
+       Walkthrough Video is video-only). Downstream: silent archive on
+       the AGM contact card; no Slack alert, no email. -->
+  <div class="step-section optional" data-step="wrapup_good" data-min="0">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">🟢</span>Wrap-Up — Good News</div>
+      <span class="step-badge optional">Optional</span>
+    </div>
+    <p class="step-desc">The install is complete and the customer is happy. Final shots — completed project, customer reactions, before/after pairings. Photos and videos both welcome here. Lands in the AGM contact card as a permanent record.</p>
+    <div class="step-progress" id="wrapup_goodProgress">
+      <span id="wrapup_goodCount">0</span> uploaded
+    </div>
+    <input type="file" id="wrapup_goodPicker" accept="image/*,video/*" multiple>
+    <input type="file" id="wrapup_goodCapture" accept="image/*,video/*" capture="environment">
+    <div class="step-buttons dual">
+      <button type="button" class="btn" onclick="document.getElementById('wrapup_goodPicker').click()">+ Add Photo / Video</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('wrapup_goodCapture').click()">📷 Capture</button>
+    </div>
+    <div class="step-uploads" id="wrapup_goodUploads"></div>
+    <div class="step-notes">
+      <label for="wrapup_goodNote">Good news notes <span class="hint">— customer reactions, anything notable about the result</span></label>
+      <textarea id="wrapup_goodNote" data-step="wrapup_good" maxlength="4000" placeholder="e.g. Member loved the putting green corner — said the kids haven't left it alone since we wrapped. Drainage swale came out cleaner than the drawing showed. Worth a shoutout in the next newsletter."></textarea>
+      <div class="note-status" id="wrapup_goodNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- ─── Wrap-Up — Issues — OPTIONAL ─────────────────────────────────
+       Post-install issue bucket: damage discovered after crew left,
+       missed work, callbacks, customer complaints. Accepts photos AND
+       videos. Downstream: every upload fires a Slack alert into
+       #hg-contracts so ops can triage; rep notes are included in the
+       alert. Eventually surfaces in installer packet for follow-up. -->
+  <div class="step-section optional" data-step="wrapup_issue" data-min="0">
+    <div class="step-header">
+      <div class="step-title"><span class="icon">🔴</span>Wrap-Up — Issues</div>
+      <span class="step-badge optional">Optional</span>
+    </div>
+    <p class="step-desc">Post-install problem documentation — damage discovered after the crew left, work that was missed, callbacks needed, customer complaints. Photos and videos both welcome. <strong>Every upload here pings HG ops on Slack so a triage decision can happen fast.</strong></p>
+    <div class="step-progress" id="wrapup_issueProgress">
+      <span id="wrapup_issueCount">0</span> uploaded
+    </div>
+    <input type="file" id="wrapup_issuePicker" accept="image/*,video/*" multiple>
+    <input type="file" id="wrapup_issueCapture" accept="image/*,video/*" capture="environment">
+    <div class="step-buttons dual">
+      <button type="button" class="btn" onclick="document.getElementById('wrapup_issuePicker').click()">+ Add Photo / Video</button>
+      <button type="button" class="btn secondary" onclick="document.getElementById('wrapup_issueCapture').click()">📷 Capture</button>
+    </div>
+    <div class="step-uploads" id="wrapup_issueUploads"></div>
+    <div class="step-notes">
+      <label for="wrapup_issueNote">Issue notes <span class="hint">— what happened, where on site, urgency, what the customer is asking for</span></label>
+      <textarea id="wrapup_issueNote" data-step="wrapup_issue" maxlength="4000" placeholder="e.g. Member found a chip in the corner brick near the gate after the crew rolled off Tuesday. Wants a touch-up before her family visits next weekend. Not blocking final payment, but needs a return visit in the next 5 days."></textarea>
+      <div class="note-status" id="wrapup_issueNoteStatus"></div>
+    </div>
+  </div>
+
+  <!-- Build / rebuild packet — always visible. Reps come back to add ONE
+       more photo and rebuild; gating this behind required minimums locks
+       them out and forces extra uploads they don't actually need. -->
+  <div class="card" style="text-align:center; padding: 22px 20px;">
+    <p id="packetStatus" style="margin: 0 0 14px 0; color: var(--ink-soft); font-size: 14px; line-height: 1.5;">
+      Files are saved as you upload them. Click below any time to rebuild the installer packet with the latest set.
+    </p>
+    <button class="build-packet-btn" id="buildPacketBtn" onclick="buildPacket()">
+      Build Installer Packet
+    </button>
+    <div class="build-packet-result" id="buildPacketResult"></div>
+  </div>
+</div>
+
+<script>
+  const JOB = "DEMO-1042";
+
+  // Step → category mapping mirrors uploader_app._STEP_TO_CATEGORY so the
+  // category we send back is exactly what _field_for_asset() routes by.
+  const STEP_CATEGORY = {
+    "photos":                "Site Photos",
+    "access_photos":         "Access Photos",
+    "drawing":               "Drawing",
+    "video":                 "Walkthrough Video",
+    "waiver":                "Waiver",
+    "existing_damage":       "Existing Damage",
+    "needs_site_inspection": "Needs Site Inspection",
+    "wrapup_good":           "Wrap-Up Good",
+    "wrapup_issue":          "Wrap-Up Issue",
+  };
+
+  // Per-step display label. Files are renumbered after every upload/delete
+  // to "Job Site Photo 1, 2, 3…" / "Access Photo 1, 2, 3…" so the rep sees
+  // a clean ordered list instead of original device filenames like
+  // "IMG_0875-1024x768.jpg" or "Backyard oasis.jpg".
+  const STEP_LABEL = {
+    "photos":                "Job Site Photo",
+    "access_photos":         "Access Photo",
+    "drawing":               "Drawing",
+    "video":                 "Walkthrough Video",
+    "waiver":                "Waiver",
+    "existing_damage":       "Existing Damage",
+    "needs_site_inspection": "Inspection Attachment",
+    "wrapup_good":           "Wrap-Up Good",
+    "wrapup_issue":          "Wrap-Up Issue",
+  };
+
+  // Pre-existing files hydrated server-side from S3 so a rep returning to
+  // delete a wrong upload from a previous session can see and remove it.
+  const EXISTING_FILES = {"photos": [], "access_photos": [], "drawing": [], "video": [], "waiver": [], "existing_damage": [], "needs_site_inspection": [], "wrapup_good": [], "wrapup_issue": []};
+
+  // Pre-existing per-step notes hydrated server-side from S3 markers
+  // (notes-<step>.json). Keys: photos / access_photos / drawing /
+  // existing_damage / video. Missing keys mean no saved note for that step.
+  const INITIAL_NOTES = {};
+
+  // Per-step state. Initial counts are hydrated server-side from S3 so a
+  // rep returning to add one more photo isn't told they're at 0/3 minimum
+  // when 5 are already uploaded. Subsequent uploads increment optimistically.
+  const stepState = {
+    photos:          { count: 0,          min: 3 },
+    access_photos:   { count: 0,   min: 1 },
+    drawing:         { count: 0,         min: 1 },
+    video:           { count: 0,           min: 0 },
+    waiver:          { count: 0,          min: 0 },
+    // existing_damage is required-with-bypass: satisfied when count >= 1
+    // OR when the rep has checked the "no visible damage" attestation,
+    // which writes a damage-bypass-*.json marker to S3.
+    existing_damage: { count: 0, min: 1, bypassed: false },
+    // needs_site_inspection: Submit-gated request flow. The `flagged` field
+    // tracks whether the marker has been written (POST already fired); the
+    // `count` field tracks user-uploaded inspection-specific assets (photos
+    // or marked-up PDFs) attached inside this section. min=0 because the
+    // attachments are optional — gate is on the OTHER sections' required
+    // materials, not on this section's count.
+    needs_site_inspection: { count: 0, min: 0, flagged: false },
+    // wrapup_good / wrapup_issue are optional multi-asset (photo+video)
+    // post-install buckets. wrapup_issue uploads fire a Slack alert into
+    // #hg-contracts so ops can triage; wrapup_good is silent archive.
+    wrapup_good:  { count: 0,  min: 0 },
+    wrapup_issue: { count: 0, min: 0 },
+  };
+
+  // Wire each step's pickers (multi-select) to uploadOne with the explicit
+  // step tag. Photos has a second picker for in-portal still capture.
+  function bindPicker(pickerId, step) {
+    const el = document.getElementById(pickerId);
+    if (!el) return;
+    el.addEventListener('change', async (e) => {
+      for (const f of e.target.files) await uploadOne(f, step);
+      e.target.value = "";
+    });
+  }
+  bindPicker('photosPicker',           'photos');
+  bindPicker('photosCapture',          'photos');
+  bindPicker('access_photosPicker',    'access_photos');
+  bindPicker('access_photosCapture',   'access_photos');
+  bindPicker('drawingPicker',          'drawing');
+  bindPicker('videoPicker',            'video');
+  bindPicker('waiverPicker',           'waiver');
+  bindPicker('existing_damagePicker',  'existing_damage');
+  bindPicker('existing_damageCapture', 'existing_damage');
+  bindPicker('wrapup_goodPicker',      'wrapup_good');
+  bindPicker('wrapup_goodCapture',     'wrapup_good');
+  bindPicker('wrapup_issuePicker',     'wrapup_issue');
+  bindPicker('wrapup_issueCapture',    'wrapup_issue');
+  // Site Inspection — inline attachments (photos + drawing PDF) the rep
+  // attaches specifically to this inspection ask. Different prefix from
+  // Drawing and Site Photos (which gate the request) so the classifier
+  // routes these tiles under needs_site_inspection rather than the gating
+  // sections. accept="image/*,application/pdf" on the picker.
+  bindPicker('needs_site_inspectionPicker',  'needs_site_inspection');
+  bindPicker('needs_site_inspectionCapture', 'needs_site_inspection');
+
+  // Existing-damage bypass toggle. When the rep checks the box, POST a
+  // marker to S3 (durable attestation). When unchecked, DELETE all
+  // bypass markers. Uploading any real damage media doesn't auto-uncheck
+  // the box — the rep can choose to capture both (some damage AND attest
+  // the rest of the area is clean). The visible upload tile list does
+  // NOT include the bypass marker, so it can't be deleted via the per-
+  // tile X button.
+  async function toggleDamageBypass(cb) {
+    const url = '/upload/' + encodeURIComponent(JOB) + '/bypass-damage';
+    cb.disabled = true;
+    try {
+      if (cb.checked) {
+        const r = await fetch(url, { method: 'POST' });
+        if (!r.ok) throw new Error('POST failed');
+        stepState.existing_damage.bypassed = true;
+      } else {
+        const r = await fetch(url, { method: 'DELETE' });
+        if (!r.ok) throw new Error('DELETE failed');
+        stepState.existing_damage.bypassed = false;
+      }
+    } catch (err) {
+      cb.checked = !cb.checked;  // revert UI
+      alert('Could not save bypass state — please try again.');
+    } finally {
+      cb.disabled = false;
+      refreshProgress('existing_damage');
+    }
+  }
+  // Hydrate initial bypass-checkbox state from server-side check
+  (function () {
+    const cb = document.getElementById('damageBypass');
+    if (cb && stepState.existing_damage && stepState.existing_damage.bypassed) {
+      cb.checked = true;
+    }
+  })();
+
+  // Needs Site Inspection — Submit-gated Request flow (NOT auto-fire on tick).
+  //
+  // Two gates protect against accidental external-comms blasts:
+  //   1. Required-materials gate (client-side + server-side mirror):
+  //      Access Photos ≥ 1, Site Photos ≥ 3, Drawing PDF ≥ 1, Existing
+  //      Damage ≥ 1 photo/video OR bypass attested. Walkthrough Video
+  //      is optional, does not gate.
+  //   2. Explicit confirm() dialog naming the recipients.
+  //
+  // Original Phase 1b shipped this as an auto-fire-on-checkbox-tick toggle
+  // mirroring the existing-damage bypass pattern. Troy caught the UX bug
+  // on 2026-05-15 — damage bypass is a low-stakes attestation, but Site
+  // Inspection emails the HG production team + the rep + Liz + Emma, which
+  // is high stakes and must require explicit deliberate submission.
+  function evaluateSiteInspectionGate() {
+    // Prerequisite gate removed 2026-05-18 per Tim+Troy ratification:
+    // reps can request a site inspection without having uploaded
+    // Access/Site/Drawing/Damage docs first. The explicit confirm()
+    // dialog in requestSiteInspection() remains as the only gate —
+    // that's the one that prevents accidental external email blasts.
+    const btn = document.getElementById('siteInspectionRequestBtn');
+    const hint = document.getElementById('siteInspectionGate');
+    if (!btn || !hint) return;
+    // Already submitted — keep the confirmation visible, hide the gate hint.
+    if (stepState.needs_site_inspection && stepState.needs_site_inspection.flagged) {
+      btn.disabled = true;
+      btn.textContent = 'Site Inspection Requested ✓';
+      hint.style.display = 'none';
+      return;
+    }
+    btn.disabled = false;
+    btn.textContent = 'Submit Request to Production';
+    hint.style.display = 'none';
+  }
+
+  async function requestSiteInspection() {
+    const btn = document.getElementById('siteInspectionRequestBtn');
+    const resultEl = document.getElementById('siteInspectionResult');
+    if (!btn || btn.disabled) return;
+    const confirmed = confirm(
+      'Submit a site inspection request for this project?\n\n' +
+      'This will email:\n' +
+      '  • HG Production (production@heavenlygreens.com)\n' +
+      '  • Liz Vazquez\n' +
+      '  • Emma Sanchez\n' +
+      '  • The assigned sales rep (Reply-To)\n\n' +
+      'Click OK to send. Click Cancel to keep editing.'
+    );
+    if (!confirmed) return;
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    if (resultEl) resultEl.innerHTML = '';
+    try {
+      const r = await fetch('/upload/' + encodeURIComponent(JOB) + '/needs-inspection', { method: 'POST' });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        throw new Error(j.detail || j.error || ('HTTP ' + r.status));
+      }
+      stepState.needs_site_inspection.flagged = true;
+      btn.textContent = 'Site Inspection Requested ✓';
+      // Server returns {"email": {"sent": bool, "ok": bool, "reason": str?, ...}}
+      // nested under the top-level response. Read sent/ok from there, fall
+      // back to reason for the failure path.
+      const emailObj = j.email || {};
+      const emailOk = emailObj.sent === true || emailObj.ok === true;
+      const emailNote = emailOk
+        ? 'Email sent to HG production, Liz, Emma, and the assigned rep.'
+        : 'Marker saved. Email did not dispatch: ' + (emailObj.reason || emailObj.error || 'unknown error') + '.';
+      const noteColor = emailOk ? 'var(--ok)' : 'var(--warn)';
+      if (resultEl) resultEl.innerHTML = '<span style="color:' + noteColor + ';">✓ ' + emailNote + '</span>';
+      const hint = document.getElementById('siteInspectionGate');
+      if (hint) hint.style.display = 'none';
+      // Branch the install-packet UI into "inspection pending" state so
+      // the rep sees that dispatch is paused before clicking Build Packet.
+      updatePacketBuildState();
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Request Site Inspection';
+      if (resultEl) resultEl.innerHTML = '<span style="color:var(--err);">⚠️ Could not submit: ' + (err.message || err) + '</span>';
+    }
+  }
+  // Initial gate evaluation on page load — runs once after stepState is
+  // hydrated so the rep sees the correct disabled/enabled state immediately.
+  evaluateSiteInspectionGate();
+
+  function refreshProgress(step) {
+    const s = stepState[step];
+    if (!s) return;
+    const progEl = document.getElementById(step + 'Progress');
+    const countEl = document.getElementById(step + 'Count');
+    if (countEl) countEl.textContent = s.count;
+    if (!progEl) return;
+    if (s.min > 0) {
+      // Existing-damage step: bypass flag satisfies independently of count.
+      // Display "✓ bypassed (no visible damage)" so the rep can see at a
+      // glance which path satisfied the requirement.
+      if (s.bypassed && s.count === 0) {
+        progEl.classList.remove('short');
+        progEl.classList.add('satisfied');
+        progEl.innerHTML = '✓ bypassed — no visible damage';
+      } else if (s.bypassed && s.count > 0) {
+        progEl.classList.remove('short');
+        progEl.classList.add('satisfied');
+        progEl.innerHTML = '<span>' + s.count + '</span> uploaded  ✓ bypass also confirmed';
+      } else if (s.count >= s.min) {
+        progEl.classList.remove('short');
+        progEl.classList.add('satisfied');
+        progEl.innerHTML = '<span>' + s.count + '</span> / ' + s.min + ' minimum  ✓ satisfied';
+      } else {
+        progEl.classList.remove('satisfied');
+        progEl.classList.add('short');
+        progEl.innerHTML = '<span id="' + step + 'Count">' + s.count + '</span> / ' + s.min + ' minimum';
+      }
+    } else {
+      progEl.innerHTML = '<span id="' + step + 'Count">' + s.count + '</span> uploaded';
+    }
+    // Build button is always visible; no gate to flip there.
+    // Site Inspection request button IS gated — re-evaluate after every
+    // progress change so the disabled→enabled flip is immediate as the
+    // rep clears the required-materials checklist.
+    if (typeof evaluateSiteInspectionGate === 'function') {
+      evaluateSiteInspectionGate();
+    }
+  }
+  // Initial render
+  Object.keys(stepState).forEach(refreshProgress);
+  renderExistingFiles();
+
+  // ── Per-step notes ────────────────────────────────────────────────────
+  // Hydrate textareas from INITIAL_NOTES (S3 markers), then bind each one
+  // to a debounced auto-save (on input) plus an immediate flush (on blur)
+  // so a rep typing for a while sees "Saving…" pulse and a rep tapping
+  // out of the field gets a guaranteed save before they walk away.
+  // Must match the server-side NOTES_STEPS tuple. needs_site_inspection
+  // was missing here even though the server saves it — result: rep typed
+  // inspection notes never auto-saved, the Site Inspection email pulled
+  // an empty notes blob from S3, and the textarea showed empty after any
+  // reload. Bug Troy caught 2026-05-18 on HGC-00149. wrapup_good /
+  // wrapup_issue added at the same time so the wrap-up section gets the
+  // same persistence behavior reps already expect from other steps.
+  const NOTE_STEPS = ['photos', 'access_photos', 'drawing', 'existing_damage', 'video',
+                      'needs_site_inspection', 'wrapup_good', 'wrapup_issue'];
+  const noteDebounce = {};  // step → setTimeout handle
+
+  function setNoteStatus(step, kind, text) {
+    const el = document.getElementById(step + 'NoteStatus');
+    if (!el) return;
+    el.classList.remove('saving', 'saved', 'error');
+    if (kind) el.classList.add(kind);
+    el.textContent = text || '';
+  }
+
+  async function saveNote(step, immediate) {
+    const ta = document.getElementById(step + 'Note');
+    if (!ta) return;
+    const text = (ta.value || '').trim();
+    setNoteStatus(step, 'saving', 'Saving…');
+    try {
+      const resp = await fetch('/upload/' + encodeURIComponent(JOB) + '/notes/' + step, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: text }),
+      });
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data.detail || ('HTTP ' + resp.status));
+      }
+      setNoteStatus(step, 'saved', text ? '✓ Saved' : '✓ Cleared');
+      // Fade the "Saved" hint after a moment so it doesn't sit there forever
+      setTimeout(() => {
+        const el = document.getElementById(step + 'NoteStatus');
+        if (el && el.classList.contains('saved')) { el.textContent = ''; el.classList.remove('saved'); }
+      }, 2500);
+    } catch (err) {
+      setNoteStatus(step, 'error', '⚠ Save failed — tap out and back in to retry');
+    }
+  }
+
+  function bindNote(step) {
+    const ta = document.getElementById(step + 'Note');
+    if (!ta) return;
+    // Hydrate from S3 marker (if any)
+    if (INITIAL_NOTES && typeof INITIAL_NOTES[step] === 'string') {
+      ta.value = INITIAL_NOTES[step];
+    }
+    // Debounced auto-save while the rep is typing — 900ms idle saves quietly
+    // so the textarea doesn't feel laggy and we don't hammer S3 per keystroke.
+    ta.addEventListener('input', () => {
+      if (noteDebounce[step]) clearTimeout(noteDebounce[step]);
+      setNoteStatus(step, 'saving', 'Typing…');
+      noteDebounce[step] = setTimeout(() => saveNote(step, false), 900);
+    });
+    // Immediate flush on blur so the rep can never lose a note by closing
+    // the tab right after typing — cancels any pending debounce first.
+    ta.addEventListener('blur', () => {
+      if (noteDebounce[step]) { clearTimeout(noteDebounce[step]); noteDebounce[step] = null; }
+      saveNote(step, true);
+    });
+  }
+  NOTE_STEPS.forEach(bindNote);
+
+  // Renumber every successfully-uploaded item in a step so the display
+  // reads "Job Site Photo 1, 2, 3…" instead of original filenames. Items
+  // mid-upload are skipped (no .done class yet) so the rep sees real-time
+  // progress on the file they just tapped, then it slots into the
+  // sequence once the upload completes.
+  function renumberStep(step) {
+    const container = document.getElementById(step + 'Uploads');
+    if (!container) return;
+    const label = STEP_LABEL[step] || 'File';
+    const items = container.querySelectorAll('.upload-item.done');
+    items.forEach((item, idx) => {
+      const nameEl = item.querySelector('[data-display]');
+      if (nameEl) nameEl.textContent = label + ' ' + (idx + 1);
+    });
+  }
+
+  // Build a thumbnail node. Photos pre-existing in S3 get a real preview
+  // (the bucket is public-read so the URL works as <img src>); newly
+  // uploaded photos in this session show the gradient placeholder until
+  // page reload — keeps the upload path simple (no FileReader / blob URLs)
+  // since the practical case is photos pop in via take-photo or picker
+  // and the rep moves on.
+  function buildThumb(kind, url) {
+    const div = document.createElement('div');
+    div.className = 'thumb' + (kind === 'video' ? ' video' : kind === 'pdf' ? ' pdf' : '');
+    if (kind === 'photo' && url) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = '';
+      img.loading = 'lazy';
+      div.appendChild(img);
+    } else if (kind === 'pdf') {
+      div.textContent = '📄';
+    }
+    return div;
+  }
+
+  // Hydrate pre-existing S3 files into each step's upload list so the rep
+  // can delete a wrong file from a previous session. Done items get
+  // numbered immediately by renumberStep at the end.
+  function renderExistingFiles() {
+    Object.keys(EXISTING_FILES).forEach((step) => {
+      const files = EXISTING_FILES[step] || [];
+      const container = document.getElementById(step + 'Uploads');
+      if (!container) return;
+      if (files.length) container.classList.add('has-items');
+      files.forEach((f) => {
+        const id = 'u' + Math.random().toString(36).slice(2, 10);
+        const item = document.createElement('div');
+        item.className = 'upload-item done';
+        item.id = id;
+        item.dataset.step = step;
+        item.dataset.s3Key = f.s3_key;
+        item.appendChild(buildThumb(f.kind, f.url));
+        const meta = document.createElement('div');
+        meta.className = 'upload-meta';
+        meta.innerHTML = '<div class="upload-name" data-display></div>'
+          + '<div class="upload-status done">✓ Uploaded</div>';
+        item.appendChild(meta);
+        const xBtn = document.createElement('button');
+        xBtn.type = 'button';
+        xBtn.className = 'remove-btn';
+        xBtn.setAttribute('aria-label', 'Remove');
+        xBtn.textContent = '×';
+        xBtn.onclick = () => confirmDelete(id);
+        item.appendChild(xBtn);
+        container.appendChild(item);
+      });
+    });
+    Object.keys(stepState).forEach(renumberStep);
+  }
+
+  // X-button handler. Confirms, hits the DELETE endpoint, removes the row
+  // on success, decrements the step count, and renumbers the survivors so
+  // labels stay sequential ("delete Photo 2 of 4 → 1, 2, 3" not
+  // "1, _, 3, 4"). Items still mid-upload (no s3_key yet) are removed
+  // locally only — the upload either completes and orphans an S3 object,
+  // or fails and never lands one. We accept that edge case because the
+  // alternative (race-condition handling on an in-flight POST) isn't worth
+  // the complexity for an edge that resolves in seconds.
+  async function confirmDelete(itemId) {
+    const item = document.getElementById(itemId);
+    if (!item) return;
+    if (!confirm('Remove this file?')) return;
+    const step = item.dataset.step;
+    const s3Key = item.dataset.s3Key || '';
+    if (!s3Key) {
+      item.remove();
+      if (stepState[step]) {
+        stepState[step].count = Math.max(0, stepState[step].count - 1);
+        refreshProgress(step);
+        renumberStep(step);
+      }
+      return;
+    }
+    item.classList.add('removing');
+    try {
+      const resp = await fetch('/upload/' + JOB + '/file', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ s3_key: s3Key }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (resp.ok && data.ok) {
+        item.remove();
+        stepState[step].count = Math.max(0, stepState[step].count - 1);
+        refreshProgress(step);
+        renumberStep(step);
+      } else {
+        item.classList.remove('removing');
+        alert('Could not remove file: ' + (data.error || ('HTTP ' + resp.status)));
+      }
+    } catch (err) {
+      item.classList.remove('removing');
+      alert('Network error — try again.');
+    }
+  }
+
+  async function uploadOne(file, step) {
+    const uploadsContainer = document.getElementById(step + 'Uploads');
+    if (!uploadsContainer) return;
+    uploadsContainer.classList.add('has-items');
+    const id = 'u' + Date.now() + Math.random().toString(36).slice(2, 6);
+    const isVideo = file.type.startsWith('video/');
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    const thumbClass = isVideo ? 'video' : (isPdf ? 'pdf' : '');
+    const item = document.createElement('div');
+    item.className = 'upload-item';
+    item.id = id;
+    item.dataset.step = step;
+    item.innerHTML = `
+      <div class="thumb ${thumbClass}">${isPdf ? '📄' : ''}</div>
+      <div class="upload-meta">
+        <div class="upload-name" data-display>${file.name}</div>
+        <div class="upload-progress"><div class="upload-progress-bar" id="${id}-bar"></div></div>
+        <div class="upload-status" id="${id}-status">Uploading…</div>
+      </div>
+      <button type="button" class="remove-btn" aria-label="Remove" onclick="confirmDelete('${id}')">×</button>`;
+    uploadsContainer.appendChild(item);
+    const bar = document.getElementById(id + '-bar');
+    const status = document.getElementById(id + '-status');
+    const fd = new FormData();
+    fd.append('files', file);
+    const category = STEP_CATEGORY[step] || "";
+    if (category) fd.append('category', category);
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.upload.onprogress = (e) => { if (e.lengthComputable) bar.style.width = (e.loaded / e.total * 100) + '%'; };
+      const result = await new Promise((resolve, reject) => {
+        xhr.onload = () => xhr.status >= 200 && xhr.status < 300 ? resolve(JSON.parse(xhr.responseText)) : reject(xhr.responseText);
+        xhr.onerror = () => reject('network');
+        xhr.open('POST', '/upload/' + JOB);
+        xhr.send(fd);
+      });
+      bar.style.width = '100%';
+      const u = result.uploads[0] || {};
+      if (u.error) {
+        status.textContent = '⚠ ' + u.error;
+        status.classList.add('error');
+      } else {
+        status.textContent = '✓ Uploaded';
+        status.classList.add('done');
+        item.classList.add('done');
+        if (u.s3_key) item.dataset.s3Key = u.s3_key;
+        stepState[step].count++;
+        refreshProgress(step);
+        renumberStep(step);
+      }
+    } catch (err) {
+      status.textContent = '⚠ Upload failed';
+      status.classList.add('error');
+    }
+  }
+
+  // Encode the Site Inspection branch in the install-packet UI. When a
+  // site inspection has been requested (marker exists in S3), the rep
+  // sees: (a) updated packetStatus copy explaining dispatch is paused
+  // pending production review, (b) updated button label flagging the
+  // inspection-pending state, and (c) a confirm() dialog if they click
+  // build anyway. Soft warning, not hard block — sometimes a rep genuinely
+  // needs the packet built mid-review (info update, etc.).
+  function updatePacketBuildState() {
+    const btn = document.getElementById('buildPacketBtn');
+    const status = document.getElementById('packetStatus');
+    if (!btn || !status) return;
+    if (stepState.needs_site_inspection && stepState.needs_site_inspection.flagged) {
+      status.innerHTML = '<strong style="color:var(--warn);">⚠️ Site inspection requested.</strong> Install dispatch is paused pending production review. You can build the installer packet now if needed — you\'ll be asked to confirm.';
+      btn.textContent = 'Build Installer Packet (inspection pending)';
+      btn.style.backgroundColor = 'var(--warn)';
+    } else {
+      status.textContent = 'Files are saved as you upload them. Click below any time to rebuild the installer packet with the latest set.';
+      btn.textContent = 'Build Installer Packet';
+      btn.style.backgroundColor = '';
+    }
+  }
+
+  async function buildPacket() {
+    // Inspection-pending soft gate. If the rep already submitted a site
+    // inspection request, warn before building the packet — install
+    // dispatch should usually wait for production's review.
+    if (stepState.needs_site_inspection && stepState.needs_site_inspection.flagged) {
+      const confirmed = confirm(
+        '⚠️ Site inspection requested — install dispatch is paused pending production review.\n\n' +
+        'Are you sure you want to build the installer packet now? The crew should not dispatch until production has reviewed the site.\n\n' +
+        'Click OK to build anyway. Click Cancel to wait for production.'
+      );
+      if (!confirmed) return;
+    }
+    const btn = document.getElementById('buildPacketBtn');
+    const result = document.getElementById('buildPacketResult');
+    btn.disabled = true;
+    btn.textContent = 'Building…';
+    result.textContent = '';
+    try {
+      const resp = await fetch('/build-packet/' + JOB, { method: 'POST' });
+      const data = await resp.json();
+      if (data.ok) {
+        btn.textContent = '✓ Packet Built';
+        result.style.color = '#2f8a3f';
+        // Render as a real clickable link so the rep (and anyone reading
+        // the page) can open the packet in a new tab directly. Previously
+        // rendered as textContent only, forcing a manual copy/paste.
+        if (data.short_url) {
+          result.innerHTML = 'Installer packet ready: <a href="' + data.short_url + '" target="_blank" rel="noopener" style="color:#2f8a3f;font-weight:600;">' + data.short_url + '</a>';
+        } else {
+          result.textContent = 'Installer packet ready (link saved to contact)';
+        }
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Retry — Build Installer Packet';
+        result.style.color = '#b3261e';
+        result.textContent = 'Build failed: ' + (data.error || 'unknown error');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Retry — Build Installer Packet';
+      result.style.color = '#b3261e';
+      result.textContent = 'Network error — try again';
+    }
+  }
+  // Initial sync — set the install-packet UI based on hydrated marker state.
+  updatePacketBuildState();
+</script>
+
+<script>
+(function(){
+  document.querySelectorAll('input[type=file]').forEach(function(i){ i.disabled = true; });
+  var _orig = window.fetch;
+  window.fetch = function(){ return Promise.resolve(new Response(
+    JSON.stringify({ok:true, demo:true, files:[]}),
+    {status:200, headers:{'Content-Type':'application/json'}})); };
+})();
+</script>
+</body>
+</html>
