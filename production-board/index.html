@@ -25,7 +25,7 @@
   .brand .sub{font-size:12px;opacity:.85;margin-top:2px}
   .whoami{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);
           padding:7px 14px;border-radius:999px;font-size:13px}
-  .dot{width:9px;height:9px;border-radius:50%;background:#7CFF9E;box-shadow:0 0 0 3px rgba(124,255,158,.25)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--hg);box-shadow:0 0 0 3px rgba(63,185,80,.25)}
   /* Toolbar */
   .toolbar{background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;
            gap:24px;flex-wrap:wrap;position:sticky;top:74px;z-index:20}
@@ -106,6 +106,10 @@
   .card-adv{margin-left:auto;background:var(--hg-dark);color:#fff;border:0;border-radius:6px;min-width:26px;height:24px;
             font-size:13px;cursor:pointer;line-height:1;padding:0 8px;flex:none}
   .card-adv:hover{background:var(--hg)}
+  .row2-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+  .card-back{background:#21262d;color:var(--muted);border:1px solid var(--line);border-radius:6px;
+             min-width:26px;height:24px;font-size:13px;cursor:pointer;line-height:1;padding:0 8px;flex:none}
+  .card-back:hover{background:#2d333b;color:var(--ink);border-color:var(--muted)}
   .stage-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .action-hint{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
   .pay-grid{display:flex;flex-direction:column;gap:8px}
@@ -364,6 +368,8 @@ const fmt = n => '$'+Number(n).toLocaleString();
    board. Each transition maps to a real write-back in production (or is derived).
 ---------------------------------------------------------------------------- */
 const STAGE_FLOW   = {sold:'approved', approved:'scheduled', scheduled:'completed', completed:'notpaid', notpaid:'paid'};
+/* Reverse of STAGE_FLOW — lets a card move back a stage if it was advanced by mistake. */
+const STAGE_BACK   = Object.fromEntries(Object.entries(STAGE_FLOW).map(([k,v])=>[v,k]));
 const STAGE_ACTION = {sold:'Approve job', approved:'Set install date → Scheduled',
                       scheduled:'Mark completed', completed:'Send to billing', notpaid:'Mark paid & close'};
 const STAGE_WRITEBACK = {
@@ -389,6 +395,14 @@ function advance(dash, idx){
   if(OPEN && OPEN.dash===dash && OPEN.idx===idx){
     next==='paid' ? closeDrawer() : openDrawer(dash, idx);
   }
+}
+function regress(dash, idx){
+  const arr = boardData(dash);
+  const prev = STAGE_BACK[arr[idx].status];
+  if(!prev) return;                // 'sold' is the first stage — nothing before it
+  arr[idx].status = prev;
+  render();
+  if(OPEN && OPEN.dash===dash && OPEN.idx===idx) openDrawer(dash, idx);
 }
 function toggleDelayed(dash, idx){
   const arr = boardData(dash);
@@ -438,11 +452,13 @@ function cardHTML(j, idx){
   }
   const advBtn = STAGE_FLOW[j.status]
     ? `<button class="card-adv" title="${STAGE_ACTION[j.status]}" onclick="event.stopPropagation();advance('${DASH}',${idx})">▸</button>` : '';
+  const backBtn = STAGE_BACK[j.status]
+    ? `<button class="card-back" title="Move back to ${STATUS_NAMES[STAGE_BACK[j.status]]}" onclick="event.stopPropagation();regress('${DASH}',${idx})">◂</button>` : '';
   return `<div class="pcard" onclick="openDrawer('${DASH}',${idx})">
     <div class="title"><span class="area-badge">A${j.area}</span>${j.last} · ${j.sqft} SF</div>
     <div class="meta"><span>${j.turf}</span><span>· ${j.city}</span></div>
     <div class="meta"><span>${j.job}</span></div>
-    <div class="row2"><span style="display:flex;gap:5px;flex-wrap:wrap">${tags.join('')}</span>${advBtn}</div>
+    <div class="row2"><span class="row2-left">${backBtn}${tags.join('')}</span>${advBtn}</div>
   </div>`;
 }
 
