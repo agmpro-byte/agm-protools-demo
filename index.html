@@ -4,30 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Live Operations Dashboard — AGM Pro Tools</title>
-<meta name="description" content="See what your data already knows. Your Contractor Automation Score, live.">
+<title>Demo Turf Co. — AGM Pro Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0f1a;
     --bg-card: #111827;
-    --bg-hover: #1a2332;
-    --bg-elevated: #151d2b;
     --accent: #22c55e;
     --accent-dim: rgba(34,197,94,0.15);
     --accent-glow: rgba(34,197,94,0.3);
-    --agm-purple: #7c3aed;
-    --agm-purple-dim: rgba(124,58,237,0.15);
-    --agm-purple-glow: rgba(124,58,237,0.25);
+    --jobber: #7c3aed;
+    --jobber-dim: rgba(124,58,237,0.15);
+    --jobber-glow: rgba(124,58,237,0.25);
     --blue: #3b82f6;
     --blue-dim: rgba(59,130,246,0.15);
-    --amber: #f59e0b;
-    --amber-dim: rgba(245,158,11,0.15);
+    --amber: #f97316;
+    --amber-dim: rgba(249,115,22,0.15);
     --red: #ef4444;
     --red-dim: rgba(239,68,68,0.15);
-    --cyan: #06b6d4;
-    --cyan-dim: rgba(6,182,212,0.15);
-    --star: #fbbf24;
+    --gold: #facc15;
+    --gold-dim: rgba(250,204,21,0.15);
     --text: #f1f5f9;
     --text2: #94a3b8;
     --text3: #64748b;
@@ -35,592 +31,1046 @@
     --border2: rgba(255,255,255,0.03);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  html { font-size:17px; }
-  body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:17px; line-height:1.5; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-  /* ═══ HEADER ═══ */
-  .header { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:20px 40px; background:rgba(10,15,26,0.95); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
-  .header-left { display:flex; align-items:center; gap:14px; }
-  .header-logo { font-size:20px; font-weight:800; letter-spacing:-0.03em; line-height:1.1; }
-  .header-tagline { font-size:12px; font-weight:500; color:var(--text3); letter-spacing:0.01em; margin-top:4px; font-style:italic; }
+  .header { background:rgba(10,15,26,0.95); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .header-inner { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:14px 28px; max-width:1440px; margin:0 auto; }
+  .header-left { display:flex; align-items:center; gap:10px; }
+  .header-logo { font-size:16px; font-weight:800; letter-spacing:-0.03em; line-height:1.1; color:var(--text); }
   .header-center { text-align:center; }
-  .header-client { font-size:26px; font-weight:800; letter-spacing:-0.02em; line-height:1.2; }
-  .header-client-sub { font-size:13px; font-weight:500; color:var(--text3); letter-spacing:0.06em; text-transform:uppercase; margin-top:4px; }
-  .header-right { display:flex; align-items:center; justify-content:flex-end; gap:18px; }
+  .header-client { font-size:24px; font-weight:800; color:var(--text); letter-spacing:-0.02em; line-height:1.2; }
+  .header-client-sub { font-size:11px; font-weight:600; color:var(--text3); letter-spacing:0.05em; text-transform:uppercase; margin-top:4px; }
+  .header-right { display:flex; align-items:center; justify-content:flex-end; gap:16px; }
   .header-sync { text-align:right; line-height:1.3; }
-  .sync-label { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px; }
-  .sync-time { font-size:14px; color:var(--text2); font-weight:600; }
-  .status-badge { display:flex; align-items:center; gap:8px; background:var(--accent-dim); border:1px solid rgba(34,197,94,0.2); padding:8px 16px; border-radius:20px; font-size:13px; font-weight:700; color:var(--accent); letter-spacing:0.06em; text-transform:uppercase; }
-  .status-dot { width:9px; height:9px; border-radius:50%; background:currentColor; animation:pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 var(--accent-glow)} 50%{box-shadow:0 0 0 6px transparent} }
+  .sync-label { font-size:9px; color:var(--text3); text-transform:uppercase; letter-spacing:0.04em; }
+  .sync-time { font-size:10px; color:var(--text2); font-weight:600; }
+  .status-badge { display:flex; align-items:center; gap:7px; background:var(--accent-dim); border:1px solid rgba(34,197,94,0.2); padding:5px 14px; border-radius:20px; font-size:11px; font-weight:600; color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; }
+  .status-dot { width:7px; height:7px; border-radius:50%; background:currentColor; animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 var(--accent-glow)} 50%{box-shadow:0 0 0 5px transparent} }
 
-  /* ═══ FILTER BAR ═══ */
-  .filter-bar { display:flex; justify-content:center; align-items:center; gap:8px; padding:16px 40px; background:var(--bg); border-bottom:1px solid var(--border); flex-wrap:wrap; }
-  .filter-label { font-size:13px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-right:12px; }
-  .filter-btn { background:transparent; border:1px solid var(--border); color:var(--text2); font-size:14px; font-weight:600; font-family:inherit; padding:8px 18px; border-radius:10px; cursor:pointer; transition:all 0.2s ease; white-space:nowrap; }
-  .filter-btn:hover { border-color:var(--accent); color:var(--text); background:var(--accent-dim); }
-  .filter-btn.active { background:var(--accent); color:#0a0f1a; border-color:var(--accent); font-weight:700; }
+  /* ===== TAB BAR — the one new framework element ===== */
+  .tab-bar { background:rgba(10,15,26,0.95); border-bottom:1px solid var(--border); position:sticky; top:63px; z-index:99; }
+  .tab-bar-inner { max-width:1440px; margin:0 auto; padding:0 28px; display:flex; gap:6px; }
+  .tab { appearance:none; background:transparent; border:none; border-bottom:3px solid transparent; color:var(--text3); font-family:inherit; font-size:14px; font-weight:700; letter-spacing:-0.01em; padding:14px 18px 12px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:color 0.15s, border-color 0.2s; }
+  .tab:hover { color:var(--text2); }
+  .tab.active { color:var(--text); border-bottom-color:var(--accent); }
+  .tab .tab-badge { font-size:10px; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; padding:3px 8px; border-radius:10px; background:var(--jobber-dim); color:#a78bfa; border:1px solid rgba(124,58,237,0.35); }
+  .tab.active .tab-badge { background:linear-gradient(135deg, var(--jobber), #9333ea); color:#fff; border-color:transparent; }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:flex; flex-direction:column; gap:14px; }
 
-  /* ═══ MAIN ═══ */
-  .main { padding:32px 40px 40px; max-width:1480px; margin:0 auto; display:flex; flex-direction:column; gap:24px; }
+  .demo-chip { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold); background:var(--gold-dim); border:1px solid rgba(250,204,21,0.3); border-radius:10px; padding:2px 8px; vertical-align:middle; }
 
-  /* ═══ CAS HERO ═══ */
-  .cas-hero { background:linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border:1px solid var(--border); border-radius:18px; padding:40px; position:relative; overflow:hidden; }
-  .cas-hero::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--agm-purple), var(--accent)); }
-  .cas-hero-inner { display:grid; grid-template-columns:auto 1fr auto; gap:40px; align-items:center; }
+  .main { padding:20px 28px 32px; max-width:1440px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
 
-  .cas-ring-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
-  .cas-ring { position:relative; width:200px; height:200px; }
-  .cas-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
-  .cas-ring-track { fill:none; stroke:var(--border); stroke-width:12; }
-  .cas-ring-fill { fill:none; stroke:url(#cas-gradient); stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1); }
-  .cas-number-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; }
-  .cas-number { font-size:68px; font-weight:800; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; background:linear-gradient(135deg, var(--agm-purple) 0%, var(--accent) 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
-  .cas-of { font-size:16px; color:var(--text3); font-weight:500; margin-top:2px; }
-  .cas-label { font-size:13px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.12em; text-align:center; }
+  .hero { background:linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(34,197,94,0.06) 100%); border:1px solid var(--border); border-radius:14px; padding:28px 32px; display:grid; grid-template-columns:2fr 1fr; gap:40px; position:relative; overflow:hidden; align-items:center; }
+  .hero::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--jobber), var(--accent)); }
+  .hero-left { display:flex; flex-direction:column; gap:14px; }
+  .ring-stack { display:flex; flex-direction:column; align-items:center; gap:10px; flex-shrink:0; }
+  .ring { width:170px; height:170px; position:relative; flex-shrink:0; }
+  .ring-label { font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.1em; text-align:center; }
+  .ring svg { transform:rotate(-90deg); width:100%; height:100%; }
+  .ring-bg { stroke:rgba(255,255,255,0.05); stroke-width:12; fill:none; }
+  .ring-fill { stroke:url(#casGradient); stroke-width:12; fill:none; stroke-linecap:round; }
+  .ring-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; line-height:1; }
+  .score-num { font-size:54px; font-weight:900; letter-spacing:-0.04em; background:linear-gradient(135deg, var(--jobber), var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .score-out { font-size:11px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+  .hero-info-eyebrow { font-size:13px; font-weight:700; color:var(--jobber); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+  .hero-info-title { font-size:26px; font-weight:800; letter-spacing:-0.02em; margin-bottom:10px; line-height:1.2; }
+  .hero-info-sub { font-size:15px; color:var(--text2); line-height:1.55; margin-bottom:18px; }
+  .hero-info-stats { display:flex; gap:24px; flex-wrap:wrap; }
+  .stat-label { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:5px; font-weight:600; }
+  .stat-val { font-size:20px; font-weight:800; letter-spacing:-0.02em; }
+  .stat-val.amber { color:var(--amber); }
+  .stat-val.green { color:var(--accent); }
+  .impact-badge { background:linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.06)); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:6px; text-align:center; align-items:center; width:260px; max-width:100%; }
+  .impact-badge-eyebrow { font-size:11px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.09em; }
+  .impact-badge-num { font-size:32px; font-weight:900; letter-spacing:-0.04em; color:var(--red); font-variant-numeric:tabular-nums; line-height:1; margin-top:2px; }
+  .impact-badge-sub { font-size:12px; color:var(--text2); font-weight:500; line-height:1.4; max-width:220px; }
+  .hero-right { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:16px; }
 
-  .cas-meta { display:flex; flex-direction:column; gap:14px; }
-  .cas-eyebrow { font-size:13px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.12em; }
-  .cas-headline { font-size:36px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; }
-  .cas-headline .brand { background:linear-gradient(135deg, var(--agm-purple), var(--accent)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
-  .cas-sub { font-size:16px; color:var(--text2); line-height:1.55; max-width:560px; }
-  .cas-stats { display:flex; gap:24px; margin-top:6px; flex-wrap:wrap; }
-  .cas-stat { display:flex; flex-direction:column; gap:4px; }
-  .cas-stat-val { font-size:22px; font-weight:800; color:var(--text); font-variant-numeric:tabular-nums; }
-  .cas-stat-val.up { color:var(--accent); }
-  .cas-stat-lbl { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
+  .nav-strip { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
+  .mini-tile { display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:rgba(255,255,255,0.025); border:1px solid var(--border); border-top-width:3px; border-radius:9px; text-decoration:none; color:inherit; cursor:pointer; transition:background 0.15s, transform 0.12s, border-color 0.2s; position:relative; }
+  .mini-tile:hover { background:rgba(255,255,255,0.05); transform:translateY(-2px); }
+  .mini-tile.severe { border-top-color:var(--red); }
+  .mini-tile.high { border-top-color:var(--amber); }
+  .mini-tile.medium { border-top-color:var(--gold); }
+  .mini-tile.opportunity { border-top-color:var(--accent); }
+  .mini-tile-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .mini-label { font-size:14px; font-weight:700; color:var(--text); letter-spacing:-0.01em; line-height:1.15; }
+  .mini-num { font-size:24px; font-weight:900; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
+  .mini-tile.severe .mini-num { color:var(--red); }
+  .mini-tile.high .mini-num { color:var(--amber); }
+  .mini-tile.medium .mini-num { color:var(--gold); }
+  .mini-tile.opportunity .mini-num { color:var(--accent); }
+  .mini-meta { font-size:12px; color:var(--text3); font-weight:500; font-variant-numeric:tabular-nums; }
 
-  .cas-cta { display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
-  .cas-cta-btn { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg, var(--agm-purple) 0%, var(--accent) 100%); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-weight:700; font-size:15px; letter-spacing:-0.01em; box-shadow:0 8px 24px rgba(124,58,237,0.25); transition:transform 0.2s, box-shadow 0.2s; }
-  .cas-cta-btn:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(124,58,237,0.35); }
-  .cas-cta-sub { font-size:13px; color:var(--text3); max-width:220px; text-align:right; line-height:1.4; }
+  .slogan { padding:24px 28px; background:rgba(124,58,237,0.05); border:1px solid var(--jobber-dim); border-radius:10px; text-align:center; display:flex; flex-direction:column; gap:6px; letter-spacing:-0.01em; }
+  .slogan-headline { font-size:26px; font-weight:800; color:var(--text); letter-spacing:-0.02em; line-height:1.2; }
+  .slogan-sub { font-size:16px; font-weight:500; color:var(--text2); font-style:italic; line-height:1.4; }
 
-  /* ═══ CATEGORY GRID ═══ */
-  .category-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
-  .cat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:24px; position:relative; overflow:hidden; display:flex; flex-direction:column; gap:16px; transition:border-color 0.2s; }
-  .cat-card:hover { border-color:rgba(255,255,255,0.1); }
-  .cat-card::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
-  .cat-card.green::before { background:var(--accent); }
-  .cat-card.blue::before { background:var(--blue); }
-  .cat-card.cyan::before { background:var(--cyan); }
-  .cat-card.purple::before { background:var(--agm-purple); }
-  .cat-card.amber::before { background:var(--amber); }
-  .cat-card.red::before { background:var(--red); }
+  .panels { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .panel { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:26px 28px; position:relative; overflow:hidden; transition:border-color 0.3s; display:flex; flex-direction:column; }
+  .panel:hover { border-color:rgba(255,255,255,0.1); }
+  .panel::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .panel.severe::before { background:linear-gradient(90deg, var(--red), transparent); }
+  .panel.high::before { background:linear-gradient(90deg, var(--amber), transparent); }
+  .panel.medium::before { background:linear-gradient(90deg, var(--gold), transparent); }
+  .panel.opportunity::before { background:linear-gradient(90deg, var(--accent), transparent); }
+  .panel.pro::before { background:linear-gradient(90deg, var(--jobber), transparent); }
+  .p-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; gap:18px; }
+  .p-headline { flex:1; min-width:0; }
+  .p-eyebrow { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+  .panel.severe .p-eyebrow { color:var(--red); }
+  .panel.high .p-eyebrow { color:var(--amber); }
+  .panel.medium .p-eyebrow { color:var(--gold); }
+  .panel.opportunity .p-eyebrow { color:var(--accent); }
+  .panel.pro .p-eyebrow { color:#a78bfa; }
+  .p-title { font-size:24px; font-weight:800; letter-spacing:-0.02em; line-height:1.2; }
+  .p-numbers { text-align:right; flex-shrink:0; }
+  .p-bignum { font-size:48px; font-weight:900; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; }
+  .panel.severe .p-bignum { color:var(--red); }
+  .panel.high .p-bignum { color:var(--amber); }
+  .panel.medium .p-bignum { color:var(--gold); }
+  .panel.opportunity .p-bignum { color:var(--accent); }
+  .panel.pro .p-bignum { color:#a78bfa; }
+  .p-bignum-sub { font-size:12px; color:var(--text3); margin-top:6px; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; }
+  .p-impact { display:flex; gap:18px; padding:14px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .p-impact-item { flex:1; min-width:0; }
+  .p-impact-label { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:5px; font-weight:600; line-height:1.2; }
+  .p-impact-val { font-size:20px; font-weight:800; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .p-impact-val.dollar { color:var(--accent); }
+  .p-impact-val.amber { color:var(--amber); }
+  .p-impact-val.red { color:var(--red); }
+  .p-list-title { font-size:13px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; }
+  .p-list { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .p-row { display:grid; grid-template-columns:auto auto 1fr auto; gap:14px; padding:12px 14px; background:rgba(255,255,255,0.02); border-radius:8px; align-items:center; }
+  .p-row:hover { background:rgba(255,255,255,0.04); }
+  .row-age { font-size:14px; font-weight:700; color:var(--text); white-space:nowrap; font-variant-numeric:tabular-nums; min-width:54px; }
+  .row-source { font-size:12px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; padding:3px 8px; background:rgba(255,255,255,0.04); border-radius:4px; }
+  .row-name { font-size:14px; font-weight:700; color:var(--text); white-space:nowrap; min-width:80px; }
+  .row-meta { font-size:14px; color:var(--text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .row-value { font-size:16px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .row-value.muted { color:var(--text3); font-weight:500; font-size:13px; text-transform:uppercase; letter-spacing:0.04em; }
+  .p-cta { background:rgba(255,255,255,0.015); border:1px solid var(--border); border-left:2px solid var(--jobber-dim); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:10px; margin-top:auto; }
+  .p-cta-text { font-size:14px; line-height:1.55; color:var(--text2); }
+  .p-cta-text strong { color:var(--text); font-weight:700; }
+  .p-cta-row { display:flex; justify-content:flex-end; align-items:center; gap:14px; }
+  .p-cta-button { background:transparent; color:var(--jobber); border:1px solid var(--jobber-dim); padding:9px 16px; border-radius:7px; font-size:13px; font-weight:700; letter-spacing:-0.01em; cursor:pointer; white-space:nowrap; transition:background 0.2s, border-color 0.2s, color 0.2s; font-family:inherit; }
+  .p-cta-button:hover { background:var(--jobber-dim); border-color:var(--jobber); color:#a78bfa; }
+  .p-cta-sub { font-size:11px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
 
-  .cat-head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; }
-  .cat-name { font-size:14px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.08em; }
-  .cat-score-chip { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
-  .cat-score-big { font-size:32px; font-weight:800; letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; }
-  .cat-card.green .cat-score-big { color:var(--accent); }
-  .cat-card.blue  .cat-score-big { color:var(--blue); }
-  .cat-card.cyan  .cat-score-big { color:var(--cyan); }
-  .cat-card.purple .cat-score-big { color:var(--agm-purple); }
-  .cat-card.amber .cat-score-big { color:var(--amber); }
-  .cat-card.red .cat-score-big { color:var(--red); }
-  .cat-benchmark { font-size:12px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; }
-  .cat-benchmark.up { color:var(--accent); }
-  .cat-benchmark.down { color:var(--amber); }
+  /* ===== SCHEDULE & CREW TAB ===== */
+  .sched-kpis { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
+  .sched-kpi { display:flex; flex-direction:column; gap:6px; padding:16px 18px; background:rgba(255,255,255,0.025); border:1px solid var(--border); border-top:3px solid var(--accent); border-radius:9px; }
+  .sched-kpi.purple { border-top-color:var(--jobber); }
+  .sched-kpi.amber { border-top-color:var(--amber); }
+  .sched-kpi.blue { border-top-color:var(--blue); }
+  .sched-kpi-label { font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+  .sched-kpi-num { font-size:28px; font-weight:900; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
+  .sched-kpi.green .sched-kpi-num { color:var(--accent); }
+  .sched-kpi.purple .sched-kpi-num { color:#a78bfa; }
+  .sched-kpi.amber .sched-kpi-num { color:var(--amber); }
+  .sched-kpi.blue .sched-kpi-num { color:var(--blue); }
+  .sched-kpi-meta { font-size:12px; color:var(--text3); font-weight:500; }
+  .sched-kpi-meta .delta-up { color:var(--accent); font-weight:700; }
 
-  .cat-metrics { display:flex; flex-direction:column; gap:10px; }
-  .cat-metric { display:flex; justify-content:space-between; align-items:baseline; font-size:15px; }
-  .cat-metric-lbl { color:var(--text2); font-weight:500; }
-  .cat-metric-val { color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; }
+  /* ===== 30-DAY HERO: one number + capacity bar ===== */
+  .sched-hero-num { font-size:58px; font-weight:900; letter-spacing:-0.04em; color:var(--accent); font-variant-numeric:tabular-nums; line-height:1; }
+  .verdict-title { font-size:42px; font-weight:900; letter-spacing:-0.03em; line-height:1.12; margin-bottom:14px; }
+  @media (max-width:680px) { .verdict-title { font-size:30px; } }
+  .sched-hero-num .of { font-size:22px; font-weight:700; color:var(--text2); letter-spacing:-0.01em; }
+  .cap-wrap { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .cap-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .cap-label { font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+  .cap-pct { font-size:13px; font-weight:800; color:var(--amber); font-variant-numeric:tabular-nums; }
+  .cap-bar { height:16px; border-radius:8px; border:1px solid var(--border); position:relative; margin-top:20px; background:repeating-linear-gradient(45deg, rgba(249,115,22,0.16) 0 7px, rgba(249,115,22,0.05) 7px 14px); }
+  .cap-fill { border-radius:8px 0 0 8px; }
+  .cap-fill { position:absolute; top:0; bottom:0; left:0; background:linear-gradient(90deg, #16a34a, var(--accent)); border-radius:8px 0 0 8px; box-shadow:0 0 14px rgba(34,197,94,0.45); }
+  .cap-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--text2); font-weight:600; }
+  .cap-meta .open-count { color:var(--amber); font-weight:700; }
+  .cap-peer { position:absolute; top:-5px; bottom:-5px; width:3px; background:var(--gold); border-radius:2px; box-shadow:0 0 8px rgba(250,204,21,0.6); }
+  .cap-peer-label { position:absolute; top:-24px; transform:translateX(-50%); font-size:10px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap; }
+  .vs-peer { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--text3); margin-top:2px; }
+  .vs-peer .peer-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .vs-peer strong { color:var(--gold); font-weight:800; }
+  .impact-badge.capacity { background:linear-gradient(135deg, rgba(249,115,22,0.12), rgba(250,204,21,0.05)); border-color:rgba(249,115,22,0.3); }
+  .impact-badge.capacity .impact-badge-eyebrow, .impact-badge.capacity .impact-badge-num { color:var(--amber); }
 
-  .cat-agm, .cat-insight { font-size:14px; line-height:1.5; padding:14px 16px; border-radius:10px; }
-  .cat-agm { background:var(--accent-dim); border:1px solid rgba(34,197,94,0.15); color:var(--text); }
-  .cat-agm-label { font-size:11px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px; display:block; }
-  .cat-insight { background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.18); color:var(--text); }
-  .cat-insight-label { font-size:11px; font-weight:800; color:var(--agm-purple); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px; display:block; }
+  /* ===== MONEY CALENDAR: month grid, per-day $ heat ===== */
+  .mcal { display:grid; grid-template-columns:repeat(7, minmax(112px, 1fr)); gap:6px; min-width:840px; }
+  .mcal-dow { padding:6px 8px; text-align:center; font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid var(--border); }
+  .mcal-day { min-height:88px; border:1px solid var(--border2); border-radius:8px; background:rgba(255,255,255,0.015); padding:8px 10px; display:flex; flex-direction:column; gap:3px; }
+  .mcal-day.wkend { opacity:0.35; }
+  .mcal-date { font-size:11px; font-weight:700; color:var(--text3); font-variant-numeric:tabular-nums; }
+  .mcal-day.heat1 { background:rgba(34,197,94,0.06); border-color:rgba(34,197,94,0.18); }
+  .mcal-day.heat2 { background:rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.32); }
+  .mcal-day.heat3 { background:rgba(34,197,94,0.2); border-color:rgba(34,197,94,0.5); box-shadow:inset 0 0 22px rgba(34,197,94,0.15); }
+  .mcal-amt { font-size:17px; font-weight:900; color:var(--accent); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .mcal-amt.svc { color:var(--blue); }
+  .mcal-job { font-size:11px; color:var(--text2); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mcal-span { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.04em; }
+  .mcal-open { margin-top:auto; font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; opacity:0.6; }
+  .mcal-day.ghost { border:1px dashed rgba(249,115,22,0.5); background:rgba(249,115,22,0.045); }
+  .ghost-tag { font-size:9px; font-weight:800; color:var(--amber); text-transform:uppercase; letter-spacing:0.06em; }
+  .ghost-amt { font-size:15px; font-weight:900; color:var(--amber); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .ghost-job { font-size:11px; color:var(--text2); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .legend-dot.ghost-dot { background:transparent; border:2px dashed var(--amber); box-sizing:border-box; }
+  /* ===== THREE-NUMBER STORY STRIP — reads like a sentence ===== */
+  .story { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  .story-card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:26px 28px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; }
+  .story-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .story-card.got::before { background:linear-gradient(90deg, var(--accent), transparent); }
+  .story-card.open::before { background:linear-gradient(90deg, var(--amber), transparent); }
+  .story-card.fix::before { background:linear-gradient(90deg, var(--jobber), transparent); }
+  .story-card.cost::before { background:linear-gradient(90deg, var(--blue), transparent); }
+  .story-card.cost .story-num { color:var(--blue); }
+  .story-label { font-size:14px; font-weight:700; color:var(--text2); letter-spacing:-0.01em; }
+  .story-num { font-size:44px; font-weight:900; letter-spacing:-0.04em; font-variant-numeric:tabular-nums; line-height:1; }
+  .story-card.got .story-num { color:var(--accent); }
+  .story-card.open .story-num { color:var(--amber); }
+  .story-card.fix .story-num { color:#a78bfa; }
+  .story-sub { font-size:14px; color:var(--text2); line-height:1.5; font-weight:500; }
+  .story-sub strong { color:var(--text); }
+  @media (max-width:980px) { .story { grid-template-columns:1fr; } }
 
-  /* ═══ ACTIVITY FEED + SYSTEM HEALTH ═══ */
-  .duo-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:20px; align-items:stretch; }
-  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
-  .card-head { display:flex; justify-content:space-between; align-items:center; padding:20px 24px 14px; }
-  .card-title { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
-  .badge { font-size:13px; font-weight:700; padding:5px 12px; border-radius:12px; text-transform:uppercase; letter-spacing:0.06em; }
-  .badge.live { background:var(--accent-dim); color:var(--accent); }
+  .board { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:26px 28px; position:relative; overflow:hidden; }
+  .board::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--jobber), var(--accent)); }
+  .board-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:14px; flex-wrap:wrap; }
+  .board-title { font-size:20px; font-weight:800; letter-spacing:-0.02em; }
+  .board-sub { font-size:13px; color:var(--text3); font-weight:500; margin-top:4px; }
+  .week-nav { display:flex; align-items:center; gap:8px; }
+  .week-label { font-size:13px; font-weight:700; color:var(--text2); padding:0 6px; font-variant-numeric:tabular-nums; }
 
-  .feed-container { flex:1; overflow:hidden; position:relative; padding:0 24px 20px; max-height:460px; }
-  .feed-container::after { content:''; position:absolute; bottom:0; left:0; right:0; height:52px; background:linear-gradient(transparent, var(--bg-card)); pointer-events:none; z-index:2; }
-  .feed-track { display:flex; flex-direction:column; gap:8px; }
-  .feed-item { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:10px; background:var(--border2); transition:background 0.2s; flex-shrink:0; }
-  .feed-item.fresh { background:var(--accent-dim); border:1px solid rgba(34,197,94,0.18); animation:fresh-flash 2.4s ease-out; }
-  @keyframes fresh-flash { 0%{background:rgba(34,197,94,0.28); transform:translateY(-4px)} 100%{background:var(--accent-dim); transform:translateY(0)} }
-  .feed-dot { width:9px; height:9px; border-radius:50%; margin-top:7px; flex-shrink:0; }
-  .feed-dot.green { background:var(--accent); box-shadow:0 0 6px var(--accent-glow); }
-  .feed-dot.blue { background:var(--blue); box-shadow:0 0 6px rgba(59,130,246,0.3); }
-  .feed-dot.purple { background:var(--agm-purple); box-shadow:0 0 6px var(--agm-purple-glow); }
-  .feed-dot.amber { background:var(--amber); box-shadow:0 0 6px rgba(245,158,11,0.3); }
-  .feed-dot.cyan { background:var(--cyan); box-shadow:0 0 6px rgba(6,182,212,0.3); }
-  .feed-text { font-size:15px; color:var(--text2); line-height:1.5; flex:1; }
-  .feed-text strong { color:var(--text); font-weight:600; }
-  .feed-amount { color:var(--accent); font-weight:700; }
-  .feed-star { color:var(--star); letter-spacing:1px; }
-  .feed-time { font-size:13px; color:var(--text3); white-space:nowrap; margin-top:2px; font-weight:500; }
+  .grid-wrap { overflow-x:auto; }
+  .crew-grid { display:grid; grid-template-columns:150px repeat(7, minmax(120px, 1fr)); gap:6px; min-width:900px; }
+  .cg-corner { padding:8px 10px; }
+  .cg-day { padding:8px 10px; text-align:center; font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--border); }
+  .cg-day .d-num { display:block; font-size:16px; color:var(--text); font-weight:800; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .cg-day.today { color:var(--accent); }
+  .cg-day.today .d-num { color:var(--accent); }
+  .cg-crew { display:flex; flex-direction:column; justify-content:center; gap:3px; padding:10px 12px; background:rgba(255,255,255,0.025); border:1px solid var(--border); border-left:3px solid var(--jobber); border-radius:8px; }
+  .cg-crew.svc { border-left-color:var(--blue); }
+  .cg-crew-name { font-size:13px; font-weight:800; letter-spacing:-0.01em; }
+  .cg-crew-meta { font-size:11px; color:var(--text3); font-weight:600; }
+  .cg-cell { min-height:64px; background:rgba(255,255,255,0.015); border:1px solid var(--border2); border-radius:8px; padding:5px; display:flex; flex-direction:column; gap:4px; }
+  .cg-cell.open { align-items:center; justify-content:center; }
+  .open-tag { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; opacity:0.7; }
+  .job-chip { border-radius:6px; padding:7px 9px; font-size:12px; line-height:1.3; background:rgba(124,58,237,0.14); border:1px solid rgba(124,58,237,0.35); border-left:3px solid var(--jobber); cursor:default; }
+  .job-chip.install { background:rgba(34,197,94,0.10); border-color:rgba(34,197,94,0.3); border-left-color:var(--accent); }
+  .job-chip.service { background:rgba(59,130,246,0.10); border-color:rgba(59,130,246,0.3); border-left-color:var(--blue); }
+  .job-chip.done { opacity:0.55; }
+  .jc-name { font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .jc-meta { color:var(--text2); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+  .jc-val { color:var(--accent); font-weight:700; font-size:11px; font-variant-numeric:tabular-nums; margin-top:1px; }
+  .jc-span { color:var(--text3); font-size:10px; font-weight:700; }
 
-  .health-body { padding:8px 24px 20px; }
-  .health-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; font-size:15px; border-bottom:1px solid var(--border2); }
-  .health-row:last-child { border-bottom:none; }
-  .health-left { color:var(--text2); font-weight:500; }
-  .health-right { color:var(--accent); font-weight:700; display:flex; align-items:center; gap:8px; }
-  .health-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow); }
+  .legend-strip { display:flex; align-items:center; justify-content:center; gap:24px; padding:10px 16px; background:rgba(255,255,255,0.015); border:1px solid var(--border); border-radius:8px; flex-wrap:wrap; }
+  .legend-label { font-size:12px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-right:8px; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--text2); }
+  .legend-dot { width:10px; height:10px; border-radius:50%; }
+  .legend-dot.install { background:var(--accent); box-shadow:0 0 8px rgba(34,197,94,0.5); }
+  .legend-dot.service { background:var(--blue); box-shadow:0 0 8px rgba(59,130,246,0.5); }
+  .legend-dot.open { background:var(--text3); }
 
-  /* ═══ AGM WORKING BAND ═══ */
-  .agm-band { background:linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border:1px solid var(--border); border-radius:14px; padding:26px 30px; }
-  .agm-band::before { content:''; display:block; height:3px; background:linear-gradient(90deg, var(--agm-purple), var(--accent)); border-radius:2px; margin:-26px -30px 22px; }
-  .agm-band-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
-  .agm-band-title { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
-  .agm-band-time { font-size:15px; color:var(--accent); font-weight:700; }
-  .agm-band-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:20px; }
-  .agm-stat { display:flex; flex-direction:column; gap:6px; }
-  .agm-stat-val { font-size:30px; font-weight:800; letter-spacing:-0.02em; color:var(--text); font-variant-numeric:tabular-nums; }
-  .agm-stat-lbl { font-size:13px; color:var(--text3); font-weight:600; letter-spacing:0.02em; }
+  .totals { background:linear-gradient(135deg, rgba(124,58,237,0.08), rgba(34,197,94,0.05)); border:1px solid rgba(124,58,237,0.25); border-radius:16px; padding:32px 36px; display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center; margin-top:8px; }
+  .totals-eyebrow { font-size:13px; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; }
+  .totals-headline { font-size:24px; font-weight:800; letter-spacing:-0.02em; line-height:1.3; margin-bottom:14px; max-width:640px; }
+  .totals-amount { font-size:48px; font-weight:900; letter-spacing:-0.04em; color:var(--accent); font-variant-numeric:tabular-nums; line-height:1; }
+  .totals-amount-sub { font-size:13px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-top:8px; font-weight:600; }
+  .totals-cta { text-align:right; flex-shrink:0; }
+  .totals-cta-button { background:linear-gradient(135deg, var(--accent), #16a34a); color:white; border:none; padding:18px 30px; border-radius:10px; font-size:17px; font-weight:800; letter-spacing:-0.01em; cursor:pointer; white-space:nowrap; box-shadow:0 5px 16px rgba(34,197,94,0.4); transition:transform 0.15s, box-shadow 0.2s; font-family:inherit; }
+  .totals-cta-button:hover { transform:translateY(-1px); box-shadow:0 7px 22px rgba(34,197,94,0.6); }
+  .totals-cta-sub { font-size:13px; color:var(--text3); margin-top:10px; font-weight:500; }
 
-  /* ═══ FOOTER ═══ */
-  .footer { text-align:center; padding:32px 40px 40px; border-top:1px solid var(--border); margin-top:14px; }
-  .footer-tagline { font-size:15px; color:var(--text2); font-weight:500; margin-bottom:12px; }
-  .footer-brand { font-size:15px; color:var(--text3); }
-  .footer-brand a { color:var(--text); text-decoration:none; font-weight:700; }
-  .footer-brand a:hover { color:var(--accent); }
-  .security-note { font-size:13px; color:var(--text3); margin-top:18px; font-family:'SF Mono',Menlo,monospace; letter-spacing:0.03em; }
-  .security-note .ok { color:var(--accent); }
+  .p-more { font-size:12px; color:var(--text3); font-weight:600; text-align:center; padding:6px 0 0; }
+  .p-more .view-link { color:#a78bfa; font-weight:700; }
 
-  /* ═══ RESPONSIVE ═══ */
-  @media(max-width:1180px) {
-    .cas-hero-inner { grid-template-columns:auto 1fr; }
-    .cas-cta { grid-column:1/-1; flex-direction:row; justify-content:center; align-items:center; gap:20px; margin-top:16px; }
-    .cas-cta-sub { text-align:left; max-width:none; }
-    .category-grid { grid-template-columns:repeat(2, 1fr); }
-    .agm-band-grid { grid-template-columns:repeat(3, 1fr); }
+  @keyframes rowIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:none; } }
+  .act-row { display:flex; align-items:center; gap:14px; padding:15px 18px; background:rgba(255,255,255,0.02); border-radius:10px; }
+  .act-row.roll-in { animation:rowIn 0.5s ease; }
+  @media (prefers-reduced-motion: reduce) { .act-row.roll-in { animation:none; } }
+  .act-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .act-dot.lead { background:var(--blue); box-shadow:0 0 8px rgba(59,130,246,0.5); }
+  .act-dot.chase { background:var(--jobber); box-shadow:0 0 8px rgba(124,58,237,0.5); }
+  .act-dot.won { background:var(--accent); box-shadow:0 0 8px rgba(34,197,94,0.5); }
+  .act-dot.review { background:var(--gold); box-shadow:0 0 8px rgba(250,204,21,0.5); }
+  .act-dot.flag { background:var(--amber); box-shadow:0 0 8px rgba(249,115,22,0.5); }
+  .act-text { flex:1; font-size:15px; color:var(--text2); line-height:1.4; min-width:0; }
+  .act-text b { color:var(--text); font-weight:700; }
+  .act-text .act-amt { color:var(--accent); font-weight:800; }
+  .act-text .act-stars { color:var(--gold); letter-spacing:1px; }
+  .act-time { font-size:13px; color:var(--text3); font-weight:500; white-space:nowrap; }
+
+  /* ===== CAS RESULTS (free, pre-connect) — locked-row state ===== */
+  .locked-list { position:relative; }
+  .locked-list .p-row { filter:blur(5px); pointer-events:none; user-select:none; }
+  .locked-veil { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .locked-chip { background:rgba(10,15,26,0.85); border:1px solid rgba(34,197,94,0.35); color:var(--accent); border-radius:20px; padding:8px 18px; font-size:13px; font-weight:800; letter-spacing:0.02em; box-shadow:0 4px 18px rgba(0,0,0,0.5); }
+  .typ-chip { display:inline-block; font-size:10px; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; padding:2px 8px; border-radius:9px; margin-left:8px; vertical-align:middle; color:var(--gold); background:var(--gold-dim); border:1px solid rgba(250,204,21,0.3); }
+
+  .footer { padding:24px 32px; text-align:center; color:var(--text3); font-size:13px; border-top:1px solid var(--border); margin-top:24px; }
+  .footer .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:7px; vertical-align:middle; box-shadow:0 0 6px var(--accent-glow); animation:pulse 2s ease-in-out infinite; }
+
+  @media (max-width:980px) {
+    .hero { grid-template-columns:1fr; }
+    .panels { grid-template-columns:1fr; }
+    .totals { grid-template-columns:1fr; }
+    .totals-cta { text-align:center; }
+    .nav-strip { grid-template-columns:repeat(3, 1fr); }
+    .sched-kpis { grid-template-columns:1fr 1fr; }
   }
-  @media(max-width:720px) {
-    .cas-hero-inner { grid-template-columns:1fr; }
-    .cas-meta { text-align:center; align-items:center; }
-    .category-grid { grid-template-columns:1fr; }
-    .duo-grid { grid-template-columns:1fr; }
-    .agm-band-grid { grid-template-columns:repeat(2, 1fr); }
-    .header { grid-template-columns:1fr 1fr; padding:12px 16px; }
-    .header-center { grid-column:1/-1; order:3; margin-top:8px; text-align:left; }
-    .main { padding:20px 16px; }
+  @media (max-width:680px) {
+    .main { padding:14px 14px 24px; gap:12px; }
+    .header-inner { padding:12px 14px; }
+    .header-client-sub, .sync-label { display:none; }
+    .header-sync { display:none; }
+    .header-client { font-size:18px; }
+    .header-logo { font-size:14px; }
+    .tab-bar-inner { padding:0 8px; }
+    .tab { padding:12px 12px 10px; font-size:13px; }
+    .nav-strip { grid-template-columns:1fr 1fr; gap:8px; }
+    .panel { padding:20px 18px; }
+    .p-title { font-size:20px; }
+    .p-bignum { font-size:40px; }
+    .sched-kpis { grid-template-columns:1fr 1fr; }
+    .totals { padding:24px 20px; gap:18px; }
+    .totals-headline { font-size:18px; }
+    .totals-amount { font-size:38px; }
+    .totals-cta-button { width:100%; padding:18px 22px; font-size:16px; }
   }
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div>
+<div class="header">
+  <div class="header-inner">
+    <div class="header-left">
       <div class="header-logo">AGM Pro Tools</div>
-      <div class="header-tagline">Delivering field service intelligence</div>
+    </div>
+    <div class="header-center">
+      <div class="header-client">Demo Turf Co.</div>
+      <div class="header-client-sub">Pro Stack Preview &middot; Demo</div>
+    </div>
+    <div class="header-right">
+      <div class="header-sync">
+        <div class="sync-label">Last sync</div>
+        <div class="sync-time">Jul 2, 2026 &middot; live pull</div>
+      </div>
+      <div class="status-badge"><span class="status-dot"></span>Active</div>
     </div>
   </div>
-  <div class="header-center">
-    <div class="header-client">See What Your Data Already Knows</div>
-    <div class="header-client-sub">Live Operations Dashboard</div>
-  </div>
-  <div class="header-right">
-    <div class="header-sync">
-      <div class="sync-label">Last update</div>
-      <div class="sync-time" id="lastSync">--</div>
-    </div>
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      <span>Live</span>
-    </div>
-  </div>
-</header>
-
-<div class="filter-bar">
-  <span class="filter-label">Period</span>
-  <button type="button" class="filter-btn" data-period="today">Today</button>
-  <button type="button" class="filter-btn" data-period="7d">7 Day</button>
-  <button type="button" class="filter-btn active" data-period="mtd">Month to Date</button>
-  <button type="button" class="filter-btn" data-period="q1">Q1</button>
-  <button type="button" class="filter-btn" data-period="ytd">Year to Date</button>
-  <button type="button" class="filter-btn" data-period="all">All Time</button>
 </div>
 
-<main class="main">
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button type="button" class="tab active" data-tab="cas">Your Score Results <span class="tab-badge" style="background:var(--gold-dim); color:var(--gold); border-color:rgba(250,204,21,0.35);">Free</span></button>
+    <button type="button" class="tab" data-tab="leaks">Revenue Leaks <span class="tab-badge" style="background:var(--accent-dim); color:var(--accent); border-color:rgba(34,197,94,0.35);">Starter &middot; $97</span></button>
+    <button type="button" class="tab" data-tab="sched">Revenue Recovered <span class="tab-badge">Pro &middot; $297</span></button>
+  </div>
+</div>
 
-  <!-- ═══ CAS HERO ═══ -->
-  <section class="cas-hero">
-    <svg width="0" height="0" style="position:absolute">
-      <defs>
-        <linearGradient id="cas-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#7c3aed"/>
-          <stop offset="100%" stop-color="#22c55e"/>
-        </linearGradient>
-      </defs>
-    </svg>
+<div class="main">
 
-    <div class="cas-hero-inner">
-      <div class="cas-ring-wrap">
-        <div class="cas-ring">
-          <svg viewBox="0 0 200 200">
-            <circle class="cas-ring-track" cx="100" cy="100" r="86"/>
-            <circle class="cas-ring-fill" cx="100" cy="100" r="86"
-                    stroke-dasharray="540.35" stroke-dashoffset="540.35" id="casRingFill"/>
-          </svg>
-          <div class="cas-number-wrap">
-            <div class="cas-number" id="casNumber">0</div>
-            <div class="cas-of">out of 100</div>
-          </div>
+  <!-- ============ TAB 0: CAS RESULTS (free) — same dashboard, pre-connect state ============ -->
+  <div class="tab-pane active" id="pane-cas">
+
+    <div class="hero">
+      <div class="hero-left">
+        <div>
+          <div class="hero-info-eyebrow">Your Contractor Automation Score</div>
+          <div class="verdict-title">Your 54 isn't a grade.<br>It's a diagnosis.</div>
+          <div class="hero-info-sub">Companies your size average 61. Under 60 almost always means money leaking in five places — leads nobody answered, quotes that went quiet, past customers nobody reached back to, reviews never asked for, appointments never confirmed. Your report below shows all five.</div>
         </div>
-        <div class="cas-label">Contractor Automation Score</div>
-      </div>
-
-      <div class="cas-meta">
-        <div class="cas-eyebrow">Your Automation Intelligence</div>
-        <h1 class="cas-headline">Your business is running at <span class="brand" id="casHeadlineScore">72</span> of its automation potential.</h1>
-        <p class="cas-sub">The Contractor Automation Score measures how well your operation captures leads, follows up on quotes, generates reviews, tracks pipeline, and reactivates dormant customers. AGM improves all five.</p>
-        <div class="cas-stats">
-          <div class="cas-stat">
-            <div class="cas-stat-val up" id="casDelta">▲ +4</div>
-            <div class="cas-stat-lbl">vs. last month</div>
+        <div class="hero-info-stats">
+          <div>
+            <div class="stat-label">Where you stand</div>
+            <div class="stat-val amber">40th of 100</div>
           </div>
-          <div class="cas-stat">
-            <div class="cas-stat-val" id="casRank">Top 22%</div>
-            <div class="cas-stat-lbl">national benchmark</div>
+          <div>
+            <div class="stat-label">Companies your size</div>
+            <div class="stat-val">score 61 avg</div>
           </div>
-          <div class="cas-stat">
-            <div class="cas-stat-val" id="casTarget">85</div>
-            <div class="cas-stat-lbl">your target range</div>
+          <div>
+            <div class="stat-label">Built from</div>
+            <div class="stat-val">your answers</div>
           </div>
         </div>
       </div>
-
-      <div class="cas-cta">
-        <a class="cas-cta-btn" href="https://contractorautomationscore.com" target="_blank" rel="noopener">
-          See your own score →
-        </a>
-        <div class="cas-cta-sub">10 questions · 3 minutes · free report</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ CATEGORY GRID ═══ -->
-  <section class="category-grid">
-
-    <!-- Speed to Lead -->
-    <div class="cat-card green">
-      <div class="cat-head">
-        <div class="cat-name">Speed to Lead</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">82</div>
-          <div class="cat-benchmark up">Top 15% nationally</div>
+      <div class="hero-right">
+        <div class="ring-stack">
+          <div class="ring">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="casGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#22c55e"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="100" cy="100" r="84"/>
+              <circle cx="100" cy="100" r="84" stroke-dasharray="284.9 527.5" style="stroke:url(#casGradient2); stroke-width:12; fill:none; stroke-linecap:round;"/>
+            </svg>
+            <div class="ring-center">
+              <div class="score-num">54</div>
+              <div class="score-out">/ 100</div>
+            </div>
+          </div>
+          <div class="ring-label">Your Score</div>
+        </div>
+        <div class="impact-badge">
+          <div class="impact-badge-eyebrow">What your answers add up to</div>
+          <div class="impact-badge-num">$12–18K</div>
+          <div class="impact-badge-sub">leaking every month across those five places. <strong>Your exact number is one connection away.</strong></div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Avg response time</span><span class="cat-metric-val">47s</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Leads auto-replied</span><span class="cat-metric-val">412</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Missed-call rescues</span><span class="cat-metric-val">11 this wk</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        Sent 11 missed-call rescue auto-replies this week; 4 converted to booked appointments.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Insight</span>
-        Your response times under 60 seconds close at <strong>47% higher win rates</strong> than your 2–5 min responses.
-      </div>
     </div>
 
-    <!-- Quote Follow-Up -->
-    <div class="cat-card amber">
-      <div class="cat-head">
-        <div class="cat-name">Quote Follow-Up</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">68</div>
-          <div class="cat-benchmark">Top 35% nationally</div>
+    <div class="slogan">
+      <div class="slogan-headline">This report ran on your answers. Imagine it running on your business.</div>
+      <div class="slogan-sub">Connect your account and the night shift clocks in tonight — every lead, every quote, every appointment, checked before morning. Your real numbers on this page by tomorrow. <strong>$97 a month. No contract.</strong></div>
+    </div>
+
+    <div class="panels">
+      <div class="panel severe">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Severe leak &middot; Speed to lead</div>
+            <div class="p-title">Leads waiting on a first reply <span class="typ-chip">Peers: 4–7 a week</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">~5</div>
+            <div class="p-bignum-sub">a week, based on your answers</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">You told us: replies take</div><div class="p-impact-val amber">about half a day</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">The fast guys</div><div class="p-impact-val">4 min</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">~5 wk &times; your ~$6,000 job</div><div class="p-impact-val red">$30K/mo at stake</div></div>
+        </div>
+        <div class="p-list-title">What this costs you — and the fix</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--red);">The damage</div><div class="row-meta">Answering in 5+ hours instead of 5 minutes roughly halves your win rate — most jobs go to whoever answers first</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--gold);">Free fix</div><div class="row-meta">Put one person on first-reply duty before 9 AM — even a two-line text holds the job while you're on a site</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">The employee</div><div class="row-meta">Every lead answered in under a minute, in your voice, day or night — and this panel tracks each one by name</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Run the free fix this week — it works.</strong> Connect, and this panel goes live: your real leads, by name, with wait times, every morning.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Quotes awaiting response</span><span class="cat-metric-val">24 · $202k</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Auto follow-ups sent</span><span class="cat-metric-val">148 this wk</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Quote → sold win rate</span><span class="cat-metric-val">46%</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        3 quotes flagged as stale (7+ days no response). Chaser sequence triggered for each.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Insight</span>
-        Quotes followed-up within 48 hours close at <strong>2.1× the rate</strong> of quotes left more than a week.
-      </div>
-    </div>
 
-    <!-- Review Generation -->
-    <div class="cat-card cyan">
-      <div class="cat-head">
-        <div class="cat-name">Review Generation</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">75</div>
-          <div class="cat-benchmark up">Top 20% nationally</div>
+      <div class="panel opportunity">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">What's working &middot; Strengths</div>
+            <div class="p-title">What you've got going for you <span class="typ-chip">From your answers</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">3</div>
+            <div class="p-bignum-sub">real strengths to protect</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">You close</div><div class="p-impact-val dollar">~4 of 10</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Avg. job</div><div class="p-impact-val dollar">~$6,000</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Past customers</div><div class="p-impact-val dollar">~300</div></div>
+        </div>
+        <div class="p-list-title">Worth protecting while the leaks get fixed</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">Close rate</div><div class="row-meta">Winning ~4 of 10 quotes you run puts you above the pack — your problem isn't selling, it's follow-through</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">Ticket size</div><div class="row-meta">A ~$6,000 average job beats most outfits your size — you don't need more volume to grow, just fewer leaks</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">Your list</div><div class="row-meta">~300 past customers is a goldmine most contractors never re-open — they already know your work</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>The report isn't all leaks.</strong> Connect, and this becomes your live win feed — every closed job, every dollar, your real close rate, updated overnight.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Reviews collected</span><span class="cat-metric-val">287 · 4.9★</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">New this week</span><span class="cat-metric-val">41</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Request → review rate</span><span class="cat-metric-val">78%</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        53 review requests sent this week. 41 five-star reviews landed, zero under 4 stars.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Insight</span>
-        Review requests sent within 24hrs of install completion get <strong>3× more 5-star responses</strong> than delayed requests.
-      </div>
     </div>
 
-    <!-- Pipeline Visibility -->
-    <div class="cat-card purple">
-      <div class="cat-head">
-        <div class="cat-name">Pipeline Visibility</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">71</div>
-          <div class="cat-benchmark">Top 33% nationally</div>
+    <div class="panels">
+      <div class="panel high">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">High leak &middot; Quote follow-up</div>
+            <div class="p-title">Quotes that go quiet <span class="typ-chip">Peers lose 1 in 3 this way</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">~4</div>
+            <div class="p-bignum-sub">a month, based on your answers</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">You told us: follow-up happens</div><div class="p-impact-val amber">&ldquo;when there's time&rdquo;</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">The fast guys</div><div class="p-impact-val">3 touches, every quote</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">~4 &times; your ~$6,000 job</div><div class="p-impact-val red">$24K/mo exposed</div></div>
+        </div>
+        <div class="p-list-title">What this costs you — and the fix</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--red);">The damage</div><div class="row-meta">A quote with no follow-up closes about half as often — your silence reads as &ldquo;they don't want the work&rdquo;</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--gold);">Free fix</div><div class="row-meta">Every quote gets a call or text on day 3 and day 10 — put it on the calendar like a job</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">The employee</div><div class="row-meta">A 3-step follow-up on every quote, automatically, until it closes or they say no — tracked here by name</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Day 3 and day 10 — start this week.</strong> Connect, and every open quote shows up here with its age and dollar figure, so nothing goes quiet unnoticed.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Open pipeline value</span><span class="cat-metric-val">$202,089</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Stages tracked live</span><span class="cat-metric-val">6 of 6</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Jobs sold · MTD</span><span class="cat-metric-val">12 · $128k</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        Live pipeline sync running every 5 min. Stage changes pushed to 3 downstream workflows automatically.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Insight</span>
-        You have <strong>31% of pipeline value</strong> stuck in the Quoted stage. That's your biggest velocity leak.
-      </div>
-    </div>
 
-    <!-- Customer Reactivation -->
-    <div class="cat-card red">
-      <div class="cat-head">
-        <div class="cat-name">Customer Reactivation</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">58</div>
-          <div class="cat-benchmark down">⚠ Biggest gap</div>
+      <div class="panel medium">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Hidden opportunity &middot; Reactivation</div>
+            <div class="p-title">Past customers nobody's called <span class="typ-chip">From your answers</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">~300</div>
+            <div class="p-bignum-sub">past customers on your list</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">Your last check-in</div><div class="p-impact-val red">&ldquo;can't remember&rdquo;</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Peers check in</div><div class="p-impact-val">every 90 days</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">If 5 come back a year</div><div class="p-impact-val dollar">~$30,000</div></div>
+        </div>
+        <div class="p-list-title">What this costs you — and the fix</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--red);">The damage</div><div class="row-meta">A past customer who never hears from you buys their next project from whoever shows up first</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--gold);">Free fix</div><div class="row-meta">Send 10 texts this week — &ldquo;been a while, want us to take a look at the yard?&rdquo; It'll book at least one.</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">The employee</div><div class="row-meta">Quietly checks in with every past customer every 90 days, in your voice — replies land in your inbox</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>They already know your work.</strong> Connect, and your highest-value past customers appear here by name, with lifetime spend and last-contact dates.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Dormant customers (90+ days)</span><span class="cat-metric-val">47</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Re-engaged this month</span><span class="cat-metric-val">8</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Reactivation revenue · MTD</span><span class="cat-metric-val">$28,400</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        2 reactivation sequences running. 8 dormant customers re-engaged, 3 became new jobs.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Insight</span>
-        Customers reactivated after 90+ days dormant spend <strong>23% more per job</strong> than brand-new leads.
-      </div>
     </div>
 
-    <!-- Spotlight: Biggest Lift -->
-    <div class="cat-card blue">
-      <div class="cat-head">
-        <div class="cat-name">How to raise your score</div>
-        <div class="cat-score-chip">
-          <div class="cat-score-big">+13</div>
-          <div class="cat-benchmark up">potential points</div>
+    <div class="panels">
+      <div class="panel medium">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Medium leak &middot; Review generation</div>
+            <div class="p-title">Reviews you never asked for <span class="typ-chip">From your answers</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">8 in 10</div>
+            <div class="p-bignum-sub">finished jobs never get asked</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">You told us: you ask</div><div class="p-impact-val amber">&ldquo;sometimes&rdquo;</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Jobs you finish</div><div class="p-impact-val">~8 a month</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Best day to ask</div><div class="p-impact-val">Day job closes</div></div>
+        </div>
+        <div class="p-list-title">What this costs you — and the fix</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--red);">The damage</div><div class="row-meta">Every finished job without an ask is a 5-star you'll never get — and reviews are how the neighbors pick</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--gold);">Free fix</div><div class="row-meta">Text the review link the day you wrap the job — happy customers say yes same-day, not next week</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">The employee</div><div class="row-meta">Fires the ask the day every job closes — one-tap link to your profile. It catches every job, not &ldquo;sometimes&rdquo;</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Asking costs nothing. Forgetting costs stars.</strong> Connect, and every finished job shows up here until it gets its ask.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
         </div>
       </div>
-      <div class="cat-metrics">
-        <div class="cat-metric"><span class="cat-metric-lbl">Close reactivation gap</span><span class="cat-metric-val">+7 pts</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Stale-quote chasers 100% on</span><span class="cat-metric-val">+4 pts</span></div>
-        <div class="cat-metric"><span class="cat-metric-lbl">Review requests within 24hr</span><span class="cat-metric-val">+2 pts</span></div>
-      </div>
-      <div class="cat-agm">
-        <span class="cat-agm-label">AGM Working</span>
-        These three are already partially running. Going full-coverage moves you from <strong>72 → 85</strong>.
-      </div>
-      <div class="cat-insight">
-        <span class="cat-insight-label">Benchmark</span>
-        <strong>85+ contractors</strong> average 38% more revenue per location than the 70–75 band.
+
+      <div class="panel high">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">High leak &middot; Appointment confirmation</div>
+            <div class="p-title">Appointments nobody confirmed <span class="typ-chip">At your volume</span></div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">~1</div>
+            <div class="p-bignum-sub">no-show a week, based on your answers</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">You told us: reminders go out</div><div class="p-impact-val amber">&ldquo;sometimes&rdquo;</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">A wasted truck roll</div><div class="p-impact-val">~$280</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">~1 a week adds up to</div><div class="p-impact-val red">~$1,200/mo</div></div>
+        </div>
+        <div class="p-list-title">What this costs you — and the fix</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name" style="color:var(--red);">The damage</div><div class="row-meta">A reminder hopes they remember. A confirmation gets an answer — and silence is your warning sign</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--gold);">Free fix</div><div class="row-meta">Text every appointment 24 hours out asking for a YES — chase the silent ones before you roll a truck</div></div>
+          <div class="p-row"><div class="row-name" style="color:var(--accent);">The employee</div><div class="row-meta">Asks every customer 24 hours out, captures the answer, and flags the silent ones before the truck rolls</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>You can't bill a driveway you drove to twice.</strong> Connect, and this week's appointments show up here — confirmed, silent, or at risk.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Starter</span>
+            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+          </div>
+        </div>
       </div>
     </div>
 
-  </section>
+    <div class="totals">
+      <div>
+        <div class="totals-eyebrow">Your score results</div>
+        <div class="totals-headline">Your score says there's money on the table. The only way to see how much — and whose names are on it — is to turn the employee on.</div>
+        <div class="totals-amount">$97/mo</div>
+        <div class="totals-amount-sub">no contract &middot; connect once &middot; works every night</div>
+      </div>
+      <div class="totals-cta">
+        <button type="button" class="totals-cta-button">Connect &amp; turn it on</button>
+        <div class="totals-cta-sub">Your first report: tomorrow morning.</div>
+      </div>
+    </div>
 
-  <!-- ═══ ACTIVITY + HEALTH ═══ -->
-  <div class="duo-grid">
-    <div class="card">
-      <div class="card-head">
-        <span class="card-title">Recent Activity</span>
-        <span class="badge live"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:middle"></span>Live</span>
-      </div>
-      <div class="feed-container">
-        <div class="feed-track" id="activityFeed"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <span class="card-title">System Health</span>
-      </div>
-      <div class="health-body">
-        <div class="health-row"><span class="health-left">AGM Sync</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-        <div class="health-row"><span class="health-left">Review engine</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-        <div class="health-row"><span class="health-left">Follow-up agent</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-        <div class="health-row"><span class="health-left">Lead capture</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-        <div class="health-row"><span class="health-left">Reactivation sequences</span><span class="health-right"><span class="health-dot"></span>2 running</span></div>
-        <div class="health-row"><span class="health-left">SMS delivery</span><span class="health-right"><span class="health-dot"></span>Healthy</span></div>
-        <div class="health-row"><span class="health-left">Self-heal events</span><span class="health-right" style="color:var(--text2)"><span id="healEvents">7</span> auto-resolved</span></div>
-      </div>
-    </div>
   </div>
 
-  <!-- ═══ AGM WORKING BAND ═══ -->
-  <section class="agm-band">
-    <div class="agm-band-head">
-      <div class="agm-band-title">What AGM did for you this week</div>
-      <div class="agm-band-time">≈ 22 hours of manual work saved</div>
-    </div>
-    <div class="agm-band-grid">
-      <div class="agm-stat">
-        <div class="agm-stat-val">148</div>
-        <div class="agm-stat-lbl">Auto follow-ups sent</div>
-      </div>
-      <div class="agm-stat">
-        <div class="agm-stat-val">53</div>
-        <div class="agm-stat-lbl">Review requests sent</div>
-      </div>
-      <div class="agm-stat">
-        <div class="agm-stat-val">11</div>
-        <div class="agm-stat-lbl">Missed calls rescued</div>
-      </div>
-      <div class="agm-stat">
-        <div class="agm-stat-val">8</div>
-        <div class="agm-stat-lbl">Dormant customers re-engaged</div>
-      </div>
-      <div class="agm-stat">
-        <div class="agm-stat-val">7</div>
-        <div class="agm-stat-lbl">System issues self-healed</div>
-      </div>
-    </div>
-  </section>
+  <!-- ============ TAB 1: the existing $97 view (sample numbers) ============ -->
+  <div class="tab-pane" id="pane-leaks">
 
-</main>
+    <div class="hero">
+      <div class="hero-left">
+        <div>
+          <div class="hero-info-eyebrow">Your Contractor Automation Score</div>
+          <div class="hero-info-title">Your existing Starter view lives here <span class="demo-chip">sample numbers</span></div>
+          <div class="hero-info-sub">Your score, re-checked monthly. Below it: everything your 24-hour employee found overnight — five leaks, one strength, and the dollars attached to each.</div>
+        </div>
+        <div class="hero-info-stats">
+          <div>
+            <div class="stat-label">Percentile</div>
+            <div class="stat-val amber">40th</div>
+          </div>
+          <div>
+            <div class="stat-label">30-day change</div>
+            <div class="stat-val green">baseline</div>
+          </div>
+          <div>
+            <div class="stat-label">Re-scored</div>
+            <div class="stat-val">Monthly</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="ring-stack">
+          <div class="ring">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="casGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#22c55e"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="100" cy="100" r="84"/>
+              <circle class="ring-fill" cx="100" cy="100" r="84" stroke-dasharray="284.9 527.5"/>
+            </svg>
+            <div class="ring-center">
+              <div class="score-num">54</div>
+              <div class="score-out">/ 100</div>
+            </div>
+          </div>
+          <div class="ring-label">Your Score</div>
+        </div>
+        <div class="impact-badge">
+          <div class="impact-badge-eyebrow">What your data is telling you</div>
+          <div class="impact-badge-num">$15,300</div>
+          <div class="impact-badge-sub">estimated lost revenue every month, across all 5 leaks</div>
+        </div>
+      </div>
+    </div>
 
-<footer class="footer">
-  <div class="footer-tagline">No login. No app. No setup call. Just a link — opens on any device, always real-time.</div>
-  <div class="footer-brand">Powered by <a href="https://agmprotools.com" target="_blank" rel="noopener">AGM Pro Tools</a> — the operating layer for field service businesses.</div>
-  <div class="security-note"><span class="ok">●</span> Aggregates only · No customer records exposed · Auth-gated data · Subscriber-scoped URL</div>
-</footer>
+    <div class="slogan">
+      <div class="slogan-headline">An employee without the payroll.</div>
+      <div class="slogan-sub">You go home. It clocks in. Every lead, every quote, every appointment — checked before you're back in the truck or at the office. Last night: 312 customers, five leaks, $15,300 a month at stake. It has never missed a night. <strong>The $97 employee watches and reports. The $297 one goes and gets them — next tab.</strong></div>
+    </div>
+
+    <div class="panels">
+      <div class="panel severe">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Severe leak &middot; Speed to lead</div>
+            <div class="p-title">Leads waiting on a first reply</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">5</div>
+            <div class="p-bignum-sub">waiting 4+ hours this week</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">5 leads &times; your avg job ($6,270)</div><div class="p-impact-val red">$31,350 on the line</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Your avg. response</div><div class="p-impact-val amber">6.4 hrs</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">The fast guys</div><div class="p-impact-val">4 min</div></div>
+        </div>
+        <div class="p-list-title">Longest-waiting leads right now</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">M. Alvarez</div><div class="row-source">11h</div><div class="row-meta">Website form &middot; wrote: &ldquo;interested in turf for our backyard&rdquo;</div><div class="row-value" style="color:var(--red);">nearly gone</div></div>
+          <div class="p-row"><div class="row-name">D. Chen</div><div class="row-source">9h</div><div class="row-meta">Website form &middot; no note left</div><div class="row-value" style="color:var(--amber);">going cold</div></div>
+          <div class="p-row"><div class="row-name">K. Whitfield</div><div class="row-source">6h</div><div class="row-meta">Phone lead &middot; no details yet</div><div class="row-value" style="color:var(--gold);">cooling off</div></div>
+          <div class="p-row"><div class="row-name">R. Vasquez</div><div class="row-source">4h</div><div class="row-meta">Website form &middot; wrote: &ldquo;need a quote for the side yard&rdquo;</div><div class="row-value" style="color:var(--accent);">still warm</div></div>
+        </div>
+        <div class="p-more">+ 1 more &middot; <span class="view-link">See the full list &rarr;</span></div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Most jobs go to whoever answers first.</strong> The system replies to every new lead the moment it arrives — text and email, in your voice — and you watch the replies come in.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel opportunity">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">What's working &middot; Strengths</div>
+            <div class="p-title">Closed-won, last 30 days</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">$62,695</div>
+            <div class="p-bignum-sub">closed-won, last 30 days</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">Jobs closed</div><div class="p-impact-val">10</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Avg. ticket</div><div class="p-impact-val dollar">$6,270</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Close rate</div><div class="p-impact-val dollar">38%</div></div>
+        </div>
+        <div class="p-list-title">Latest wins</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">Backyard patio turf</div><div class="row-source">Closed in 6 days</div><div class="row-meta">Austin</div><div class="row-value">$5,845</div></div>
+          <div class="p-row"><div class="row-name">Cascade Amenity</div><div class="row-source">Closed in 12 days</div><div class="row-meta">Liberty Hill &middot; phase 1</div><div class="row-value">$8,935</div></div>
+          <div class="p-row"><div class="row-name">Dog area turf</div><div class="row-source">Closed in 4 days</div><div class="row-meta">Austin</div><div class="row-value">$9,120</div></div>
+          <div class="p-row"><div class="row-name">2-day install</div><div class="row-source">Closed in 9 days</div><div class="row-meta">Dripping Springs</div><div class="row-value">$22,328</div></div>
+        </div>
+        <div class="p-more">+ 6 more &middot; <span class="view-link">See the full list &rarr;</span></div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Your close rate is solid where you focus.</strong> Imagine it when the system stops the bleeding on the leads, quotes and past customers around you — and feeds confirmed prospects in on top of what's already working.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel high">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">High leak &middot; Quote follow-up</div>
+            <div class="p-title">Quotes that went quiet</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">5</div>
+            <div class="p-bignum-sub">no reply, 9+ days</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">Quote value sitting</div><div class="p-impact-val amber">$34,700</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Avg. days cold</div><div class="p-impact-val">16</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Likely recoverable</div><div class="p-impact-val dollar">$9,100</div></div>
+        </div>
+        <div class="p-list-title">Biggest quotes still cold</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">Rodriguez Homes LLC</div><div class="row-source">24d</div><div class="row-meta">Backyard renovation, 2 units</div><div class="row-value">$12,600</div></div>
+          <div class="p-row"><div class="row-name">S. Patel</div><div class="row-source">18d</div><div class="row-meta">Turf + paver combo</div><div class="row-value">$8,300</div></div>
+          <div class="p-row"><div class="row-name">M. Keller</div><div class="row-source">14d</div><div class="row-meta">Backyard turf before the heat</div><div class="row-value">$5,400</div></div>
+          <div class="p-row"><div class="row-name">J. Morrison</div><div class="row-source">9d</div><div class="row-meta">Front + side yards</div><div class="row-value">$3,700</div></div>
+        </div>
+        <div class="p-more">+ 1 more &middot; <span class="view-link">See the full list &rarr;</span></div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Sure, you could build a follow-up flow yourself.</strong> Or the system runs a 3-step sequence on every quote until it closes or the customer says no. We write the copy. You see the replies.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel medium">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Hidden opportunity &middot; Reactivation</div>
+            <div class="p-title">Past customers gone quiet</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">17</div>
+            <div class="p-bignum-sub">no contact, 12+ months</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">They've spent with you</div><div class="p-impact-val dollar">$61,400</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">If just 3 come back</div><div class="p-impact-val dollar">$18,800</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Your last outreach</div><div class="p-impact-val red">14 mo</div></div>
+        </div>
+        <div class="p-list-title">Highest-value past customers</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">B. Castellano</div><div class="row-source">Last job Mar 2025</div><div class="row-meta">2 installs with you</div><div class="row-value">$14,800</div></div>
+          <div class="p-row"><div class="row-name">Oakhurst Country Club</div><div class="row-source">Last job Jan 2025</div><div class="row-meta">Common areas</div><div class="row-value">$12,900</div></div>
+          <div class="p-row"><div class="row-name">L. Fitzgerald</div><div class="row-source">Last job Apr 2025</div><div class="row-meta">Backyard + pet run</div><div class="row-value">$9,400</div></div>
+          <div class="p-row"><div class="row-name">P. Dominguez</div><div class="row-source">Last job Feb 2025</div><div class="row-meta">Front yard turf</div><div class="row-value">$8,300</div></div>
+        </div>
+        <div class="p-more">+ 13 more &middot; <span class="view-link">See the full list &rarr;</span></div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Most contractors never reach back.</strong> The system quietly checks in with every past customer every 90 days, in your voice. Replies route straight to your inbox.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel medium">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">Medium leak &middot; Review generation</div>
+            <div class="p-title">Finished jobs that never got a review ask</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">9</div>
+            <div class="p-bignum-sub">completed 90d, no review request</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">Jobs done (90d)</div><div class="p-impact-val">24</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Asks sent</div><div class="p-impact-val amber">3 of 24</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Best day to ask</div><div class="p-impact-val">Day job closes</div></div>
+        </div>
+        <div class="p-list-title">Recent jobs with no review request</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">A. Brennan</div><div class="row-source">Done 6d ago</div><div class="row-meta">Backyard turf</div><div class="row-value">5&#9733; likely</div></div>
+          <div class="p-row"><div class="row-name">Willow Creek Daycare</div><div class="row-source">Done 11d ago</div><div class="row-meta">Play area</div><div class="row-value">5&#9733; likely</div></div>
+          <div class="p-row"><div class="row-name">G. Tanaka</div><div class="row-source">Done 15d ago</div><div class="row-meta">Pet run</div><div class="row-value">5&#9733; likely</div></div>
+        </div>
+        <div class="p-more">+ 6 more &middot; <span class="view-link">See the full list &rarr;</span></div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>Every job you finish without asking is a 5-star you'll never get.</strong> The system fires a review request the day a job closes — one-tap link straight to your Google profile. It catches every job.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel high">
+        <div class="p-head">
+          <div class="p-headline">
+            <div class="p-eyebrow">High leak &middot; Appointment confirmation</div>
+            <div class="p-title">This week's appointments — unconfirmed</div>
+          </div>
+          <div class="p-numbers">
+            <div class="p-bignum">3</div>
+            <div class="p-bignum-sub">scheduled, nobody confirmed</div>
+          </div>
+        </div>
+        <div class="p-impact">
+          <div class="p-impact-item"><div class="p-impact-label">No-show risk this wk</div><div class="p-impact-val red">~1 appt</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Truck-roll cost</div><div class="p-impact-val amber">~$280</div></div>
+          <div class="p-impact-item"><div class="p-impact-label">Weekly waste</div><div class="p-impact-val red">$310/wk</div></div>
+        </div>
+        <div class="p-list-title">This week's appointments</div>
+        <div class="p-list">
+          <div class="p-row"><div class="row-name">L. Galli</div><div class="row-source">Mon 8:00 AM</div><div class="row-meta">Install start</div><div class="row-value">confirmed</div></div>
+          <div class="p-row"><div class="row-name">J. Piven</div><div class="row-source">Tue 8:30 AM</div><div class="row-meta">Bocci court install</div><div class="row-value muted">unconfirmed</div></div>
+          <div class="p-row"><div class="row-name">Denali Pools</div><div class="row-source">Wed 9:00 AM</div><div class="row-meta">Leander &middot; install start</div><div class="row-value muted">unconfirmed</div></div>
+          <div class="p-row"><div class="row-name">G. Tanaka</div><div class="row-source">Fri 10:00 AM</div><div class="row-meta">Turf groom</div><div class="row-value muted">unconfirmed</div></div>
+        </div>
+        <div class="p-cta">
+          <div class="p-cta-text"><strong>A reminder hopes the customer remembers. A confirmation captures their answer.</strong> The system asks 24 hours out — customer taps to confirm, replies, or reschedules. The silent ones get flagged before the truck rolls.</div>
+          <div class="p-cta-row">
+            <span class="p-cta-sub">Done-for-you</span>
+            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="totals" style="border-color:rgba(239,68,68,0.25); background:linear-gradient(135deg, rgba(239,68,68,0.08), rgba(249,115,22,0.05));">
+      <div>
+        <div class="totals-eyebrow" style="color:var(--red);">What your data is telling you</div>
+        <div class="totals-headline">You're leaving roughly this much on the table every month — across leads, quotes, reviews, past customers, and no-shows combined:</div>
+        <div class="totals-amount" style="color:var(--red);">$15,300</div>
+        <div class="totals-amount-sub">estimated lost revenue, last 30 days</div>
+      </div>
+      <div class="totals-cta">
+        <button type="button" class="totals-cta-button">Stop the bleeding — Pro Stack $297/mo</button>
+        <div class="totals-cta-sub">We set it up. It works every night.<br>You watch your numbers move.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB 2: SCHEDULE & CREW (Pro upgrade — real Jobber schedule data) ============ -->
+  <div class="tab-pane" id="pane-sched">
+
+    <div class="slogan" style="background:rgba(34,197,94,0.05); border-color:rgba(34,197,94,0.2);">
+      <div class="slogan-headline">No new software. No setup. Nothing to learn.</div>
+      <div class="slogan-sub">You got busy — the employee gets it back. You upgrade once, and the done-for-you system runs 24/7 in the background, chasing every leak with automatic texts and emails, in your voice. When a customer says yes, it lands as a booked day on your calendar. <span class="demo-chip">sample data &middot; unlocks on Pro connect</span></div>
+    </div>
+
+    <div class="story">
+      <div class="story-card got">
+        <div class="story-label">Recovered this month</div>
+        <div class="story-num">$11,670</div>
+        <div class="story-sub">A <strong>$5,400 quote</strong> that went quiet and a <strong>past customer who came back</strong> — both booked, both on the calendar below.</div>
+      </div>
+      <div class="story-card fix">
+        <div class="story-label">Being chased right now</div>
+        <div class="story-num">$19,570</div>
+        <div class="story-sub">Straight off your Revenue Leaks tab — old quotes and past customers <strong>you already have</strong>, followed up automatically and aimed at your 34 open crew days.</div>
+      </div>
+      <div class="story-card cost">
+        <div class="story-label">What it cost you</div>
+        <div class="story-num">$297</div>
+        <div class="story-sub">Against $11,670 back, that's <strong>39&times; the cost</strong> — and you didn't send a single follow-up yourself.</div>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="board-head">
+        <div>
+          <div class="board-title">Recent activity</div>
+          <div class="board-sub">Your employee, working — every move, as it makes them. <span class="demo-chip">Pro preview &middot; sample feed</span></div>
+        </div>
+        <div class="status-badge"><span class="status-dot"></span>Live</div>
+      </div>
+      <div class="p-list" id="receipts-feed"></div>
+      <div class="p-cta" style="margin-top:4px;">
+        <div class="p-cta-text"><strong>One week of chasing you didn't have to do — for about $69.</strong> That's the whole idea: a 24-hour employee that costs less than one tank of diesel a week.</div>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="board-head">
+        <div>
+          <div class="board-title">Your next 30 days</div>
+          <div class="board-sub">Green days are booked money. Amber days are open — with the work we already found to fill them. Multi-day jobs stretch on their own.</div>
+        </div>
+        <div class="week-nav"><span class="week-label">Rolling &middot; updated every night</span></div>
+      </div>
+      <div class="grid-wrap">
+        <div class="mcal">
+          <div class="mcal-dow">Mon</div><div class="mcal-dow">Tue</div><div class="mcal-dow">Wed</div><div class="mcal-dow">Thu</div><div class="mcal-dow">Fri</div><div class="mcal-dow">Sat</div><div class="mcal-dow">Sun</div>
+
+          <div class="mcal-day heat2"><div class="mcal-date">Jul 6</div><div class="mcal-amt">$5,900</div><div class="mcal-job">L. Galli &middot; turf install</div></div>
+          <div class="mcal-day heat3"><div class="mcal-date">Jul 7</div><div class="mcal-amt">$11,450</div><div class="mcal-job">J. Piven &middot; bocci court</div></div>
+          <div class="mcal-day heat2"><div class="mcal-date">Jul 8</div><div class="mcal-amt">$6,422</div><div class="mcal-job">Denali Pools &middot; Leander</div></div>
+          <div class="mcal-day ghost"><div class="mcal-date">Jul 9</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$5,400</div><div class="ghost-job">Quote you sent &middot; 2 weeks, no reply</div></div>
+          <div class="mcal-day"><div class="mcal-date">Jul 10</div><div class="mcal-open">Open</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 11</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 12</div></div>
+
+          <div class="mcal-day heat3"><div class="mcal-date">Jul 13</div><div class="mcal-amt">$29,285</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 1/3</div></div>
+          <div class="mcal-day heat3"><div class="mcal-date">Jul 14</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 2/3</div></div>
+          <div class="mcal-day heat3"><div class="mcal-date">Jul 15</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 3/3</div></div>
+          <div class="mcal-day ghost"><div class="mcal-date">Jul 16</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$6,270</div><div class="ghost-job">Past customer &middot; 2 installs with you</div></div>
+          <div class="mcal-day heat1"><div class="mcal-date">Jul 17</div><div class="mcal-amt svc">$450</div><div class="mcal-job">G. Tanaka &middot; turf groom</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 18</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 19</div></div>
+
+          <div class="mcal-day"><div class="mcal-date">Jul 20</div><div class="mcal-open">Open</div></div>
+          <div class="mcal-day heat2"><div class="mcal-date">Jul 21</div><div class="mcal-amt">$8,348</div><div class="mcal-job">T. Rivas &middot; front yard turf</div></div>
+          <div class="mcal-day heat2"><div class="mcal-date">Jul 22</div><div class="mcal-amt">$5,900</div><div class="mcal-job">Summit Office Park</div></div>
+          <div class="mcal-day heat1"><div class="mcal-date">Jul 23</div><div class="mcal-amt svc">$3,200</div><div class="mcal-job">HOA common &middot; service</div></div>
+          <div class="mcal-day ghost"><div class="mcal-date">Jul 24</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$3,700</div><div class="ghost-job">Quote you sent &middot; 9 days, no reply</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 25</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Jul 26</div></div>
+
+          <div class="mcal-day heat2"><div class="mcal-date">Jul 27</div><div class="mcal-amt">$8,935</div><div class="mcal-job">Cascade Amenity &middot; phase 2</div></div>
+          <div class="mcal-day"><div class="mcal-date">Jul 28</div><div class="mcal-open">Open</div></div>
+          <div class="mcal-day ghost"><div class="mcal-date">Jul 29</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$4,200</div><div class="ghost-job">New lead &middot; never got a quote</div></div>
+          <div class="mcal-day heat1"><div class="mcal-date">Jul 30</div><div class="mcal-amt">$4,410</div><div class="mcal-job">K. Donnelly &middot; pet turf</div></div>
+          <div class="mcal-day"><div class="mcal-date">Jul 31</div><div class="mcal-open">Open</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Aug 1</div></div>
+          <div class="mcal-day wkend"><div class="mcal-date">Aug 2</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="totals">
+      <div>
+        <div class="totals-eyebrow">Revenue Recovered &middot; Pro Stack</div>
+        <div class="totals-headline">The employee watches before it chases. That's why everyone starts at $97 — it learns your business first. When you're ready, everything on this tab switches on from inside your account with one click. No reconnection. No new setup.</div>
+        <div class="totals-amount">$97/mo</div>
+        <div class="totals-amount-sub">your start today &middot; Pro ($297/mo) unlocks later — one booked day covers it for the year</div>
+      </div>
+      <div class="totals-cta">
+        <button type="button" class="totals-cta-button">Start with Starter — $97/mo →</button>
+        <div class="totals-cta-sub">It never gets busy, never forgets,<br>and never stops following up.</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  <span class="live-dot"></span>
+  Demo build &middot; 30-day layout, sample numbers extrapolated from the real Jul 2 data pull &middot; crew assignments are sample &middot; Your data, never shared
+</div>
 
 <script>
-(function(){
-  'use strict';
-
-  const TZ_LABEL = 'CT';
-  const FIRST = ['Jennifer','Michael','Sarah','David','Amanda','Chris','Jessica','Matt','Ashley','Ryan','Emily','Brandon','Nicole','Kevin','Stephanie','Tyler','Rachel','Jason','Lauren','Nathan','Megan','Daniel','Heather','Joshua','Rebecca','Andrew','Samantha','Justin','Eric','Kayla'];
-  const LAST = 'ABCDEFGHIJKLMNOPRSTWY'.split('');
-  const SOURCES = ['Google Ads','Facebook Ad','Website form','Referral','Yard sign','Google Business','Instagram DM'];
-  const SERVICES = ['Putting Green','Pet Area','Pool Deck','Backyard','Commercial Install','Rooftop Turf','Playground'];
-
-  function pick(a){return a[Math.floor(Math.random()*a.length)]}
-  function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-  function rName(){return pick(FIRST)+' '+pick(LAST)+'.'}
-  function rQuote(){return '$'+(rand(8,185)*100).toLocaleString()}
-  function rJob(){return 'JB-'+rand(4200,9800)}
-  function rQuoteId(){return 'QT-'+rand(1200,4500)}
-
-  // ── CAS animation ──
-  function animate(id, target, opts){
-    opts = opts || {};
-    const el = document.getElementById(id);
-    if (!el) return;
-    const duration = opts.duration || 1800;
-    const prefix = opts.prefix || '';
-    const suffix = opts.suffix || '';
-    const start = performance.now();
-    const from = opts.from || 0;
-    function tick(now){
-      const elapsed = now - start;
-      const p = Math.min(elapsed/duration, 1);
-      const eased = 1 - Math.pow(1-p, 3);
-      const val = Math.round(from + (target-from)*eased);
-      el.textContent = prefix + val.toLocaleString() + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  function animateCasRing(score){
-    const el = document.getElementById('casRingFill');
-    const circumference = 540.35;
-    const offset = circumference - (score/100) * circumference;
-    requestAnimationFrame(() => {
-      el.style.strokeDashoffset = offset;
-    });
-    animate('casNumber', score);
-  }
-
-  animateCasRing(72);
-
-  // ── Filter bar (scales some displayed numbers) ──
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
       btn.classList.add('active');
-      // For demo: small visual tweak — flash the CAS ring by re-animating.
-      animateCasRing(rand(68, 78));
+      document.getElementById('pane-' + btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0});
     });
   });
 
-  // ── Activity feed ──
-  const feedEl = document.getElementById('activityFeed');
-  const MAX_FEED = 14;
-
-  const TEMPLATES = [
-    () => ({dot:'green',  html:'Review request sent to <strong>'+rName()+'</strong> — job '+rJob(), time:'just now'}),
-    () => ({dot:'amber',  html:'New ★★★★★ review posted by <strong>'+rName()+'</strong> <span class="feed-star">★★★★★</span>', time:'just now'}),
-    () => ({dot:'blue',   html:'New lead captured — <strong>'+rName()+'</strong> · '+pick(SOURCES), time:'just now'}),
-    () => ({dot:'cyan',   html:'Auto-text sent — missed-call rescue to <strong>'+rName()+'</strong>', time:'just now'}),
-    () => ({dot:'purple', html:'Quote '+rQuoteId()+' sent to <strong>'+rName()+'</strong> — <span class="feed-amount">'+rQuote()+'</span>', time:'just now'}),
-    () => ({dot:'green',  html:'Site evaluation booked — <strong>'+rName()+'</strong> · '+pick(SERVICES), time:'just now'}),
-    () => ({dot:'amber',  html:'Stale-quote chaser triggered for <strong>'+rName()+'</strong> — QT-'+rand(1200,4500), time:'just now'}),
-    () => ({dot:'purple', html:'Reactivation sequence started for <strong>'+rName()+'</strong> · dormant '+rand(90,240)+' days', time:'just now'}),
-    () => ({dot:'green',  html:'Deposit received from <strong>'+rName()+'</strong> — <span class="feed-amount">'+rQuote()+'</span>', time:'just now'}),
-  ];
-
-  function pushEvent(){
-    const t = pick(TEMPLATES);
-    const ev = t();
-    const item = document.createElement('div');
-    item.className = 'feed-item fresh';
-    item.innerHTML = '<div class="feed-dot '+ev.dot+'"></div><div class="feed-text">'+ev.html+'</div><div class="feed-time">'+ev.time+'</div>';
-    feedEl.insertBefore(item, feedEl.firstChild);
-    Array.from(feedEl.children).forEach((el,i) => {
-      if (i === 0) return;
-      const tEl = el.querySelector('.feed-time');
-      if (!tEl) return;
-      if (tEl.textContent === 'just now') tEl.textContent = '1m ago';
-      else if (/^\d+m ago$/.test(tEl.textContent)) {
-        tEl.textContent = (parseInt(tEl.textContent)+1) + 'm ago';
+  (function(){
+    var feed = document.getElementById('receipts-feed');
+    if (!feed) return;
+    var pool = [
+      ['chase', 'Stale-quote chaser sent to <b>M. Keller</b> — <span class="act-amt">$5,400</span> &middot; 14 days quiet'],
+      ['lead', 'New lead answered in 41 seconds — <b>Matt J.</b> &middot; website form'],
+      ['chase', 'Reactivation check-in sent to <b>B. Castellano</b> &middot; 2 past installs, quiet 16 months'],
+      ['review', 'New <span class="act-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> review posted by <b>Nicole F.</b>'],
+      ['won', 'Appointment confirmed — <b>Brandon K.</b> &middot; Thu 9:00 AM'],
+      ['chase', 'Second nudge sent — <b>J. Morrison</b> &middot; <span class="act-amt">$3,700</span> quote, 9 days quiet'],
+      ['lead', 'New lead captured — <b>Justin M.</b> &middot; Google Business'],
+      ['review', 'Review ask sent — <b>G. Tanaka</b> &middot; job closed today'],
+      ['won', 'Day booked — <b>M. Keller</b> came back &middot; <span class="act-amt">$5,400</span> on the calendar'],
+      ['flag', 'Silent appointment flagged — <b>N. Vasquez</b> &middot; Fri 3:00 PM, no confirm yet'],
+      ['chase', '90-day check-in sent to <b>Oakhurst Country Club</b> &middot; last job Jan 2025'],
+      ['won', 'Weekly report sent — 11 follow-ups &middot; 3 replies &middot; <span class="act-amt">$6,270</span> booked']
+    ];
+    var MAX = 8, idx = 0;
+    function add(animate){
+      var e = pool[idx % pool.length]; idx++;
+      var row = document.createElement('div');
+      row.className = 'act-row' + (animate ? ' roll-in' : '');
+      row.dataset.min = '0';
+      row.innerHTML = '<span class="act-dot ' + e[0] + '"></span><div class="act-text">' + e[1] + '</div><span class="act-time">just now</span>';
+      feed.insertBefore(row, feed.firstChild);
+      while (feed.children.length > MAX) feed.removeChild(feed.lastChild);
+    }
+    function age(){
+      var rows = feed.children;
+      for (var i = 0; i < rows.length; i++) {
+        var m = parseInt(rows[i].dataset.min || '0', 10) + 1;
+        rows[i].dataset.min = String(m);
+        rows[i].querySelector('.act-time').textContent = m + 'm ago';
       }
-    });
-    while (feedEl.children.length > MAX_FEED) feedEl.removeChild(feedEl.lastChild);
-    setTimeout(() => item.classList.remove('fresh'), 2400);
-  }
-
-  function updateSync(){
-    const d = new Date();
-    const h = (d.getHours()%12) || 12;
-    const m = d.getMinutes().toString().padStart(2,'0');
-    const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
-    document.getElementById('lastSync').textContent = h+':'+m+' '+ampm+' '+TZ_LABEL;
-  }
-
-  for (let i=0; i<8; i++) pushEvent();
-  updateSync();
-  setInterval(pushEvent, 6000);
-  setInterval(updateSync, 30000);
-})();
+    }
+    for (var k = 0; k < MAX; k++) { if (k) age(); add(false); }
+    setInterval(function(){ age(); add(true); }, 3000);
+  })();
 </script>
 
 </body>
