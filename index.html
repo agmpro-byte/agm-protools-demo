@@ -340,6 +340,29 @@
     .totals-amount { font-size:38px; }
     .totals-cta-button { width:100%; padding:18px 22px; font-size:16px; }
   }
+  a.p-cta-button, a.totals-cta-button { text-decoration:none; display:inline-block; text-align:center; }
+  .rec-row { display:grid; grid-template-columns:auto 1fr auto; gap:16px; padding:14px 16px; background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.2); border-radius:10px; align-items:center; }
+  .rec-row.play { background:rgba(249,115,22,0.05); border-color:rgba(249,115,22,0.25); border-style:dashed; }
+  .rec-date { min-width:60px; text-align:center; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3); border-radius:8px; padding:8px 10px; font-size:10px; font-weight:800; color:var(--accent); letter-spacing:0.06em; line-height:1.3; }
+  .rec-date span { font-size:13px; }
+  .rec-date.play { background:rgba(249,115,22,0.12); border-color:rgba(249,115,22,0.3); color:var(--amber); }
+  .rec-body strong { font-size:15px; }
+  .rec-story { font-size:13.5px; color:var(--text2); line-height:1.5; margin-top:3px; }
+  .rec-right { text-align:right; }
+  .rec-amt { font-size:20px; font-weight:900; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .rec-amt.play { color:var(--amber); }
+  .rec-chip { display:inline-block; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; padding:3px 10px; border-radius:10px; margin-top:5px; }
+  .rec-chip.booked { color:var(--accent); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3); }
+  .rec-chip.play { color:var(--amber); background:rgba(249,115,22,0.1); border:1px solid rgba(249,115,22,0.3); }
+  .rec-total { margin-top:14px; padding:14px 16px; background:rgba(34,197,94,0.06); border-left:3px solid var(--accent); border-radius:8px; font-size:14px; color:var(--text2); line-height:1.55; }
+  .rec-total strong { color:var(--text); }
+  .tally-hours { font-size:15px; font-weight:800; color:var(--accent); letter-spacing:-0.01em; white-space:nowrap; }
+  .weekly-tally { display:grid; grid-template-columns:repeat(5, 1fr); gap:16px; }
+  .tally-item { display:flex; flex-direction:column; gap:4px; }
+  .tally-num { font-size:34px; font-weight:900; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
+  .tally-label { font-size:13px; color:var(--text3); font-weight:600; }
+  .weekly-tally { grid-template-columns:repeat(2, 1fr); }
+  .tally-hours { white-space:normal; }
 </style>
 </head>
 <body>
@@ -458,7 +481,7 @@
           <div class="p-cta-text"><strong>Run the free fix this week — it works.</strong> Connect, and this panel goes live: your real leads, by name, with wait times, every morning.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -489,7 +512,7 @@
           <div class="p-cta-text"><strong>The report isn't all leaks.</strong> Connect, and this becomes your live win feed — every closed job, every dollar, your real close rate, updated overnight.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -522,7 +545,7 @@
           <div class="p-cta-text"><strong>Day 3 and day 10 — start this week.</strong> Connect, and every open quote shows up here with its age and dollar figure, so nothing goes quiet unnoticed.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -553,7 +576,7 @@
           <div class="p-cta-text"><strong>They already know your work.</strong> Connect, and your highest-value past customers appear here by name, with lifetime spend and last-contact dates.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -586,7 +609,7 @@
           <div class="p-cta-text"><strong>Asking costs nothing. Forgetting costs stars.</strong> Connect, and every finished job shows up here until it gets its ask.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -617,7 +640,7 @@
           <div class="p-cta-text"><strong>You can't bill a driveway you drove to twice.</strong> Connect, and this week's appointments show up here — confirmed, silent, or at risk.</div>
           <div class="p-cta-row">
             <span class="p-cta-sub">Starter</span>
-            <button type="button" class="p-cta-button">Turn it on — $97/mo</button>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -631,7 +654,7 @@
         <div class="totals-amount-sub">no contract &middot; connect once &middot; works every night</div>
       </div>
       <div class="totals-cta">
-        <button type="button" class="totals-cta-button">Connect &amp; turn it on</button>
+        <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="totals-cta-button">Connect &amp; turn it on</a>
         <div class="totals-cta-sub">Your first report: tomorrow morning.</div>
       </div>
     </div>
@@ -722,10 +745,10 @@
         </div>
         <div class="p-more">+ 1 more &middot; <span class="view-link">See the full list &rarr;</span></div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>Most jobs go to whoever answers first.</strong> The system replies to every new lead the moment it arrives — text and email, in your voice — and you watch the replies come in.</div>
+          <div class="p-cta-text"><strong>Most jobs go to whoever answers first.</strong> The $97 employee flags every waiting lead — name, hours sitting, dollars on the line — the moment it lands. The $297 one answers them for you.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -755,10 +778,10 @@
         </div>
         <div class="p-more">+ 6 more &middot; <span class="view-link">See the full list &rarr;</span></div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>Your close rate is solid where you focus.</strong> Imagine it when the system stops the bleeding on the leads, quotes and past customers around you — and feeds confirmed prospects in on top of what's already working.</div>
+          <div class="p-cta-text"><strong>Your close rate is solid where you focus.</strong> The employee keeps this scoreboard current every night — what closed, what it paid, what's working.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -790,10 +813,10 @@
         </div>
         <div class="p-more">+ 1 more &middot; <span class="view-link">See the full list &rarr;</span></div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>Sure, you could build a follow-up flow yourself.</strong> Or the system runs a 3-step sequence on every quote until it closes or the customer says no. We write the copy. You see the replies.</div>
+          <div class="p-cta-text"><strong>Sure, you could build a follow-up flow yourself.</strong> Start by seeing every quiet quote the morning it goes cold — who, how long, how much. The chasing is the $297 employee's shift — next tab.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -823,10 +846,10 @@
         </div>
         <div class="p-more">+ 13 more &middot; <span class="view-link">See the full list &rarr;</span></div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>Most contractors never reach back.</strong> The system quietly checks in with every past customer every 90 days, in your voice. Replies route straight to your inbox.</div>
+          <div class="p-cta-text"><strong>Most contractors never reach back.</strong> The employee keeps every past customer in front of you — who's gone quiet, what they've spent, who's worth a call. The check-in texts belong to the $297 shift.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -857,10 +880,10 @@
         </div>
         <div class="p-more">+ 6 more &middot; <span class="view-link">See the full list &rarr;</span></div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>Every job you finish without asking is a 5-star you'll never get.</strong> The system fires a review request the day a job closes — one-tap link straight to your Google profile. It catches every job.</div>
+          <div class="p-cta-text"><strong>Every job you finish without asking is a 5-star you'll never get.</strong> The employee lists each finished job still waiting on its ask, the day it closes. Firing those asks automatically is the $297 shift.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
@@ -889,25 +912,25 @@
           <div class="p-row"><div class="row-name">G. Tanaka</div><div class="row-source">Fri 10:00 AM</div><div class="row-meta">Turf groom</div><div class="row-value muted">unconfirmed</div></div>
         </div>
         <div class="p-cta">
-          <div class="p-cta-text"><strong>A reminder hopes the customer remembers. A confirmation captures their answer.</strong> The system asks 24 hours out — customer taps to confirm, replies, or reschedules. The silent ones get flagged before the truck rolls.</div>
+          <div class="p-cta-text"><strong>A reminder hopes the customer remembers. A confirmation captures their answer.</strong> The employee shows you who's confirmed and who's gone silent — before the truck rolls. The asking runs on the $297 shift.</div>
           <div class="p-cta-row">
-            <span class="p-cta-sub">Done-for-you</span>
-            <button type="button" class="p-cta-button">Pro Stack — $297/mo</button>
+            <span class="p-cta-sub">Watches &amp; reports</span>
+            <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="p-cta-button">Turn it on — $97/mo</a>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="totals" style="border-color:rgba(239,68,68,0.25); background:linear-gradient(135deg, rgba(239,68,68,0.08), rgba(249,115,22,0.05));">
+    <div class="totals">
       <div>
-        <div class="totals-eyebrow" style="color:var(--red);">What your data is telling you</div>
-        <div class="totals-headline">You're leaving roughly this much on the table every month — across leads, quotes, reviews, past customers, and no-shows combined:</div>
-        <div class="totals-amount" style="color:var(--red);">$15,300</div>
-        <div class="totals-amount-sub">estimated lost revenue, last 30 days</div>
+        <div class="totals-eyebrow">Revenue Leaks &middot; Starter</div>
+        <div class="totals-headline">Every panel above unlocks with your real names and your real dollars — the morning after you connect.</div>
+        <div class="totals-amount">$97/mo</div>
+        <div class="totals-amount-sub">no contract &middot; connect once &middot; re-checked every night</div>
       </div>
       <div class="totals-cta">
-        <button type="button" class="totals-cta-button">Stop the bleeding — Pro Stack $297/mo</button>
-        <div class="totals-cta-sub">We set it up. It works every night.<br>You watch your numbers move.</div>
+        <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="totals-cta-button">Connect &amp; unlock — $97/mo &rarr;</a>
+        <div class="totals-cta-sub">~1-min connect &middot; real numbers live same day</div>
       </div>
     </div>
 
@@ -956,47 +979,51 @@
     <div class="board">
       <div class="board-head">
         <div>
-          <div class="board-title">Your next 30 days</div>
-          <div class="board-sub">Green days are booked money. Amber days are open — with the work we already found to fill them. Multi-day jobs stretch on their own.</div>
+          <div class="board-title">What the employee brought back</div>
+          <div class="board-sub">Every win gets a date and a dollar. Green is landed. Amber is in play right now.</div>
         </div>
-        <div class="week-nav"><span class="week-label">Rolling &middot; updated every night</span></div>
       </div>
-      <div class="grid-wrap">
-        <div class="mcal">
-          <div class="mcal-dow">Mon</div><div class="mcal-dow">Tue</div><div class="mcal-dow">Wed</div><div class="mcal-dow">Thu</div><div class="mcal-dow">Fri</div><div class="mcal-dow">Sat</div><div class="mcal-dow">Sun</div>
-
-          <div class="mcal-day heat2"><div class="mcal-date">Jul 6</div><div class="mcal-amt">$5,900</div><div class="mcal-job">L. Galli &middot; turf install</div></div>
-          <div class="mcal-day heat3"><div class="mcal-date">Jul 7</div><div class="mcal-amt">$11,450</div><div class="mcal-job">J. Piven &middot; bocci court</div></div>
-          <div class="mcal-day heat2"><div class="mcal-date">Jul 8</div><div class="mcal-amt">$6,422</div><div class="mcal-job">Denali Pools &middot; Leander</div></div>
-          <div class="mcal-day ghost"><div class="mcal-date">Jul 9</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$5,400</div><div class="ghost-job">Quote you sent &middot; 2 weeks, no reply</div></div>
-          <div class="mcal-day"><div class="mcal-date">Jul 10</div><div class="mcal-open">Open</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 11</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 12</div></div>
-
-          <div class="mcal-day heat3"><div class="mcal-date">Jul 13</div><div class="mcal-amt">$29,285</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 1/3</div></div>
-          <div class="mcal-day heat3"><div class="mcal-date">Jul 14</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 2/3</div></div>
-          <div class="mcal-day heat3"><div class="mcal-date">Jul 15</div><div class="mcal-job">C. Argudo &middot; turf &amp; rock</div><div class="mcal-span">day 3/3</div></div>
-          <div class="mcal-day ghost"><div class="mcal-date">Jul 16</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$6,270</div><div class="ghost-job">Past customer &middot; 2 installs with you</div></div>
-          <div class="mcal-day heat1"><div class="mcal-date">Jul 17</div><div class="mcal-amt svc">$450</div><div class="mcal-job">G. Tanaka &middot; turf groom</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 18</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 19</div></div>
-
-          <div class="mcal-day"><div class="mcal-date">Jul 20</div><div class="mcal-open">Open</div></div>
-          <div class="mcal-day heat2"><div class="mcal-date">Jul 21</div><div class="mcal-amt">$8,348</div><div class="mcal-job">T. Rivas &middot; front yard turf</div></div>
-          <div class="mcal-day heat2"><div class="mcal-date">Jul 22</div><div class="mcal-amt">$5,900</div><div class="mcal-job">Summit Office Park</div></div>
-          <div class="mcal-day heat1"><div class="mcal-date">Jul 23</div><div class="mcal-amt svc">$3,200</div><div class="mcal-job">HOA common &middot; service</div></div>
-          <div class="mcal-day ghost"><div class="mcal-date">Jul 24</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$3,700</div><div class="ghost-job">Quote you sent &middot; 9 days, no reply</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 25</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Jul 26</div></div>
-
-          <div class="mcal-day heat2"><div class="mcal-date">Jul 27</div><div class="mcal-amt">$8,935</div><div class="mcal-job">Cascade Amenity &middot; phase 2</div></div>
-          <div class="mcal-day"><div class="mcal-date">Jul 28</div><div class="mcal-open">Open</div></div>
-          <div class="mcal-day ghost"><div class="mcal-date">Jul 29</div><div class="ghost-tag">We can book this day</div><div class="ghost-amt">$4,200</div><div class="ghost-job">New lead &middot; never got a quote</div></div>
-          <div class="mcal-day heat1"><div class="mcal-date">Jul 30</div><div class="mcal-amt">$4,410</div><div class="mcal-job">K. Donnelly &middot; pet turf</div></div>
-          <div class="mcal-day"><div class="mcal-date">Jul 31</div><div class="mcal-open">Open</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Aug 1</div></div>
-          <div class="mcal-day wkend"><div class="mcal-date">Aug 2</div></div>
+      <div class="p-list">
+        <div class="rec-row">
+          <div class="rec-date">MON<br><span>Jul 6</span></div>
+          <div class="rec-body"><strong>M. Keller &mdash; backyard renovation</strong><div class="rec-story">Quote sat quiet two weeks. Two nudges. Booked for Monday, 8 AM.</div></div>
+          <div class="rec-right"><div class="rec-amt">$5,400</div><div class="rec-chip booked">Booked</div></div>
         </div>
+        <div class="rec-row">
+          <div class="rec-date">THU<br><span>Jul 16</span></div>
+          <div class="rec-body"><strong>Past customer &mdash; repeat project</strong><div class="rec-story">Two jobs with you, then 16 months of silence. One check-in text. She picked Thursday.</div></div>
+          <div class="rec-right"><div class="rec-amt">$6,270</div><div class="rec-chip booked">Booked</div></div>
+        </div>
+        <div class="rec-row">
+          <div class="rec-date">THIS<br><span>MONTH</span></div>
+          <div class="rec-body"><strong>Reviews harvested &mdash; three new five-stars</strong><div class="rec-story">Asked the day each job closed — most contractors skip this. Reviews are how your next customer picks you.</div></div>
+          <div class="rec-right"><div class="rec-amt">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rec-chip booked">&times;3 posted</div></div>
+        </div>
+        <div class="rec-row play">
+          <div class="rec-date play">IN<br><span>PLAY</span></div>
+          <div class="rec-body"><strong>J. Morrison &mdash; front + side yards</strong><div class="rec-story">Quote 9 days quiet. Second nudge went out yesterday &mdash; he replied this morning. Picking a day.</div></div>
+          <div class="rec-right"><div class="rec-amt play">$3,700</div><div class="rec-chip play">In play</div></div>
+        </div>
+        <div class="rec-row play">
+          <div class="rec-date play">IN<br><span>PLAY</span></div>
+          <div class="rec-body"><strong>New lead &mdash; never got a quote</strong><div class="rec-story">Came in off the website. The employee answered in 41 seconds &mdash; site visit set for Friday.</div></div>
+          <div class="rec-right"><div class="rec-amt play">$4,200</div><div class="rec-chip play">In play</div></div>
+        </div>
+      </div>
+      <div class="rec-total"><strong>$11,670 of your $84,300 July calendar is money the employee brought back &mdash; one dollar in seven.</strong> That share grows every month it runs.</div>
+    </div>
+
+    <div class="board">
+      <div class="board-head" style="margin-bottom:14px;">
+        <div class="board-title" style="font-size:19px;">What the employee did for you this week</div>
+        <div class="tally-hours">&asymp; 5 hours of chasing you didn't have to do<div style="font-size:11px; font-weight:600; color:var(--text3); text-transform:none; letter-spacing:0; margin-top:3px; text-align:right;">20 touches &middot; ~15 minutes apiece if you did them yourself</div></div>
+      </div>
+      <div class="weekly-tally">
+        <div class="tally-item"><div class="tally-num">11</div><div class="tally-label">Quiet quotes chased down</div></div>
+        <div class="tally-item"><div class="tally-num">3</div><div class="tally-label">Review asks fired same-day</div></div>
+        <div class="tally-item"><div class="tally-num">2</div><div class="tally-label">Missed calls texted back</div></div>
+        <div class="tally-item"><div class="tally-num">4</div><div class="tally-label">Past customers woken up</div></div>
+        <div class="tally-item"><div class="tally-num">1</div><div class="tally-label">Project back on the books</div></div>
       </div>
     </div>
 
@@ -1009,7 +1036,7 @@
         <div class="totals-amount-sub" style="margin-top:4px; text-transform:none; letter-spacing:0; font-weight:500; color:var(--text3);">Pro ($297/mo) unlocks later — one booked project covers it for the year.</div>
       </div>
       <div class="totals-cta">
-        <button type="button" class="totals-cta-button">Start with Starter — $97/mo →</button>
+        <a href="https://contractorautomationscore.com/?utm_source=demo&utm_medium=live-example" class="totals-cta-button">Start with Starter — $97/mo &rarr;</a>
         <div class="totals-cta-sub">It never gets busy, never forgets,<br>and never stops following up.</div>
       </div>
     </div>
