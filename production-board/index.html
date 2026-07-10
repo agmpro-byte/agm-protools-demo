@@ -23,6 +23,22 @@
         display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;letter-spacing:.5px}
   .brand h1{margin:0;font-size:19px;font-weight:800}
   .brand .sub{font-size:12px;opacity:.85;margin-top:2px}
+  .databadge{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;font-weight:700;
+        padding:5px 13px;border-radius:999px;border:1px solid var(--line);letter-spacing:.2px}
+  .databadge .bdot{width:8px;height:8px;border-radius:50%;flex:none}
+  .databadge .when{font-weight:600;opacity:.78}
+  .databadge.real{color:var(--hg);background:var(--green-bg);border-color:rgba(63,185,80,.5)}
+  .databadge.real .bdot{background:var(--hg);animation:bdotpulse 1.8s ease-out infinite}
+  .databadge.sample{color:var(--amber-ink);background:var(--amber-bg);border-color:var(--amber)}
+  .databadge.sample .bdot{background:var(--amber-ink)}
+  @keyframes bdotpulse{
+    0%{box-shadow:0 0 0 0 rgba(63,185,80,.6)}
+    70%{box-shadow:0 0 0 7px rgba(63,185,80,0)}
+    100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}
+  }
+  @media (prefers-reduced-motion: reduce){ .databadge.real .bdot{animation:none;box-shadow:0 0 0 3px rgba(63,185,80,.25)} }
+  .board-note{margin:14px 24px 0;padding:11px 14px;border-radius:8px;font-size:12.5px;
+        background:var(--blue-bg);border:1px solid var(--blue);color:#a5d6ff}
   .whoami{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);
           padding:7px 14px;border-radius:999px;font-size:13px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--hg);box-shadow:0 0 0 3px rgba(63,185,80,.25)}
@@ -41,6 +57,9 @@
   .delayed-btn{display:inline-flex;align-items:center;gap:5px;font-weight:700;
         color:var(--amber-ink);border-color:var(--amber);margin-left:-14px}
   .delayed-btn.on{background:var(--amber);color:#1a1300;border-color:var(--amber)}
+  .hold-btn{display:inline-flex;align-items:center;gap:5px;font-weight:700;
+        color:#ff9b94;border-color:var(--red)}
+  .hold-btn.on{background:var(--red);color:#1a0300;border-color:var(--red)}
   .delay-grp{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;
         color:var(--amber-ink);margin:14px 2px 2px;padding-top:8px;border-top:1px solid var(--line)}
   .delay-grp:first-child{margin-top:2px;padding-top:0;border-top:0}
@@ -63,9 +82,16 @@
   .pcard .area-badge{display:inline-block;background:var(--hg-dark);color:#fff;border-radius:6px;font-size:11px;
         font-weight:800;padding:1px 7px;margin-right:6px}
   .pcard .meta{color:var(--muted);font-size:12px;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px}
+  .cardchan{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;
+            padding:2px 8px;border-radius:5px;margin-top:7px}
+  .cardchan.costco{background:rgba(0,113,206,.18);color:#5cb0ff;border:1px solid rgba(0,113,206,.55)}
+  .cardchan.direct{background:rgba(139,148,158,.12);color:var(--muted);border:1px solid var(--line)}
+  .cardchan.commercial{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple)}
+  .cardchan.paver{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber)}
   .pcard .row2{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
   .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
   .tag.delayed{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber)}
+  .tag.hold{background:var(--red-bg);color:#ff9b94;border:1px solid var(--red)}
   .tag.co{background:var(--purple-bg);color:var(--purple)}
   .tag.bal{background:var(--red-bg);color:var(--red)}
   .tag.paid{background:var(--green-bg);color:var(--hg)}
@@ -119,6 +145,14 @@
   .pay-row .meth{font-size:11px;color:var(--muted)}
   .flag-src{font-size:11px;font-weight:700;color:var(--blue);background:rgba(88,166,255,.1);border:1px dashed var(--blue);
             padding:2px 8px;border-radius:6px}
+  /* Installation Calendar link — header top-right */
+  .hdr-right{display:flex;align-items:center;gap:14px}
+  .hdr-cal{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink);
+           text-decoration:none;background:var(--green-bg);border:1px solid rgba(63,185,80,.5);
+           padding:8px 14px;border-radius:8px;white-space:nowrap;transition:border-color .12s,color .12s}
+  .hdr-cal:hover{border-color:var(--hg);color:var(--hg)}
+  .hdr-cal .ext{color:var(--muted);font-weight:700}
+  @media (max-width:820px){ .hdr-cal{font-size:12px;padding:6px 11px} }
   footer{padding:16px 24px;color:var(--muted);font-size:11.5px;text-align:center;border-top:1px solid var(--line);background:var(--card)}
 
   /* ---- Compact header/toolbar on small + short (landscape phone) viewports ---- */
@@ -163,18 +197,26 @@
     <div>
       <h1>Live · Production Board</h1>
       <div class="sub">Heavenly Greens · single source of truth for production — <span id="dashName">Costco</span></div>
+      <span id="dataBadge" class="databadge sample"><span class="bdot"></span> Sample data (demo) — interactive</span>
     </div>
   </div>
-  <div class="whoami"><span class="dot"></span>&nbsp;Signed in as <strong>&nbsp;Production</strong><span class="m365">&nbsp;· Microsoft 365</span></div>
+  <div class="hdr-right">
+    <a class="hdr-cal" href="/calendar?cat=installation" target="_blank" rel="noopener" title="Install crew schedule — opens in a new window">📅 Install Calendar <span class="ext">↗</span></a>
+    <a class="hdr-cal" href="/calendar?cat=service" target="_blank" rel="noopener" title="Service schedule — opens in a new window">🔧 Service Calendar <span class="ext">↗</span></a>
+    <div class="whoami"><span class="dot"></span>&nbsp;Signed in as <strong>&nbsp;Production</strong><span class="m365">&nbsp;· Microsoft 365</span></div>
+  </div>
 </header>
 
 <div class="toolbar">
   <div class="switch">
+    <button id="btnAll" onclick="setDash('all')">All</button>
     <button id="btnCostco" class="on" onclick="setDash('costco')">Costco</button>
     <button id="btnDirect" onclick="setDash('direct')">HG Direct</button>
     <button id="btnCommercial" onclick="setDash('commercial')">Commercial</button>
+    <button id="btnPaver" onclick="setDash('paver')">Paver</button>
   </div>
-  <button class="chip delayed-btn" id="delayedBtn" onclick="toggleDelayedView()">⚑ Delayed</button>
+  <button class="chip delayed-btn" id="delayedBtn" onclick="toggleFlagView('delayed')">⚑ Delayed</button>
+  <button class="chip hold-btn" id="holdBtn" onclick="toggleFlagView('hold')">⏸ On Hold</button>
   <div class="areas" id="areaChips">
     <span class="lbl">Area</span>
     <span class="chip on" data-area="all" onclick="setArea('all')">All</span>
@@ -184,13 +226,13 @@
     <span class="chip" data-area="4" onclick="setArea('4')">4</span>
     <span class="chip" data-area="5" onclick="setArea('5')">5</span>
     <span class="chip" data-area="6" onclick="setArea('6')">6</span>
-    <span class="flag-src" title="Area is not yet a field in any source system — needs a source decision">Area ⚑ needs source</span>
   </div>
   <div class="src">
     <span>Data source</span><span class="pill" id="srcPill">Contract Engine + AGM</span>
   </div>
 </div>
 
+<div id="boardNote" class="board-note" style="display:none"></div>
 <div class="board" id="board"></div>
 
 <!-- Detail drawer -->
@@ -234,7 +276,7 @@ const STATUS_NAMES = {sold:'Sold', approved:'Approved', scheduled:'Scheduled',
    SAMPLE DATA — fields mirror real ContractData keys (Costco) /
    a thinner Salesforce snapshot (HG Direct). Dummy names/values.
 ---------------------------------------------------------------------------- */
-const COSTCO = [
+let COSTCO = [
   { area:'2', status:'completed', delayed:false, last:'Vela', first:'Dominic', sqft:567, turf:'Foundations Freedom', city:'Hollister',
     job:'HGC-00148', member:'7841233', phone:'(408) 555-0182', phone2:'', email:'dvela@example.com',
     address:'351 Eastview Ct, Hollister, CA 95023', rep:'—', dealer:'Heavenly Greens',
@@ -293,7 +335,7 @@ const COSTCO = [
     pay:[['Deposit','Card','due',0],['Final','Card','scheduled',0]] },
 ];
 
-const DIRECT = [
+let DIRECT = [
   { area:'2', status:'completed', delayed:false, last:'Harmon', first:'Grace', sqft:920, turf:'Everglade Pro', city:'San Jose',
     job:'HG-4821', member:'SF Opp 0061x', phone:'(408) 555-3321', phone2:'', email:'gharmon@example.com',
     address:'1180 Blossom Hill Rd, San Jose, CA 95123', rep:'—', dealer:'Heavenly Greens',
@@ -328,7 +370,7 @@ const DIRECT = [
 
 /* Commercial — same shape as Costco; larger jobs, business members.
    In production this board is the commercial-flagged slice of the pipeline. */
-const COMMERCIAL = [
+let COMMERCIAL = [
   { area:'1', status:'sold', delayed:false, last:'Evergreen Office Park', first:'(Property Mgmt)', sqft:4200, turf:'Foundations Heritage', city:'San Jose',
     job:'HGC-C0042', member:'COMM-3310', phone:'(408) 555-7000', phone2:'', email:'pm@evergreenpark.example.com',
     address:'2200 Zanker Rd, San Jose, CA 95131', rep:'—', dealer:'Heavenly Greens',
@@ -359,8 +401,97 @@ const COMMERCIAL = [
     pay:[['Deposit','Check','paid',9000],['Final','Check','due',9600]] },
 ];
 
+/* Paver — jobs whose contract carries a paver line-item (Belgard / Cambridge / etc).
+   Cross-cuts the channel boards: a paver job ALSO shows on its channel board. In
+   production this is the has_pavers slice across all sources; sample rows here drive
+   the standalone demo. */
+let PAVER = [
+  { area:'4', status:'scheduled', delayed:false, last:'Okonkwo', first:'David', sqft:1180, turf:'Foundations Heritage', city:'Pleasanton',
+    job:'HG-5012', member:'SF Opp 0071a', phone:'(925) 555-3012', phone2:'', email:'dokonkwo@example.com',
+    address:'4200 Rosewood Dr, Pleasanton, CA 94588', rep:'—', dealer:'Heavenly Greens',
+    front_back:'Backyard', drainage:'PDS Tile', co:1, has_pavers:true,
+    materials:[['Turf','Foundations Heritage',1180,'sq ft'],['Paver','Belgard Catalina',420,'sq ft'],
+               ['Base','3" standard',1600,'sq ft'],['Removal','4" Removal',1600,'sq ft']],
+    pay:[['Deposit','Card','paid',6800],['Final','Card','scheduled',0]] },
+  { area:'1', status:'approved', delayed:false, last:'Vargas', first:'Lucia', sqft:640, turf:'K9 Park (Olive)', city:'San Jose',
+    job:'HG-5020', member:'SF Opp 0071b', phone:'(408) 555-9021', phone2:'', email:'lvargas@example.com',
+    address:'2210 Senter Rd, San Jose, CA 95112', rep:'—', dealer:'Heavenly Greens',
+    front_back:'Front + Back', drainage:'None', co:0, has_pavers:true,
+    materials:[['Turf','K9 Park (Olive)',640,'sq ft'],['Paver','Cambridge Cobble',300,'sq ft'],
+               ['Masonry','Seat wall',24,'linear ft'],['Base','3" standard',940,'sq ft']],
+    pay:[['Deposit','Check','paid',4100],['Final','Check','due',5900]] },
+  { area:'2', status:'sold', delayed:true, last:'Ferreira', first:'Marcos', sqft:0, turf:'(hardscape only)', city:'San Mateo',
+    job:'HG-5031', member:'SF Opp 0071c', phone:'(650) 555-1180', phone2:'', email:'mferreira@example.com',
+    address:'88 Baldwin Ave, San Mateo, CA 94401', rep:'—', dealer:'Heavenly Greens',
+    front_back:'Driveway', drainage:'Channel drain', co:0, has_pavers:true,
+    materials:[['Paver','Belgard Dublin Cobble',780,'sq ft'],['Demo','Concrete demo',780,'sq ft'],
+               ['Base','Class II base',780,'sq ft']],
+    pay:[['Deposit','Card','scheduled',0]] },
+];
+
 let DASH='costco', AREA='all', VIEW='board';
 const fmt = n => '$'+Number(n).toLocaleString();
+
+/* ----------------------------------------------------------------------------
+   REAL DATA vs SAMPLE — when this page is served from the authenticated
+   Command Center route (/production-board) the snapshot endpoint exists and we
+   render REAL production jobs (live mirror). When opened standalone (the
+   GitHub Pages demo) the fetch 404s and we keep the embedded sample data with
+   the interactive stage buttons. ONE file, two modes.
+---------------------------------------------------------------------------- */
+const SNAPSHOT_API = '/api/production-snapshot';
+let READ_ONLY = false;        // becomes true once real data loads (mirror = no local mutation)
+let DATA_SOURCE = 'sample';   // 'real' | 'sample'
+let GENERATED = '';
+let BOARD_NOTES = {};         // per-board "wiring next" notes in real mode
+
+async function loadReal(){
+  try{
+    const r = await fetch(SNAPSHOT_API, {credentials:'same-origin', cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d = await r.json();
+    const b = d.boards || {};
+    COSTCO     = (b.costco     && b.costco.cards)     || [];
+    DIRECT     = (b.direct     && b.direct.cards)     || [];
+    COMMERCIAL = (b.commercial && b.commercial.cards) || [];
+    PAVER      = (b.paver      && b.paver.cards)      || [];
+    // Surface a board note whenever the API supplies one — covers both the
+    // "wiring next" boards and a real-but-empty board (Paver) explaining itself.
+    BOARD_NOTES = {
+      costco:     (b.costco     && b.costco.note)     || '',
+      direct:     (b.direct     && b.direct.note)     || '',
+      commercial: (b.commercial && b.commercial.note) || '',
+      paver:      (b.paver      && b.paver.note)      || '',
+    };
+    READ_ONLY = true;
+    DATA_SOURCE = 'real';
+    GENERATED = d.generated || '';
+    updateDataBadge();
+    closeDrawer();
+    render();
+  }catch(e){
+    // Standalone demo (or not authenticated) — keep the embedded sample data.
+    DATA_SOURCE = 'sample';
+    updateDataBadge();
+  }
+}
+
+function updateDataBadge(){
+  const el = document.getElementById('dataBadge');
+  if(!el) return;
+  if(DATA_SOURCE === 'real'){
+    el.className = 'databadge real';
+    let when = '';
+    if(GENERATED){
+      const t = new Date(GENERATED);
+      if(!isNaN(t)) when = t.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+    }
+    el.innerHTML = `<span class="bdot"></span> Connected · Real data${when?` <span class="when">· updated ${when}</span>`:''}`;
+  }else{
+    el.className = 'databadge sample';
+    el.innerHTML = `<span class="bdot"></span> Sample data (demo) — interactive`;
+  }
+}
 
 /* ----------------------------------------------------------------------------
    STAGE MOVEMENT — the board is a MIRROR of the source systems, not a database.
@@ -380,11 +511,36 @@ const STAGE_WRITEBACK = {
   notpaid:'In production this is DERIVED from the Charging Queue ledger, not set by hand. Closing archives the card off the active board.'
 };
 let OPEN=null;
-const srcLabel = () => DASH==='direct' ? 'Salesforce' : 'AGM';
-/* HG Direct is a thin Salesforce snapshot (no live financials);
-   Costco + Commercial both run on the contract engine. */
-const hasFinancials = dash => dash!=='direct';
-const boardData = dash => dash==='costco' ? COSTCO : (dash==='commercial' ? COMMERCIAL : DIRECT);
+const srcLabel = j => (DASH==='all' && j && j.channel)
+  ? (j.channel==='Costco' ? 'AGM' : 'Salesforce')
+  : (DASH==='direct' ? 'Salesforce' : 'AGM');
+/* Costco runs on the contract engine (financial detail). HG Direct + Commercial
+   are Salesforce installation slices — no per-job financials, just the SF link.
+   On the All board this is decided per card via its channel. */
+const hasFinancials = (dash, j) => dash==='costco' || (dash==='all' && j && j.channel==='Costco');
+const boardData = dash => dash==='costco' ? COSTCO
+  : dash==='commercial' ? COMMERCIAL
+  : dash==='paver' ? PAVER
+  : dash==='all' ? allData()
+  : DIRECT;
+
+/* All — every job across the channel boards in one view, deduped by job number.
+   A paver job also lives on its channel board (real data), so its duplicate is
+   dropped; sample-only paver rows have unique job numbers and are kept. Each
+   card gets its channel stamped so the chip and drawer stay truthful. */
+function allData(){
+  const seen = new Set(), out = [];
+  for(const [arr, chan] of [[COSTCO,'Costco'],[DIRECT,'HG Direct'],[COMMERCIAL,'Commercial'],[PAVER,'Paver']]){
+    for(const j of arr){
+      const key = j.job || (chan+'·'+j.last+'·'+j.city);
+      if(seen.has(key)) continue;
+      seen.add(key);
+      if(!j.channel) j.channel = chan;
+      out.push(j);
+    }
+  }
+  return out;
+}
 
 function advance(dash, idx){
   const arr = boardData(dash);
@@ -413,15 +569,19 @@ function toggleDelayed(dash, idx){
 
 function dataset(){ return boardData(DASH); }
 
-const DASH_NAME = {costco:'Costco', direct:'HG Direct', commercial:'Commercial'};
-const DASH_SRC  = {costco:'Contract Engine + AGM', direct:'Salesforce (static snapshot)',
-                   commercial:'Contract Engine + AGM (commercial)'};
+const DASH_NAME = {all:'All', costco:'Costco', direct:'HG Direct', commercial:'Commercial', paver:'Paver'};
+const DASH_SRC  = {all:'All channels — Contract Engine + AGM + Salesforce',
+                   costco:'Contract Engine + AGM', direct:'Salesforce — installation-active',
+                   commercial:'Salesforce — commercial jobs',
+                   paver:'Jobs with paver line-items (all channels)'};
 
 function setDash(d){
   DASH=d; AREA='all'; closeDrawer();
+  document.getElementById('btnAll').classList.toggle('on', d==='all');
   document.getElementById('btnCostco').classList.toggle('on', d==='costco');
   document.getElementById('btnDirect').classList.toggle('on', d==='direct');
   document.getElementById('btnCommercial').classList.toggle('on', d==='commercial');
+  document.getElementById('btnPaver').classList.toggle('on', d==='paver');
   document.getElementById('dashName').textContent = DASH_NAME[d];
   document.getElementById('srcPill').textContent = DASH_SRC[d];
   document.querySelectorAll('#areaChips .chip').forEach(c=>c.classList.toggle('on', c.dataset.area==='all'));
@@ -432,9 +592,10 @@ function setArea(a){
   document.querySelectorAll('#areaChips .chip').forEach(c=>c.classList.toggle('on', c.dataset.area===a));
   render();
 }
-function toggleDelayedView(){
-  VIEW = VIEW==='delayed' ? 'board' : 'delayed';
+function toggleFlagView(which){   // 'delayed' | 'hold'
+  VIEW = VIEW===which ? 'board' : which;
   document.getElementById('delayedBtn').classList.toggle('on', VIEW==='delayed');
+  const hb = document.getElementById('holdBtn'); if(hb) hb.classList.toggle('on', VIEW==='hold');
   closeDrawer();
   render();
 }
@@ -442,31 +603,42 @@ function toggleDelayedView(){
 function cardHTML(j, idx){
   const tags=[];
   if(j.delayed) tags.push('<span class="tag delayed">⚑ Delayed</span>');
-  if(hasFinancials(DASH) && j.co && j.co!=='—' && j.co>0) tags.push(`<span class="tag co">${j.co} CO</span>`);
-  if(hasFinancials(DASH)){
+  if(j.on_hold) tags.push('<span class="tag hold">⏸ On Hold</span>');
+  if(hasFinancials(DASH, j) && j.co && j.co!=='—' && j.co>0) tags.push(`<span class="tag co">${j.co} CO</span>`);
+  if(hasFinancials(DASH, j)){
     const due = (j.pay||[]).filter(p=>p[2]==='due').reduce((s,p)=>s+p[3],0);
-    if(j.status==='notpaid' || due>0) tags.push(`<span class="tag bal">Balance ${fmt(due||0)}</span>`);
+    if(due>0) tags.push(`<span class="tag bal">Balance ${fmt(due)}</span>`);
+    else if(j.status==='notpaid') tags.push('<span class="tag bal">Balance due</span>');
     else if(j.status==='completed') tags.push('<span class="tag paid">Paid</span>');
   } else {
     tags.push('<span class="tag src">SF</span>');
   }
-  const advBtn = STAGE_FLOW[j.status]
+  const advBtn = (!READ_ONLY && STAGE_FLOW[j.status])
     ? `<button class="card-adv" title="${STAGE_ACTION[j.status]}" onclick="event.stopPropagation();advance('${DASH}',${idx})">▸</button>` : '';
-  const backBtn = STAGE_BACK[j.status]
+  const backBtn = (!READ_ONLY && STAGE_BACK[j.status])
     ? `<button class="card-back" title="Move back to ${STATUS_NAMES[STAGE_BACK[j.status]]}" onclick="event.stopPropagation();regress('${DASH}',${idx})">◂</button>` : '';
+  const chan = j.channel || ({costco:'Costco',direct:'HG Direct',commercial:'Commercial'}[DASH] || '');
+  const chanChip = chan ? `<span class="cardchan ${({Costco:'costco','HG Direct':'direct',Commercial:'commercial',Paver:'paver'})[chan]||'direct'}">${chan}</span>` : '';
   return `<div class="pcard" onclick="openDrawer('${DASH}',${idx})">
-    <div class="title"><span class="area-badge">A${j.area}</span>${j.last} · ${j.sqft} SF</div>
+    <div class="title">${j.area?`<span class="area-badge">A${j.area}</span>`:''}${j.last} · ${j.sqft} SF</div>
     <div class="meta"><span>${j.turf}</span><span>· ${j.city}</span></div>
+    ${chanChip}
     <div class="meta"><span>${j.job}</span></div>
     <div class="row2"><span class="row2-left">${backBtn}${tags.join('')}</span>${advBtn}</div>
   </div>`;
 }
 
 function render(){
-  if(VIEW==='delayed') return renderDelayed();
+  if(VIEW==='delayed') return renderFlagView('delayed','⚑ Delayed jobs','var(--amber)','delayed');
+  if(VIEW==='hold')    return renderFlagView('on_hold','⏸ On Hold jobs','var(--red)','on-hold');
   const data = dataset().map((j,i)=>({j,i})).filter(x => AREA==='all' || x.j.area===AREA);
   const board = document.getElementById('board');
   board.classList.remove('list');
+  const noteEl = document.getElementById('boardNote');
+  if(noteEl){
+    if(DATA_SOURCE==='real' && BOARD_NOTES[DASH]){ noteEl.style.display='block'; noteEl.textContent = BOARD_NOTES[DASH]; }
+    else { noteEl.style.display='none'; }
+  }
   board.innerHTML = COLS.map(col=>{
     const items = data.filter(x=>col.match.includes(x.j.status));
     const body = items.length
@@ -482,16 +654,17 @@ function render(){
   }).join('');
 }
 
-/* Delayed view — a single list of every delayed job on the current board,
-   pre-categorized by stage (each card keeps its full status). */
-function renderDelayed(){
+/* Flag view — a single list of every Delayed (or On Hold) job on the current
+   board, pre-categorized by stage (each card keeps its full status). */
+function renderFlagView(prop, title, swatch, emptyLabel){
   const data = dataset().map((j,i)=>({j,i}))
-    .filter(x => (AREA==='all' || x.j.area===AREA) && x.j.delayed);
+    .filter(x => (AREA==='all' || x.j.area===AREA) && x.j[prop]);
   const board = document.getElementById('board');
   board.classList.add('list');
+  const noteEl = document.getElementById('boardNote'); if(noteEl) noteEl.style.display='none';
   if(!data.length){
     board.innerHTML = `<div class="col" style="flex:1 1 100%"><div class="col-body">
-      <div class="empty">No delayed jobs on this board${AREA!=='all'?` for Area ${AREA}`:''}. 🎉</div>
+      <div class="empty">No ${emptyLabel} jobs on this board${AREA!=='all'?` for Area ${AREA}`:''}. 🎉</div>
     </div></div>`;
     return;
   }
@@ -500,7 +673,7 @@ function renderDelayed(){
                      .filter(g=>g.items.length);
   board.innerHTML = `<div class="col" style="flex:1 1 100%;max-width:760px;margin:0 auto">
     <div class="col-h">
-      <span class="name"><span class="swatch" style="background:var(--amber)"></span>⚑ Delayed jobs</span>
+      <span class="name"><span class="swatch" style="background:${swatch}"></span>${title}</span>
       <span class="count">${data.length}</span>
     </div>
     <div class="col-body">
@@ -514,18 +687,35 @@ function renderDelayed(){
 
 function openDrawer(dash, idx){
   const j = boardData(dash)[idx];
-  const isCostco = hasFinancials(dash);
+  const isCostco = hasFinancials(dash, j);
   OPEN={dash,idx};
   document.getElementById('dJob').textContent = `${j.job} · Member/Ref ${j.member}`;
   document.getElementById('dName').textContent = `${j.first} ${j.last}`;
   const statusName = STATUS_NAMES[j.status] || j.status;
+  const boardCrumb = (dash==='all' && j.channel) ? j.channel : DASH_NAME[dash];
   document.getElementById('dCrumbs').innerHTML =
-    `<span>Area ${j.area}</span><span>${statusName}</span>${j.delayed?'<span>⚑ Delayed</span>':''}<span>${DASH_NAME[dash]}</span>`;
+    `<span>Area ${j.area}</span><span>${statusName}</span>${j.delayed?'<span>⚑ Delayed</span>':''}<span>${boardCrumb}</span>`;
 
   const mats = j.materials.map(m=>`<tr><td><strong>${m[0]}</strong></td><td>${m[1]||''}</td><td>${m[2]!==''?m[2]:''}</td><td>${m[3]||''}</td></tr>`).join('');
 
   let payHTML;
-  if(isCostco){
+  if(j.qbo){
+    // Live QuickBooks ledger — resolved through the QBO↔SF join key. Replaces
+    // the Phase-2 placeholder wherever the card's customer is linked.
+    const q = j.qbo;
+    const balTag = q.open>0
+      ? `<span class="tag bal">${fmt(q.open)} open</span>`
+      : `<span class="tag paid">✓ $0 — settled</span>`;
+    const invRow = q.openInv>0
+      ? `<div class="pay-row"><span><span class="m">Open invoices</span></span><span>${q.openInv}${q.oldest>0?` · oldest ${q.oldest}d overdue`:''}</span></div>` : '';
+    const payRow = q.medianDays
+      ? `<div class="pay-row"><span><span class="m">Pay behavior</span></span><span>median ${q.medianDays}d · p90 ${q.p90Days}d · last ${q.n} paid</span></div>` : '';
+    payHTML = `<div class="pay-grid">
+      <div class="pay-row"><span><span class="m">QuickBooks balance</span></span>${balTag}</div>
+      ${invRow}${payRow}</div>
+      <div class="note"><strong>Live from QuickBooks</strong> — resolved via the QBO↔SF join key (${q.tier||'linked'}). Evidence-cited; no estimates.</div>
+      <a class="btn ghost" href="${q.url}" target="_blank" rel="noopener noreferrer">↗ Open customer in QuickBooks</a>`;
+  } else if(isCostco){
     const rows = (j.pay||[]).map(p=>{
       const stcolor = p[2]==='paid'?'paid':(p[2]==='due'?'bal':'co');
       const amt = p[3]>0?fmt(p[3]):'—';
@@ -549,20 +739,49 @@ function openDrawer(dash, idx){
     : `<div class="kv"><div class="k">Change Orders</div><div class="v">Tracked manually in Salesforce (no auto-rollup)</div></div>
        <div class="note blue">HG Direct detail is a <strong>static Salesforce snapshot</strong> — as current as the SF record, not live.</div>`;
 
-  const packetBtns = isCostco
-    ? `<a class="btn" href="#" onclick="return false">📄 Installer Packet (PDF)</a>
-       <a class="btn ghost" href="#" onclick="return false">📋 Updated Job Detail</a>`
-    : `<a class="btn ghost" href="#" onclick="return false">📄 Salesforce record</a>`;
+  // Contact-record deep links — data-driven, so it's correct now AND after the
+  // 2026-07-31 contract-engine convergence. Costco jobs carry an AGM contact;
+  // HG Direct / Paver / Commercial carry a Salesforce record. Show whatever the
+  // job actually has (Costco leads also have an SF opp, so both can appear).
+  const _https = u => (typeof u === 'string' && u.startsWith('https://'));
+  const agmLink = cls => _https(j.agmUrl)
+    ? `<a class="btn ${cls}" target="_blank" rel="noopener" href="${j.agmUrl}">↗ AGM contact record</a>` : '';
+  const sfLink = cls => _https(j.sfUrl)
+    ? `<a class="btn ${cls}" target="_blank" rel="noopener" href="${j.sfUrl}">↗ Salesforce record</a>` : '';
+  let recordLinks = isCostco ? (agmLink('') + sfLink('ghost'))
+                             : (sfLink('') + agmLink('ghost'));
+  if(!recordLinks){
+    const lbl = isCostco ? 'AGM contact record' : 'Salesforce record';
+    recordLinks = `<a class="btn ghost" href="#" onclick="return false" title="The real link appears with live data">↗ ${lbl} (sample)</a>`;
+  }
 
-  const moveBtn = STAGE_ACTION[j.status]
+  // Documents — live links when the contract engine has built the packet
+  // (packetUrl lands on the AGM contact at finalization; ujdUrl re-renders
+  // the post-change-order spec on every click). Honest disabled state before.
+  const docLink = (url, icon, label) => _https(url)
+    ? `<a class="btn" target="_blank" rel="noopener" href="${url}">${icon} ${label}</a>`
+    : `<a class="btn ghost" href="#" onclick="return false" title="Available once the Installer Packet is built (after contract finalization)">${icon} ${label} — not built yet</a>`;
+  const packetBtns = isCostco
+    ? docLink(j.packetUrl, '📄', 'Installer Packet (PDF)') +
+      docLink(j.ujdUrl, '📋', 'Updated Job Detail')
+    : '';
+
+  const moveBtn = (!READ_ONLY && STAGE_ACTION[j.status])
     ? `<button class="btn sm" onclick="advance('${dash}',${idx})">${STAGE_ACTION[j.status]} →</button>` : '';
-  const delBtn = `<button class="btn ghost sm" onclick="toggleDelayed('${dash}',${idx})">${j.delayed?'✓ Clear delayed':'⚑ Flag delayed'}</button>`;
-  const stageHint = (STAGE_WRITEBACK[j.status]||'').replace('{src}', srcLabel());
+  const delBtn = READ_ONLY ? ''
+    : `<button class="btn ghost sm" onclick="toggleDelayed('${dash}',${idx})">${j.delayed?'✓ Clear delayed':'⚑ Flag delayed'}</button>`;
+  const stageHint = READ_ONLY
+    ? `Current stage: <strong>${statusName}</strong>. This board mirrors ${srcLabel(j)} (refreshed every 15 min). Stage write-back from here ships in the next phase.`
+    : (STAGE_WRITEBACK[j.status]||'').replace('{src}', srcLabel(j));
   document.getElementById('dBody').innerHTML = `
     <div class="sec">
       <h3>Stage &amp; Actions</h3>
-      <div class="stage-actions">${moveBtn}${delBtn}</div>
+      ${(moveBtn||delBtn)?`<div class="stage-actions">${moveBtn}${delBtn}</div>`:''}
       ${stageHint?`<div class="action-hint">${stageHint}</div>`:''}
+    </div>
+    <div class="sec">
+      <h3>Record</h3>
+      <div class="stage-actions">${recordLinks}</div>
     </div>
     <div class="sec">
       <h3>Customer</h3>
@@ -578,7 +797,7 @@ function openDrawer(dash, idx){
     <div class="sec">
       <h3>Project</h3>
       <div class="kv">
-        <div class="k">Area</div><div class="v">${j.area} <span class="flag-src">⚑ needs source</span></div>
+        <div class="k">Area</div><div class="v">${j.area || '—'}</div>
         <div class="k">Sq Ft Total</div><div class="v">${j.sqft} sq ft</div>
         <div class="k">Turf Type</div><div class="v">${j.turf}</div>
         <div class="k">Front / Back</div><div class="v">${j.front_back}</div>
@@ -589,8 +808,9 @@ function openDrawer(dash, idx){
     </div>
     <div class="sec">
       <h3>Project Materials</h3>
-      <table class="mtable"><thead><tr><th>Category</th><th>Product</th><th>Qty</th><th>Unit</th></tr></thead>
-      <tbody>${mats}</tbody></table>
+      ${(j.materials && j.materials.length)
+        ? `<table class="mtable"><thead><tr><th>Category</th><th>Product</th><th>Qty</th><th>Unit</th></tr></thead><tbody>${mats}</tbody></table>`
+        : `<div class="note blue">Materials &amp; change-order rollup live in the <strong>Contract Engine</strong> — wiring into this drawer next (Phase 1b).</div>`}
     </div>
     <div class="sec">
       <h3>Change Order Status</h3>
@@ -600,10 +820,10 @@ function openDrawer(dash, idx){
       <h3>Payments &amp; Balance</h3>
       ${payHTML}
     </div>
-    <div class="sec">
+    ${packetBtns ? `<div class="sec">
       <h3>Documents</h3>
       ${packetBtns}
-    </div>
+    </div>` : ''}
   `;
   document.getElementById('scrim').classList.add('show');
   document.getElementById('drawer').classList.add('show');
@@ -615,7 +835,10 @@ function closeDrawer(){
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
 
+updateDataBadge();
 render();
+loadReal();                          // real data when served authed; sample fallback standalone
+setInterval(loadReal, 5*60*1000);    // upstream refreshes every 15 min — re-poll every 5
 </script>
 </body>
 </html>
