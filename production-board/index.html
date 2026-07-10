@@ -60,6 +60,9 @@
   .hold-btn{display:inline-flex;align-items:center;gap:5px;font-weight:700;
         color:#ff9b94;border-color:var(--red)}
   .hold-btn.on{background:var(--red);color:#1a0300;border-color:var(--red)}
+  .notappr-btn{display:inline-flex;align-items:center;gap:5px;font-weight:700;
+        color:var(--blue);border-color:var(--blue)}
+  .notappr-btn.on{background:var(--blue);color:#02101f;border-color:var(--blue)}
   .delay-grp{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;
         color:var(--amber-ink);margin:14px 2px 2px;padding-top:8px;border-top:1px solid var(--line)}
   .delay-grp:first-child{margin-top:2px;padding-top:0;border-top:0}
@@ -92,6 +95,7 @@
   .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
   .tag.delayed{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber)}
   .tag.hold{background:var(--red-bg);color:#ff9b94;border:1px solid var(--red)}
+  .tag.notappr{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue)}
   .tag.co{background:var(--purple-bg);color:var(--purple)}
   .tag.bal{background:var(--red-bg);color:var(--red)}
   .tag.paid{background:var(--green-bg);color:var(--hg)}
@@ -217,6 +221,7 @@
   </div>
   <button class="chip delayed-btn" id="delayedBtn" onclick="toggleFlagView('delayed')">⚑ Delayed</button>
   <button class="chip hold-btn" id="holdBtn" onclick="toggleFlagView('hold')">⏸ On Hold</button>
+  <button class="chip notappr-btn" id="notApprBtn" onclick="toggleFlagView('notapproved')">⊘ Not Approved</button>
   <div class="areas" id="areaChips">
     <span class="lbl">Area</span>
     <span class="chip on" data-area="all" onclick="setArea('all')">All</span>
@@ -298,7 +303,7 @@ let COSTCO = [
     materials:[['Turf','K9 Park (Lime)',880,'sq ft'],['Removal','4" Removal',880,'sq ft'],
                ['Base','3" standard',880,'sq ft'],['Infill','Zeolite',880,'sq ft']],
     pay:[['Deposit','Card','due',0],['Final','Card','scheduled',0]] },
-  { area:'1', status:'sold', delayed:false, last:'Mendez', first:'Carla', sqft:430, turf:'Foundations Freedom', city:'Gilroy',
+  { area:'1', status:'sold', delayed:false, not_approved:true, last:'Mendez', first:'Carla', sqft:430, turf:'Foundations Freedom', city:'Gilroy',
     job:'HGC-00156', member:'9043120', phone:'(408) 555-2087', phone2:'', email:'cmendez@example.com',
     address:'9 Brookside Ave, Gilroy, CA 95020', rep:'—', dealer:'Heavenly Greens',
     front_back:'Front', drainage:'None', co:0,
@@ -348,7 +353,7 @@ let DIRECT = [
     front_back:'Front + Back', drainage:'(see SF notes)', co:'—',
     materials:[['Turf','Diamond Lite','—','—'],['(materials live in Salesforce — static snapshot)','','','']],
     pay:[] },
-  { area:'3', status:'sold', delayed:false, last:'Whitfield', first:'Joan', sqft:610, turf:'Everglade Pro', city:'Los Gatos',
+  { area:'3', status:'sold', delayed:false, not_approved:true, last:'Whitfield', first:'Joan', sqft:610, turf:'Everglade Pro', city:'Los Gatos',
     job:'HG-4844', member:'SF Opp 0061z', phone:'(408) 555-1020', phone2:'', email:'jwhitfield@example.com',
     address:'88 University Ave, Los Gatos, CA 95030', rep:'—', dealer:'Heavenly Greens',
     front_back:'Backyard', drainage:'(see SF notes)', co:'—',
@@ -371,7 +376,7 @@ let DIRECT = [
 /* Commercial — same shape as Costco; larger jobs, business members.
    In production this board is the commercial-flagged slice of the pipeline. */
 let COMMERCIAL = [
-  { area:'1', status:'sold', delayed:false, last:'Evergreen Office Park', first:'(Property Mgmt)', sqft:4200, turf:'Foundations Heritage', city:'San Jose',
+  { area:'1', status:'sold', delayed:false, not_approved:true, last:'Evergreen Office Park', first:'(Property Mgmt)', sqft:4200, turf:'Foundations Heritage', city:'San Jose',
     job:'HGC-C0042', member:'COMM-3310', phone:'(408) 555-7000', phone2:'', email:'pm@evergreenpark.example.com',
     address:'2200 Zanker Rd, San Jose, CA 95131', rep:'—', dealer:'Heavenly Greens',
     front_back:'Common area', drainage:'PDS Tile', co:0,
@@ -592,10 +597,11 @@ function setArea(a){
   document.querySelectorAll('#areaChips .chip').forEach(c=>c.classList.toggle('on', c.dataset.area===a));
   render();
 }
-function toggleFlagView(which){   // 'delayed' | 'hold'
+function toggleFlagView(which){   // 'delayed' | 'hold' | 'notapproved'
   VIEW = VIEW===which ? 'board' : which;
   document.getElementById('delayedBtn').classList.toggle('on', VIEW==='delayed');
   const hb = document.getElementById('holdBtn'); if(hb) hb.classList.toggle('on', VIEW==='hold');
+  const nb = document.getElementById('notApprBtn'); if(nb) nb.classList.toggle('on', VIEW==='notapproved');
   closeDrawer();
   render();
 }
@@ -604,6 +610,7 @@ function cardHTML(j, idx){
   const tags=[];
   if(j.delayed) tags.push('<span class="tag delayed">⚑ Delayed</span>');
   if(j.on_hold) tags.push('<span class="tag hold">⏸ On Hold</span>');
+  if(j.not_approved) tags.push('<span class="tag notappr">⊘ Not Approved</span>');
   if(hasFinancials(DASH, j) && j.co && j.co!=='—' && j.co>0) tags.push(`<span class="tag co">${j.co} CO</span>`);
   if(hasFinancials(DASH, j)){
     const due = (j.pay||[]).filter(p=>p[2]==='due').reduce((s,p)=>s+p[3],0);
@@ -629,8 +636,9 @@ function cardHTML(j, idx){
 }
 
 function render(){
-  if(VIEW==='delayed') return renderFlagView('delayed','⚑ Delayed jobs','var(--amber)','delayed');
-  if(VIEW==='hold')    return renderFlagView('on_hold','⏸ On Hold jobs','var(--red)','on-hold');
+  if(VIEW==='delayed')     return renderFlagView('delayed','⚑ Delayed jobs','var(--amber)','delayed');
+  if(VIEW==='hold')        return renderFlagView('on_hold','⏸ On Hold jobs','var(--red)','on-hold');
+  if(VIEW==='notapproved') return renderFlagView('not_approved','⊘ Not Approved jobs','var(--blue)','not-approved');
   const data = dataset().map((j,i)=>({j,i})).filter(x => AREA==='all' || x.j.area===AREA);
   const board = document.getElementById('board');
   board.classList.remove('list');
@@ -694,7 +702,7 @@ function openDrawer(dash, idx){
   const statusName = STATUS_NAMES[j.status] || j.status;
   const boardCrumb = (dash==='all' && j.channel) ? j.channel : DASH_NAME[dash];
   document.getElementById('dCrumbs').innerHTML =
-    `<span>Area ${j.area}</span><span>${statusName}</span>${j.delayed?'<span>⚑ Delayed</span>':''}<span>${boardCrumb}</span>`;
+    `<span>Area ${j.area}</span><span>${statusName}</span>${j.delayed?'<span>⚑ Delayed</span>':''}${j.on_hold?'<span>⏸ On Hold</span>':''}${j.not_approved?'<span>⊘ Not Approved</span>':''}<span>${boardCrumb}</span>`;
 
   const mats = j.materials.map(m=>`<tr><td><strong>${m[0]}</strong></td><td>${m[1]||''}</td><td>${m[2]!==''?m[2]:''}</td><td>${m[3]||''}</td></tr>`).join('');
 
